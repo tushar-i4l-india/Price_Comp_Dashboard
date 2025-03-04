@@ -3,6 +3,7 @@ import pandas as pd
 import os
 import plotly.express as px 
 from datetime import datetime
+import re
 
 st.set_page_config(page_title="Competitor Price Comparison Dashboard", layout="wide", menu_items={'Get Help': 'https://www.extremelycoolapp.com/help', 
                                                                                                   'Report a bug': "https://www.extremelycoolapp.com/bug", 
@@ -12,6 +13,10 @@ st.set_page_config(page_title="Competitor Price Comparison Dashboard", layout="w
 def load_data(file_path):
     df = pd.read_excel(file_path)
     return df
+
+def extract_first_price(price_str):
+    match = re.search(r'£(\d+\.\d+)', price_str)
+    return float(match.group(1)) if match else None
 
 # Set the base directory containing brand directories
 # base_directory = r"C:\Users\Priyanka\Documents\Search_for_product_on_Competitor's\Compititor's_Price"
@@ -80,8 +85,11 @@ if st.session_state.selected_brand:
                 if not product_data.empty:
                     melted_data = product_data.melt(id_vars=["Product", "SKU"], var_name="Competitor", value_name="Price")
                     st.write(f"Showing price comparison for `{st.session_state.selected_product}`:")
-                    melted_data["Price"] = melted_data["Price"].replace({'[£,]': '', 'Price Not Found': '0'}, regex=True)
-                    melted_data["Price"] = pd.to_numeric(melted_data["Price"], errors='coerce')
+                    # melted_data["Price"] = melted_data["Price"].replace({'[£,]': '', 'Price Not Found': '0'}, regex=True)
+                    # melted_data["Price"] = pd.to_numeric(melted_data["Price"], errors='coerce')
+                    for column in melted_data.columns:
+                        if 'Price' in column:
+                            melted_data[column] = melted_data[column].astype(str).apply(extract_first_price)
                     melted_data = melted_data.dropna(subset=["Price"])
                     melted_data.sort_values(by = "Price", ascending= True, inplace = True)
                     
