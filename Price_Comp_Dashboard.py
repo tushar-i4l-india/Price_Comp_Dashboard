@@ -26,7 +26,7 @@ if 'selected_product' not in st.session_state:
     st.session_state.selected_product = None
 
 # Streamlit app
-st.title("Price Comparison Dashboard")
+st.title("Price Comparison Dashboard 💷")
 
 col1, col2 = st.columns(2)
 with col1:
