@@ -2,6 +2,7 @@ import streamlit as st
 import pandas as pd
 import os
 import plotly.express as px 
+from datetime import datetime
 
 st.set_page_config(page_title="Competitor Price Comparison Dashboard", layout="wide", menu_items={'Get Help': 'https://www.extremelycoolapp.com/help', 
                                                                                                   'Report a bug': "https://www.extremelycoolapp.com/bug", 
@@ -42,6 +43,7 @@ if st.session_state.selected_brand:
     
     with col2:
         dates = [f.split("_")[-1].replace(".xlsx", "") for f in files]
+        dates = sorted(dates, key=lambda x: datetime.strptime(x, "%d-%m-%Y"), reverse=True)
         st.session_state.selected_date = st.selectbox("Select Date", dates)
 
     if st.session_state.selected_date:
