@@ -13,7 +13,8 @@ def load_data(file_path):
     return df
 
 # Set the base directory containing brand directories
-base_directory = r"C:\Users\Priyanka\Documents\Search_for_product_on_Competitor's\Compititor's_Price"
+# base_directory = r"C:\Users\Priyanka\Documents\Search_for_product_on_Competitor's\Compititor's_Price"
+base_directory = os.path.join(os.getcwd(), "Compititor's_Price")
 
 if 'selected_brand' not in st.session_state:
     st.session_state.selected_brand = None
