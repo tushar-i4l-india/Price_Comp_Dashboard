@@ -23,17 +23,27 @@ def extract_first_price(price_str):
     
     # return None
     # return float(match.group(1)) if match else None
+    # if pd.isnull(price_str):
+    #     return None
+    
+    # # Remove any non-numeric characters except '.' and digits
+    # cleaned_str = re.sub(r"[^\d\.]", "", price_str)
+    
+    # # Check if the cleaned string is a valid decimal number
+    # try:
+    #     return float(cleaned_str) if cleaned_str else None
+    # except ValueError:
+    #     return None
     if pd.isnull(price_str):
         return None
     
-    # Remove any non-numeric characters except '.' and digits
-    cleaned_str = re.sub(r"[^\d\.]", "", price_str)
+    # Find the first valid price (with or without £)
+    match = re.search(r'£?(\d+\.\d+)', price_str)
     
-    # Check if the cleaned string is a valid decimal number
-    try:
-        return float(cleaned_str) if cleaned_str else None
-    except ValueError:
-        return None
+    if match:
+        return float(match.group(1))
+    
+    return None
 
 # Set the base directory containing brand directories
 # base_directory = r"C:\Users\Priyanka\Documents\Search_for_product_on_Competitor's\Compititor's_Price"
