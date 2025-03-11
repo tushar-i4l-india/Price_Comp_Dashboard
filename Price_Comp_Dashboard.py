@@ -41,7 +41,7 @@ st.title("Price Comparison Dashboard 💷")
 
 col1, col2 = st.columns(2)
 with col1:
-    brands = ["Celotex", "Recticel"]
+    brands = ["Celotex", "Recticel", "Ecotherm"]
     st.session_state.selected_brand = st.selectbox("Select Brand", brands)
 
 if st.session_state.selected_brand:
