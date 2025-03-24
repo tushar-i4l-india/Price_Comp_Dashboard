@@ -15,12 +15,16 @@ def load_data(file_path):
     return df
 
 def extract_first_price(price_str):
-    if pd.isnull(price_str):
+    if pd.isnull(price_str) or not isinstance(price_str, str):
         return None
-    # Find the first valid price (with or without £)
-    match = re.search(r'£?(\d+\.\d+)', price_str)
+
+    # Match £ followed by numbers, allowing commas and decimals (e.g., £1,002.65 or 1002.65)
+    match = re.search(r'£?([\d,]+\.\d+)', price_str)
+    
     if match:
-        return float(match.group(1))
+        # Remove commas before converting to float
+        return float(match.group(1).replace(",", ""))
+    
     return None
 
 # Set the base directory containing brand directories
