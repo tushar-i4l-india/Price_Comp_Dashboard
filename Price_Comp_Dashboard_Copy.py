@@ -150,7 +150,7 @@ if st.session_state.selected_brand:
                             df_display.at[index, col + "_Arrow"] = "🔺"
                         elif today_price < prev_price:
                             # df_display.at[index, col + "_Arrow"] = "🔻"
-                            df_display.at[index, col + "_Arrow"] = "🔽"
+                            df_display.at[index, col + "_Arrow"] = "🔻"
 
             # Merge arrow columns with price columns for display
             for col in website_columns:
