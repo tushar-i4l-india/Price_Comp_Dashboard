@@ -2,12 +2,12 @@ import streamlit as st
 import pandas as pd
 import os
 import plotly.express as px 
-from datetime import datetime, timedelta
+from datetime import datetime
 import re
 
-st.set_page_config(page_title="Competitor Price Comparison Dashboard", layout="wide", menu_items={'Get Help': 'https://www.extremelycoolapp.com/help', 
-                                                                                                  'Report a bug': "https://www.extremelycoolapp.com/bug", 
-                                                                                                  'About': "# This is a header. This is an *extremely* cool app!"})
+st.set_page_config(page_title="Price Comparison Dashboard", page_icon= ":bar_chart:", layout="wide", menu_items={'Get Help': 'https://insulation4less.co.uk/pages/contact-us', 
+                                                                                                  'Report a bug': "https://www.insulation4less.co.uk", 
+                                                                                                  'About': "This app is a price comparison dashboard"})
 # Function to load data
 @st.cache_data
 def load_data(file_path):
@@ -15,22 +15,16 @@ def load_data(file_path):
     return df
 
 def extract_first_price(price_str):
-    if pd.isnull(price_str):
+    if pd.isnull(price_str) or not isinstance(price_str, str):
         return None
-    # Find the first valid price (with or without £)
-    match = re.search(r'£?(\d+\.\d+)', price_str)
-    if match:
-        return float(match.group(1))
-    return None
 
-# Function to extract numerical price values
-def extract_price(price):
-    if isinstance(price, str):
-        if "price not found" in price.lower() or "no link" in price.lower() or price.lower().startswith("error:"):
-            return None
-        match = re.search(r"[\d,.]+", price)
-        if match:
-            return float(match.group().replace(",", ""))
+    # Match £ followed by numbers, allowing commas and decimals (e.g., £1,002.65 or 1002.65)
+    match = re.search(r'£?([\d,]+\.\d+)', price_str)
+    
+    if match:
+        # Remove commas before converting to float
+        return float(match.group(1).replace(",", ""))
+    
     return None
 
 # Set the base directory containing brand directories
@@ -71,96 +65,13 @@ if st.session_state.selected_brand:
         file_name = f"{st.session_state.selected_brand}_Prices_{st.session_state.selected_date}.xlsx"
         data_path = os.path.join(brand_directory, file_name)
         # Load data
-        selected_date_obj = datetime.strptime(st.session_state.selected_date, "%d-%m-%Y")
-        previous_date_obj = selected_date_obj - timedelta(days=1)
-        previous_date_str = previous_date_obj.strftime("%d-%m-%Y")
-
-        prev_file_name = f"{st.session_state.selected_brand}_Prices_{st.session_state.previous_date_str}.xlsx"
-        prev_data_path = os.path.join(brand_directory, prev_file_name)
-
+        
         if st.button("Preview Data") or st.session_state.data_loaded:
             st.session_state.data_loaded = True
             # Display data
             df = load_data(data_path)
-            prev_df = load_data(prev_data_path)
-
-            df_merged = df.merge(prev_df, on=["SKU", "Product"], how="left", suffixes=("_today", "_yesterday"))
-
-            website_columns = [ "I4L", "B4L", "BSO", "Insulation Superstore", "Materials Market", "Trade Insulations",
-                                "Insulation Wholesale", "Insulation Hub", "InsulationUK", "Online Insulation Sales",
-                                "Building Materials", "Insulation Online", "Planet Insulation", "Insulation Shop",
-                                "Building Materials Direct", "Insulation Bee", "DIY Building supplies"]
-
             st.write(f"### Price list for `{st.session_state.selected_brand}`")
-            df_display = df_merged[["SKU", "Product"] + [col + "_today" for col in website_columns]].copy()
-            # Rename columns for readability
-            rename_dict = {col + "_today": col for col in website_columns}
-            # Function to apply background colors and arrows dynamically
-            def highlight_changes(row):
-                styles = []
-                for col in website_columns:
-                    today_price = extract_price(row[col])
-                    prev_col = col + "_yesterday"
-
-                    prev_price_str = df_merged.loc[row.name, prev_col] if prev_col in df_merged.columns else None
-                    prev_price = extract_price(prev_price_str)
-
-                    # Default style (no change)
-                    style = ""
-
-                    # Price increased: Light Red background with Dark Red text
-                    if today_price is not None and prev_price is not None and today_price > prev_price:
-                        # style = "background-color: #ffcccc; color: darkred; font-weight: bold;"
-                        style = "color: darkred; font-weight: bold;"
-
-                    # Price decreased: Light Green background with Dark Green text
-                    elif today_price is not None and prev_price is not None and today_price < prev_price:
-                        # style = "background-color: #ccffcc; color: darkgreen; font-weight: bold;"
-                        style = "color: darkgreen; font-weight: bold;"
-
-                    # Price unchanged: Light Blue background
-                    elif today_price is not None and prev_price is not None and today_price == prev_price:
-                        # style = "background-color: #e6f2ff; color: blue; font-weight: bold;"
-                        style = "color: blue; font-weight: bold;"
-
-                    styles.append(style)
-
-                return styles
-
-            # Apply styling to the dataframe
-            styled_df = df_display.style.apply(highlight_changes, axis=1, subset=website_columns)
-
-            # Adding arrows directly into the dataframe as new columns
-            for col in website_columns:
-                df_display[col] = df_display[col].astype(str)  # Ensure it's string type for concatenation
-                df_display[col + "_Arrow"] = ""
-
-                for index, row in df_display.iterrows():
-                    today_price = extract_price(row[col])
-                    prev_col = col + "_yesterday"
-
-                    prev_price_str = df_merged.loc[index, prev_col] if prev_col in df_merged.columns else None
-                    prev_price = extract_price(prev_price_str)
-
-                    # Adding arrows based on price changes
-                    if today_price is not None and prev_price is not None:
-                        if today_price > prev_price:
-                            # df_display.at[index, col + "_Arrow"] = "🔺"
-                            df_display.at[index, col + "_Arrow"] = "🔺"
-                        elif today_price < prev_price:
-                            # df_display.at[index, col + "_Arrow"] = "🔻"
-                            df_display.at[index, col + "_Arrow"] = "🔽"
-
-            # Merge arrow columns with price columns for display
-            for col in website_columns:
-                df_display[col] = df_display[col] + " " + df_display[col + "_Arrow"]
-                df_display.drop(columns=[col + "_Arrow"], inplace=True)
-
-            # Display styled dataframe in Streamlit
-            st.dataframe(styled_df, hide_index=True, height=600)
-            df_display.rename(columns=rename_dict, inplace=True)
-
-            # st.dataframe(df, hide_index=True)
+            st.dataframe(df, hide_index=True)
 
             # Select product
             products = df["Product"].unique()
