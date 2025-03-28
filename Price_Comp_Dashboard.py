@@ -84,15 +84,14 @@ if st.session_state.selected_brand:
     files = [f for f in os.listdir(brand_directory) if f.endswith(".xlsx")]
     
     with col2:
-        dates = [f.split("_")[-1].replace(".xlsx", "") for f in files]
-        dates = sorted(dates, key=lambda x: datetime.strptime(x, "%d-%m-%Y"), reverse=True)
-        st.session_state.selected_date = st.selectbox("Select Date", dates)
-
-    if st.session_state.selected_date:
-        # Construct the file path for the selected date
-        file_name = f"{st.session_state.selected_brand}_Prices_{st.session_state.selected_date}.xlsx"
-        data_path = os.path.join(brand_directory, file_name)
-        
+        dates = sorted([datetime.strptime(f.split("_")[-1].replace(".xlsx", ""), "%d-%m-%Y") for f in files], reverse=True)
+        st.session_state.selected_date = st.date_input("Select Date", value=max(dates).date() if dates else datetime.today().date(),
+                                                       min_value=min(dates).date() if dates else datetime.today().date(), max_value=datetime.today().date())
+        st.session_state.selected_date = st.session_state.selected_date.strftime("%d-%m-%Y")
+    # Construct the file path for the selected date
+    file_name = f"{st.session_state.selected_brand}_Prices_{st.session_state.selected_date}.xlsx"
+    data_path = os.path.join(brand_directory, file_name)
+    if st.session_state.selected_date and os.path.exists(data_path):
         selected_date_obj = datetime.strptime(st.session_state.selected_date, "%d-%m-%Y")
         previous_date_obj = selected_date_obj - timedelta(days=1)
         previous_date_str = previous_date_obj.strftime("%d-%m-%Y") # get the date before the selected date 
@@ -175,3 +174,15 @@ if st.session_state.selected_brand:
                         # barmode="group"
                     )
                     st.plotly_chart(fig)
+    
+    else:
+        st.markdown(
+            """
+            <div style="display: flex; justify-content: center; align-items: center; height: 100px;">
+                <p style="background-color: #FFDDDD; color: red; padding: 15px; font-size: 18px; font-weight: bold; border-radius: 10px;">
+                    ❌ Data for the selected date is not available. 
+                </p>
+            </div>
+            """,
+            unsafe_allow_html=True
+        )
