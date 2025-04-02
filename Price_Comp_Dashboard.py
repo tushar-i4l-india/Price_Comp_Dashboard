@@ -176,7 +176,6 @@ if st.session_state.selected_brand:
                     st.plotly_chart(fig)
     
     else:
-        # st.error("Oopss.......Data for the selected date is not available. Please select another date.")
         st.markdown(
             """
             <div style="display: flex; justify-content: center; align-items: center; height: 100px;">

@@ -88,7 +88,7 @@ if st.session_state.selected_brand:
         # dates = sorted(dates, key=lambda x: datetime.strptime(x, "%d-%m-%Y"), reverse=True)
         dates = sorted([datetime.strptime(f.split("_")[-1].replace(".xlsx", ""), "%d-%m-%Y") for f in files], reverse=True)
         st.session_state.selected_date = st.date_input("Select Date", value=max(dates).date() if dates else datetime.today().date(),
-                                                       min_value=min(dates).date() if dates else datetime.today().date(), max_value=datetime.today().date())
+                                                       min_value=min(dates).date() if dates else datetime.today().date()) # , max_value=datetime.today().date()
         # st.session_state.selected_date = st.selectbox("Select Date", dates)
         st.session_state.selected_date = st.session_state.selected_date.strftime("%d-%m-%Y")
             # Construct the file path for the selected date
