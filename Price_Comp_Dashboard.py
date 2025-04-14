@@ -140,10 +140,10 @@ if st.session_state.selected_brand:
 
                 
                 # Display styled dataframe in Streamlit
-                st.dataframe(styled_df, hide_index=True, height=600)
+                st.dataframe(styled_df, hide_index=True, height=400)
             except:
                 # Display normal dataframe in Streamlit
-                st.dataframe(df, hide_index=True, height=600)
+                st.dataframe(df, hide_index=True, height=400)
             # Select product
             products = df["Product"].unique()
             st.session_state.selected_product = st.sidebar.selectbox("Select Product", products)
