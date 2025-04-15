@@ -171,6 +171,125 @@ if st.session_state.selected_brand:
                         # barmode="group"
                     )
                     st.plotly_chart(fig)
+        else:
+            import streamlit.components.v1 as components
+            components.html(
+                """
+                <!DOCTYPE html>
+                <html>
+                <head>
+                <meta name="viewport" content="width=device-width, initial-scale=1">
+                <style>
+                * {box-sizing: border-box;}
+                body {font-family: Verdana, sans-serif;}
+                .mySlides {display: none;}
+                img {vertical-align: middle; width: 100%; border-radius: 10px;}
+
+                /* Slideshow container */
+                .slideshow-container {
+                    max-width: 800px;
+                    position: relative;
+                    margin: auto;
+                    padding-top: 40px;
+                }
+
+                /* Title text (top of image) */
+                .title-text {
+                    color: #ffffff;
+                    font-size: 24px;
+                    font-weight: bold;
+                    padding: 12px;
+                    position: absolute;
+                    top: 0;
+                    width: 100%;
+                    text-align: center;
+                    background-color: rgba(0, 0, 0, 0.5);
+                    border-top-left-radius: 10px;
+                    border-top-right-radius: 10px;
+                }
+
+                /* Dots */
+                .dot {
+                    height: 15px;
+                    width: 15px;
+                    margin: 0 2px;
+                    background-color: #bbb;
+                    border-radius: 50%;
+                    display: inline-block;
+                    transition: background-color 0.6s ease;
+                }
+
+                .active {
+                    background-color: #717171;
+                }
+
+                .fade {
+                    animation-name: fade;
+                    animation-duration: 1.5s;
+                }
+
+                @keyframes fade {
+                    from {opacity: 0.001} 
+                    to {opacity: 1}
+                }
+
+                </style>
+                </head>
+                <body>
+
+                <div class="slideshow-container">
+
+                    <div class="mySlides fade">
+                        <div class="title-text">Celotex</div>
+                        <img src="https://www.building-supplies-online.co.uk/cdn/shop/files/walls_-_external_wall_insulation_-_timber_frame_walls_1.png?v=1737114043&width=1946">
+                    </div>
+                    
+                    <div class="mySlides fade">
+                        <div class="title-text">Recticel</div>
+                        <img src="https://www.building-supplies-online.co.uk/cdn/shop/files/Eurothane_20gp_11_1.jpg">
+                    </div>
+
+                    <div class="mySlides fade">
+                        <div class="title-text">Ecotherm</div>
+                        <img src="//build4less.co.uk/cdn/shop/files/Untitleddesign-2024-03-22T094324.755_64d98e44-6e84-46e8-8385-f6acb6837e9f.png?v=1711108001&width=1946">
+                    </div>
+
+                </div>
+                <br>
+
+                <div style="text-align:center">
+                    <span class="dot"></span> 
+                    <span class="dot"></span> 
+                    <span class="dot"></span> 
+                </div>
+
+                <script>
+                let slideIndex = 0;
+                showSlides();
+
+                function showSlides() {
+                    let i;
+                    let slides = document.getElementsByClassName("mySlides");
+                    let dots = document.getElementsByClassName("dot");
+                    for (i = 0; i < slides.length; i++) {
+                        slides[i].style.display = "none";  
+                    }
+                    slideIndex++;
+                    if (slideIndex > slides.length) {slideIndex = 1}    
+                    for (i = 0; i < dots.length; i++) {
+                        dots[i].className = dots[i].className.replace(" active", "");
+                    }
+                    slides[slideIndex-1].style.display = "block";  
+                    dots[slideIndex-1].className += " active";
+                    setTimeout(showSlides, 6000); // Change image every 2 seconds
+                }
+                </script>
+
+                </body>
+                </html>
+                """,
+                height=650,
+            )
     
     else:
         st.markdown(
