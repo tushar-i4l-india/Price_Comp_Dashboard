@@ -164,7 +164,7 @@ if st.session_state.selected_brand:
                     fig = px.bar(
                         melted_data,
                         x="Competitor",
-                        y="Price",
+                        y="Price in £",
                         color="Competitor",
                         title=f"Price Comparison for {st.session_state.selected_product}",
                         text = "Price",
