@@ -167,8 +167,9 @@ if st.session_state.selected_brand:
                         y="Price",
                         color="Competitor",
                         title=f"Price Comparison for {st.session_state.selected_product}",
-                        text = "Price",
-                        # barmode="group"
+                        text = "Price", 
+                        labels= {"Price": "Price in £",}
+                        # barmode="group"   
                     )
                     st.plotly_chart(fig)
         else:
