@@ -247,7 +247,7 @@ if st.session_state.selected_brand:
                     
                     <div class="mySlides fade">
                         <div class="title-text">Recticel</div>
-                        <img src="https://www.building-supplies-online.co.uk/cdn/shop/files/Eurothane_20gp_11_1.jpg?v=1737114057&width=1946">
+                        <img src="https://www.building-supplies-online.co.uk/cdn/shop/files/Eurothane_20gp_11_1.jpg">
                     </div>
 
                     <div class="mySlides fade">
@@ -293,7 +293,6 @@ if st.session_state.selected_brand:
             )
 
     else:
-        # st.error("Oopss.......Data for the selected date is not available. Please select another date.")
         st.markdown(
             """
             <div style="display: flex; justify-content: center; align-items: center; height: 100px;">
