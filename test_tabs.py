@@ -23,7 +23,8 @@ def extract_price(price):
             return None
         match = re.search(r"[\d,.]+", price)
         if match:
-            return float(match.group().replace(",", ""))
+            return round(float(match.group().replace(",", "")), 2)
+        
     return None
 
 def highlight_changes(row):
@@ -159,21 +160,13 @@ if st.session_state.selected_brand:
                                           var_name="website", value_name="price")
                     df_long["price_numeric"] = df_long["price"].astype(str).apply(extract_price)
                     df_long = df_long.dropna(subset=["price"])
-                    # websites = sorted(df_long["website"].dropna().unique())
-                    # selected_website = st.sidebar.selectbox("Select Website", websites, key="trend_website")
-                    # st.subheader(f"📈 Price Trend for `{st.session_state.selected_product}` on `{selected_website}`: ") 
-                    # trend_df = df_long[(df_long["product"] == st.session_state.selected_product) &
-                    #                    (df_long["website"] == selected_website)].sort_values("date")
-                    # # st.line_chart(trend_df.set_index("date")["price_numeric"])
-                    # fig = px.line(df_long, x="date", y="price_numeric", color="product")
-                    # st.plotly_chart(fig)
                     selected_product = st.session_state.selected_product
                     avg_price_trend = df_long[df_long["product"] == selected_product].groupby("date")["price_numeric"].mean().reset_index()
                     st.write(f"📈 Average Price Trend for `{selected_product}` over time: ")
                     fig = px.line(avg_price_trend, x="date", y="price_numeric", title=f"Average Price Trend for {selected_product}", hover_data= ["price_numeric"], 
                                   markers=True, labels={"date": "Date", "price_numeric": "Price in £"})
                     st.plotly_chart(fig)
-
+                  
         else:
             import streamlit.components.v1 as components
             components.html(
