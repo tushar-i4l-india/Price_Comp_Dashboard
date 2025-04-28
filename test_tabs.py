@@ -87,7 +87,7 @@ if st.session_state.selected_brand:
 
         if st.sidebar.button("Preview Data") or st.session_state.data_loaded:
             st.session_state.data_loaded = True
-            tab1, tab2, tab3 = st.tabs(["🗃 Data", ":bar_chart: Price Comparison", ":chart_with_upwards_trend: Average Price Trend"])
+            tab1, tab2, tab3 = st.tabs(["🗃 Data", ":bar_chart: Price Comparison", ":chart_with_upwards_trend: Price Trend (Average Price)"])
             df = load_data(data_path)
 
             with tab1:
@@ -162,11 +162,11 @@ if st.session_state.selected_brand:
                     df_long = df_long.dropna(subset=["price"])
                     selected_product = st.session_state.selected_product
                     avg_price_trend = df_long[df_long["product"] == selected_product].groupby("date")["price_numeric"].mean().reset_index()
+                    avg_price_trend["product"] = selected_product
                     st.write(f"📈 Average Price Trend for `{selected_product}` over time: ")
                     fig = px.line(avg_price_trend, x="date", y="price_numeric", title=f"Average Price Trend for {selected_product}", hover_data= ["price_numeric"], 
-                                  markers=True, labels={"date": "Date", "price_numeric": "Price in £"})
+                                  markers=True, labels={"date": "Date", "price_numeric": "Price in £"}, hover_name="product")
                     st.plotly_chart(fig)
-                  
         else:
             import streamlit.components.v1 as components
             components.html(

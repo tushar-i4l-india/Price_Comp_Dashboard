@@ -69,12 +69,10 @@ if 'previous_date_str' not in st.session_state:
     st.session_state.previous_date_str = None
 
 # Streamlit app
-st.title("Price Comparison Dashboard 💷")
+st.sidebar.title("Price Comparison Dashboard 💷")
 
-col1, col2 = st.columns(2)
-with col1:
-    brands = ["Celotex", "Recticel", "Ecotherm"]
-    st.session_state.selected_brand = st.selectbox("Select Brand", brands)
+brands = ["Celotex", "Recticel", "Ecotherm", "Unilin"]
+st.session_state.selected_brand = st.sidebar.selectbox("Select Brand", brands)
 
 if st.session_state.selected_brand:
     # Construct the directory path for the selected brand
@@ -83,20 +81,16 @@ if st.session_state.selected_brand:
     # List available files (dates) for the selected brand
     files = [f for f in os.listdir(brand_directory) if f.endswith(".xlsx")]
     
-    with col2:
-        # dates = [f.split("_")[-1].replace(".xlsx", "") for f in files]
-        # dates = sorted(dates, key=lambda x: datetime.strptime(x, "%d-%m-%Y"), reverse=True)
-        dates = sorted([datetime.strptime(f.split("_")[-1].replace(".xlsx", ""), "%d-%m-%Y") for f in files], reverse=True)
-        st.session_state.selected_date = st.date_input("Select Date", value=max(dates).date() if dates else datetime.today().date(),
-                                                       min_value=min(dates).date() if dates else datetime.today().date()) # , max_value=datetime.today().date()
-        # st.session_state.selected_date = st.selectbox("Select Date", dates)
-        st.session_state.selected_date = st.session_state.selected_date.strftime("%d-%m-%Y")
-            # Construct the file path for the selected date
+    dates = sorted([datetime.strptime(f.split("_")[-1].replace(".xlsx", ""), "%d-%m-%Y") for f in files], reverse=True)
+    st.session_state.selected_date = st.sidebar.date_input("Select Date", value=max(dates).date() if dates else datetime.today().date(),
+                                                    min_value=min(dates).date() if dates else datetime.today().date(), max_value=datetime.today().date())
+    st.session_state.selected_date = st.session_state.selected_date.strftime("%d-%m-%Y")
+    # Construct the file path for the selected date
     file_name = f"{st.session_state.selected_brand}_Prices_{st.session_state.selected_date}.xlsx"
     data_path = os.path.join(brand_directory, file_name)
     if st.session_state.selected_date and os.path.exists(data_path):
         selected_date_obj = datetime.strptime(st.session_state.selected_date, "%d-%m-%Y")
-        if st.session_state.selected_brand == "Ecotherm":
+        if st.session_state.selected_brand == "Ecotherm" or st.session_state.selected_brand == "Unilin":
             previous_date_obj = selected_date_obj - timedelta(days=7)
         else:
             previous_date_obj = selected_date_obj - timedelta(days=1)
@@ -105,7 +99,7 @@ if st.session_state.selected_brand:
         prev_file_name = f"{st.session_state.selected_brand}_Prices_{st.session_state.previous_date_str}.xlsx"
         prev_data_path = os.path.join(brand_directory, prev_file_name)
         # Load data
-        if st.button("Preview Data") or st.session_state.data_loaded:
+        if st.sidebar.button("Preview Data") or st.session_state.data_loaded:
             st.session_state.data_loaded = True
             # Display data
             df = load_data(data_path)
@@ -149,13 +143,13 @@ if st.session_state.selected_brand:
 
                 
                 # Display styled dataframe in Streamlit
-                st.dataframe(styled_df, hide_index=True, height=600)
+                st.dataframe(styled_df, hide_index=True, height=400)
             except:
                 # Display normal dataframe in Streamlit
-                st.dataframe(df, hide_index=True, height=600)
+                st.dataframe(df, hide_index=True, height=400)
             # Select product
             products = df["Product"].unique()
-            st.session_state.selected_product = st.selectbox("Select Product", products)
+            st.session_state.selected_product = st.sidebar.selectbox("Select Product", products)
 
             if st.session_state.selected_product:
                 # Filter data for the selected product
@@ -176,12 +170,132 @@ if st.session_state.selected_brand:
                         y="Price",
                         color="Competitor",
                         title=f"Price Comparison for {st.session_state.selected_product}",
-                        text = "Price",
-                        # barmode="group"
+                        text = "Price", 
+                        labels= {"Price": "Price in £",}
+                        # barmode="group"   
                     )
                     st.plotly_chart(fig)
+        else:
+            import streamlit.components.v1 as components
+            components.html(
+                """
+                <!DOCTYPE html>
+                <html>
+                <head>
+                <meta name="viewport" content="width=device-width, initial-scale=1">
+                <style>
+                * {box-sizing: border-box;}
+                body {font-family: Verdana, sans-serif;}
+                .mySlides {display: none;}
+                img {vertical-align: middle; width: 100%; border-radius: 10px;}
+
+                /* Slideshow container */
+                .slideshow-container {
+                    max-width: 800px;
+                    position: relative;
+                    margin: auto;
+                    padding-top: 40px;
+                }
+
+                /* Title text (top of image) */
+                .title-text {
+                    color: #ffffff;
+                    font-size: 24px;
+                    font-weight: bold;
+                    padding: 12px;
+                    position: absolute;
+                    top: 0;
+                    width: 100%;
+                    text-align: center;
+                    background-color: rgba(0, 0, 0, 0.5);
+                    border-top-left-radius: 10px;
+                    border-top-right-radius: 10px;
+                }
+
+                /* Dots */
+                .dot {
+                    height: 15px;
+                    width: 15px;
+                    margin: 0 2px;
+                    background-color: #bbb;
+                    border-radius: 50%;
+                    display: inline-block;
+                    transition: background-color 0.6s ease;
+                }
+
+                .active {
+                    background-color: #717171;
+                }
+
+                .fade {
+                    animation-name: fade;
+                    animation-duration: 1.5s;
+                }
+
+                @keyframes fade {
+                    from {opacity: 0.001} 
+                    to {opacity: 1}
+                }
+
+                </style>
+                </head>
+                <body>
+
+                <div class="slideshow-container">
+
+                    <div class="mySlides fade">
+                        <div class="title-text">Celotex</div>
+                        <img src="https://www.building-supplies-online.co.uk/cdn/shop/files/walls_-_external_wall_insulation_-_timber_frame_walls_1.png?v=1737114043&width=1946">
+                    </div>
+                    
+                    <div class="mySlides fade">
+                        <div class="title-text">Recticel</div>
+                        <img src="https://www.building-supplies-online.co.uk/cdn/shop/files/Eurothane_20gp_11_1.jpg">
+                    </div>
+
+                    <div class="mySlides fade">
+                        <div class="title-text">Ecotherm</div>
+                        <img src="//build4less.co.uk/cdn/shop/files/Untitleddesign-2024-03-22T094324.755_64d98e44-6e84-46e8-8385-f6acb6837e9f.png?v=1711108001&width=1946">
+                    </div>
+
+                </div>
+                <br>
+
+                <div style="text-align:center">
+                    <span class="dot"></span> 
+                    <span class="dot"></span> 
+                    <span class="dot"></span> 
+                </div>
+
+                <script>
+                let slideIndex = 0;
+                showSlides();
+
+                function showSlides() {
+                    let i;
+                    let slides = document.getElementsByClassName("mySlides");
+                    let dots = document.getElementsByClassName("dot");
+                    for (i = 0; i < slides.length; i++) {
+                        slides[i].style.display = "none";  
+                    }
+                    slideIndex++;
+                    if (slideIndex > slides.length) {slideIndex = 1}    
+                    for (i = 0; i < dots.length; i++) {
+                        dots[i].className = dots[i].className.replace(" active", "");
+                    }
+                    slides[slideIndex-1].style.display = "block";  
+                    dots[slideIndex-1].className += " active";
+                    setTimeout(showSlides, 2000); // Change image every 2 seconds
+                }
+                </script>
+
+                </body>
+                </html>
+                """,
+                height=650,
+            )
+    
     else:
-        # st.error("Oopss.......Data for the selected date is not available. Please select another date.")
         st.markdown(
             """
             <div style="display: flex; justify-content: center; align-items: center; height: 100px;">
