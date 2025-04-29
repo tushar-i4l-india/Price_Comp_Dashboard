@@ -5,6 +5,7 @@ import plotly.express as px
 from datetime import datetime, timedelta
 import re
 import glob
+import plotly.graph_objs as go
 
 st.set_page_config(page_title="Price Comparison Dashboard", page_icon=":bar_chart:", layout="wide", menu_items={
     'Get Help': 'https://insulation4less.co.uk/pages/contact-us',
@@ -141,7 +142,7 @@ if st.session_state.selected_brand:
                             title=f"Price Comparison for {st.session_state.selected_product}",
                             text="Price"
                         )
-                        st.plotly_chart(fig)
+                        st.plotly_chart(fig, use_container_width = True)
 
             with tab3:
                 folder_path = brand_directory
@@ -163,10 +164,12 @@ if st.session_state.selected_brand:
                     selected_product = st.session_state.selected_product
                     avg_price_trend = df_long[df_long["product"] == selected_product].groupby("date")["price_numeric"].mean().reset_index()
                     avg_price_trend["product"] = selected_product
-                    st.write(f"📈 Average Price Trend for `{selected_product}` over time: ")
+                    avg_price_trend["price_numeric"] = avg_price_trend["price_numeric"].apply(lambda x: round(x, 2))
+                    st.write(f"📈 Average Price Trend for `{selected_product}` over time: ")                 
                     fig = px.line(avg_price_trend, x="date", y="price_numeric", title=f"Average Price Trend for {selected_product}", hover_data= ["price_numeric"], 
                                   markers=True, labels={"date": "Date", "price_numeric": "Price in £"}, hover_name="product")
-                    st.plotly_chart(fig)
+                    st.plotly_chart(fig, use_container_width=True)
+                    # st.plotly_chart(fig)
         else:
             import streamlit.components.v1 as components
             components.html(
