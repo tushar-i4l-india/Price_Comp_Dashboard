@@ -79,7 +79,10 @@ if st.session_state.selected_brand:
 
     if st.session_state.selected_date and os.path.exists(data_path):
         selected_date_obj = datetime.strptime(st.session_state.selected_date, "%d-%m-%Y")
-        previous_date_obj = selected_date_obj - timedelta(days=1)
+        if st.session_state.selected_brand == "Unilin" or st.session_state.selected_brand == "Ecotherm":
+            previous_date_obj = selected_date_obj - timedelta(days=7)
+        else:
+            previous_date_obj = selected_date_obj - timedelta(days=1)
         previous_date_str = previous_date_obj.strftime("%d-%m-%Y")
         st.session_state.previous_date_str = previous_date_str
         prev_file_name = f"{st.session_state.selected_brand}_Prices_{st.session_state.previous_date_str}.xlsx"
