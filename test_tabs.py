@@ -165,9 +165,42 @@ if st.session_state.selected_brand:
                     avg_price_trend = df_long[df_long["product"] == selected_product].groupby("date")["price_numeric"].mean().reset_index()
                     avg_price_trend["product"] = selected_product
                     avg_price_trend["price_numeric"] = avg_price_trend["price_numeric"].apply(lambda x: round(x, 2))
+                    # avg_price_trend = df_long.groupby(["date", "product"])["price_numeric"].mean().reset_index()
+                    # avg_price_trend["price_numeric"] = avg_price_trend["price_numeric"].apply(lambda x: round(x, 2))
+                    # latest_points = avg_price_trend.sort_values("date").groupby("product").tail(1)
                     st.write(f"📈 Average Price Trend for `{selected_product}` over time: ")                 
-                    fig = px.line(avg_price_trend, x="date", y="price_numeric", title=f"Average Price Trend for {selected_product}", hover_data= ["price_numeric"], 
-                                  markers=True, labels={"date": "Date", "price_numeric": "Price in £"}, hover_name="product")
+                    fig = px.line(
+                                avg_price_trend,
+                                x="date",
+                                y="price_numeric",
+                                color="product",
+                                title=f"Average Price Trend for {selected_product}",
+                                hover_data=["price_numeric"],
+                                labels={"date": "Date", "price_numeric": "Average Price (£)", "product": "Product"},
+                                markers=True,
+                                width=1200,  # Increase width
+                                height=600   # Increase height
+                            )
+                    # fig.update_yaxes(tickprefix="£", rangemode="tozero", automargin=True)
+                    # for product in latest_points["product"].unique():
+                    #     last_point = latest_points[latest_points["product"] == product].iloc[0]
+                    #     fig.add_annotation(
+                    #         x=last_point["date"],
+                    #         y=last_point["price_numeric"],
+                    #         text=product,
+                    #         showarrow=False,
+                    #         font=dict(size=12),
+                    #         xanchor="left",
+                    #         yanchor="middle"
+                    #     )
+                    # apply_fade = st.checkbox("Fade other lines", value=True)
+                    # if apply_fade:
+                    #     for i, trace in enumerate(fig.data):
+                    #         if trace.name != selected_product:
+                    #             fig.data[i].opacity = 0.2
+                    #         else:
+                    #             fig.data[i].line.width = 4
+                    #             fig.data[i].opacity = 1.0
                     st.plotly_chart(fig, use_container_width=True)
                     # st.plotly_chart(fig)
         else:
