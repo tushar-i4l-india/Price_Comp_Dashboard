@@ -5,7 +5,6 @@ import plotly.express as px
 from datetime import datetime, timedelta
 import re
 import glob
-import plotly.graph_objs as go
 
 st.set_page_config(page_title="Price Comparison Dashboard", page_icon=":bar_chart:", layout="wide", menu_items={
     'Get Help': 'https://insulation4less.co.uk/pages/contact-us',
@@ -27,6 +26,10 @@ def extract_price(price):
             return round(float(match.group().replace(",", "")), 2)
         
     return None
+
+def extract_date(filename):
+    date_str = filename.split('_')[-1].replace('.xlsx', '')  # Adjust the extension if needed
+    return datetime.strptime(date_str, '%d-%m-%Y')
 
 def highlight_changes(row):
     styles = []
@@ -63,14 +66,15 @@ if 'previous_date_str' not in st.session_state:
 
 st.sidebar.title("Price Comparison Dashboard 💷")
 
-brands = ["Celotex", "Recticel", "Ecotherm", "Unilin"]
+brands = ["Celotex", "Recticel", "Ecotherm", "Unilin", "Novia", "Powerlon"]
 st.session_state.selected_brand = st.sidebar.selectbox("Select Brand", brands)
 
 if st.session_state.selected_brand:
     brand_directory = os.path.join(base_directory, f"{st.session_state.selected_brand}_Prices")
     files = [f for f in os.listdir(brand_directory) if f.endswith(".xlsx")]
-
+    sorted_files = sorted(files, key=extract_date)
     dates = sorted([datetime.strptime(f.split("_")[-1].replace(".xlsx", ""), "%d-%m-%Y") for f in files], reverse=True)
+    sorted_dates = [date.strftime("%d-%m-%Y") for date in dates]
     st.session_state.selected_date = st.sidebar.date_input("Select Date", value=max(dates).date() if dates else datetime.today().date(),
                                                     min_value=min(dates).date() if dates else datetime.today().date())
     st.session_state.selected_date = st.session_state.selected_date.strftime("%d-%m-%Y")
@@ -80,9 +84,15 @@ if st.session_state.selected_brand:
 
     if st.session_state.selected_date and os.path.exists(data_path):
         selected_date_obj = datetime.strptime(st.session_state.selected_date, "%d-%m-%Y")
-        previous_date_obj = selected_date_obj - timedelta(days=1)
-        previous_date_str = previous_date_obj.strftime("%d-%m-%Y")
-        st.session_state.previous_date_str = previous_date_str
+        if st.session_state.selected_brand == "Unilin" or st.session_state.selected_brand == "Ecotherm":
+            previous_date_obj_index = sorted_dates.index(st.session_state.selected_date) + 1
+            previous_date_str = sorted_dates[previous_date_obj_index]
+            st.session_state.previous_date_str = previous_date_str
+            # previous_date_obj = selected_date_obj - timedelta(days=7)
+        else:
+            previous_date_obj = selected_date_obj - timedelta(days=1)
+            previous_date_str = previous_date_obj.strftime("%d-%m-%Y")
+            st.session_state.previous_date_str = previous_date_str
         prev_file_name = f"{st.session_state.selected_brand}_Prices_{st.session_state.previous_date_str}.xlsx"
         prev_data_path = os.path.join(brand_directory, prev_file_name)
 
@@ -142,7 +152,7 @@ if st.session_state.selected_brand:
                             title=f"Price Comparison for {st.session_state.selected_product}",
                             text="Price"
                         )
-                        st.plotly_chart(fig, use_container_width = True)
+                        st.plotly_chart(fig)
 
             with tab3:
                 folder_path = brand_directory
@@ -164,45 +174,10 @@ if st.session_state.selected_brand:
                     selected_product = st.session_state.selected_product
                     avg_price_trend = df_long[df_long["product"] == selected_product].groupby("date")["price_numeric"].mean().reset_index()
                     avg_price_trend["product"] = selected_product
-                    avg_price_trend["price_numeric"] = avg_price_trend["price_numeric"].apply(lambda x: round(x, 2))
-                    # avg_price_trend = df_long.groupby(["date", "product"])["price_numeric"].mean().reset_index()
-                    # avg_price_trend["price_numeric"] = avg_price_trend["price_numeric"].apply(lambda x: round(x, 2))
-                    # latest_points = avg_price_trend.sort_values("date").groupby("product").tail(1)
-                    st.write(f"📈 Average Price Trend for `{selected_product}` over time: ")                 
-                    fig = px.line(
-                                avg_price_trend,
-                                x="date",
-                                y="price_numeric",
-                                color="product",
-                                title=f"Average Price Trend for {selected_product}",
-                                hover_data=["price_numeric"],
-                                labels={"date": "Date", "price_numeric": "Average Price (£)", "product": "Product"},
-                                markers=True,
-                                width=1200,  # Increase width
-                                height=600   # Increase height
-                            )
-                    # fig.update_yaxes(tickprefix="£", rangemode="tozero", automargin=True)
-                    # for product in latest_points["product"].unique():
-                    #     last_point = latest_points[latest_points["product"] == product].iloc[0]
-                    #     fig.add_annotation(
-                    #         x=last_point["date"],
-                    #         y=last_point["price_numeric"],
-                    #         text=product,
-                    #         showarrow=False,
-                    #         font=dict(size=12),
-                    #         xanchor="left",
-                    #         yanchor="middle"
-                    #     )
-                    # apply_fade = st.checkbox("Fade other lines", value=True)
-                    # if apply_fade:
-                    #     for i, trace in enumerate(fig.data):
-                    #         if trace.name != selected_product:
-                    #             fig.data[i].opacity = 0.2
-                    #         else:
-                    #             fig.data[i].line.width = 4
-                    #             fig.data[i].opacity = 1.0
-                    st.plotly_chart(fig, use_container_width=True)
-                    # st.plotly_chart(fig)
+                    st.write(f"📈 Average Price Trend for `{selected_product}` over time: ")
+                    fig = px.line(avg_price_trend, x="date", y="price_numeric", title=f"Average Price Trend for {selected_product}", hover_data= ["price_numeric"], 
+                                  markers=True, labels={"date": "Date", "price_numeric": "Price in £"}, hover_name="product")
+                    st.plotly_chart(fig)
         else:
             import streamlit.components.v1 as components
             components.html(

@@ -70,6 +70,7 @@ if st.session_state.selected_brand:
     files = [f for f in os.listdir(brand_directory) if f.endswith(".xlsx")]
 
     dates = sorted([datetime.strptime(f.split("_")[-1].replace(".xlsx", ""), "%d-%m-%Y") for f in files], reverse=True)
+    sorted_dates = [date.strftime("%d-%m-%Y") for date in dates]
     st.session_state.selected_date = st.sidebar.date_input("Select Date", value=max(dates).date() if dates else datetime.today().date(),
                                                     min_value=min(dates).date() if dates else datetime.today().date())
     st.session_state.selected_date = st.session_state.selected_date.strftime("%d-%m-%Y")
@@ -80,11 +81,13 @@ if st.session_state.selected_brand:
     if st.session_state.selected_date and os.path.exists(data_path):
         selected_date_obj = datetime.strptime(st.session_state.selected_date, "%d-%m-%Y")
         if st.session_state.selected_brand == "Unilin" or st.session_state.selected_brand == "Ecotherm":
-            previous_date_obj = selected_date_obj - timedelta(days=7)
+            previous_date_obj_index = sorted_dates.index(st.session_state.selected_date) + 1
+            previous_date_str = sorted_dates[previous_date_obj_index]
+            st.session_state.previous_date_str = previous_date_str
         else:
             previous_date_obj = selected_date_obj - timedelta(days=1)
-        previous_date_str = previous_date_obj.strftime("%d-%m-%Y")
-        st.session_state.previous_date_str = previous_date_str
+            previous_date_str = previous_date_obj.strftime("%d-%m-%Y")
+            st.session_state.previous_date_str = previous_date_str
         prev_file_name = f"{st.session_state.selected_brand}_Prices_{st.session_state.previous_date_str}.xlsx"
         prev_data_path = os.path.join(brand_directory, prev_file_name)
 
