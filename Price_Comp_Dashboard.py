@@ -1,10 +1,11 @@
-import streamlit as st
-import pandas as pd
+import streamlit as st # type: ignore
+import pandas as pd # type: ignore
 import os
-import plotly.express as px 
+import plotly.express as px  # type: ignore
 from datetime import datetime, timedelta
 import re
 import glob
+import streamlit.components.v1 as components # type: ignore
 
 st.set_page_config(page_title="Price Comparison Dashboard", page_icon=":bar_chart:", layout="wide", menu_items={
     'Get Help': 'https://insulation4less.co.uk/pages/contact-us',
@@ -174,7 +175,7 @@ if st.session_state.selected_brand:
                                   markers=True, labels={"date": "Date", "price_numeric": "Price in £"}, hover_name="product")
                     st.plotly_chart(fig)
         else:
-            import streamlit.components.v1 as components
+             
             components.html(
                 """
                 <!DOCTYPE html>
