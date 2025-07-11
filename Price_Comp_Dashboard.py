@@ -63,7 +63,7 @@ if 'previous_date_str' not in st.session_state:
 
 st.sidebar.title("Price Comparison Dashboard 💷")
 
-brands = ["Celotex", "Recticel", "Ecotherm", "Unilin","Core-Products", "Cladco", "Novia", "Powerlon"]
+brands = ["Celotex", "Recticel", "Ecotherm", "Unilin", "IKO", "Core-Products", "Cladco", "Novia", "Powerlon"]
 st.session_state.selected_brand = st.sidebar.selectbox("Select Brand", brands)
 
 if st.session_state.selected_brand:
@@ -78,17 +78,11 @@ if st.session_state.selected_brand:
 
     file_name = f"{st.session_state.selected_brand}_Prices_{st.session_state.selected_date}.xlsx"
     data_path = os.path.join(brand_directory, file_name)
-    weekly_brands = {"Unilin", "Ecotherm"}
     if st.session_state.selected_date and os.path.exists(data_path):
         selected_date_obj = datetime.strptime(st.session_state.selected_date, "%d-%m-%Y")
-        if st.session_state.selected_brand in weekly_brands:
-            previous_date_obj_index = sorted_dates.index(st.session_state.selected_date) + 1
-            previous_date_str = sorted_dates[previous_date_obj_index]
-            st.session_state.previous_date_str = previous_date_str
-        else:
-            previous_date_obj = selected_date_obj - timedelta(days=1)
-            previous_date_str = previous_date_obj.strftime("%d-%m-%Y")
-            st.session_state.previous_date_str = previous_date_str
+        previous_date_obj = selected_date_obj - timedelta(days=1)
+        previous_date_str = previous_date_obj.strftime("%d-%m-%Y")
+        st.session_state.previous_date_str = previous_date_str
         prev_file_name = f"{st.session_state.selected_brand}_Prices_{st.session_state.previous_date_str}.xlsx"
         prev_data_path = os.path.join(brand_directory, prev_file_name)
 
