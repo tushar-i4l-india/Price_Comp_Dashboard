@@ -1,11 +1,11 @@
-import streamlit as st # type: ignore
-import pandas as pd # type: ignore
+import streamlit as st 
+import pandas as pd 
 import os
-import plotly.express as px  # type: ignore
+import plotly.express as px  
 from datetime import datetime, timedelta
 import re
 import glob
-import streamlit.components.v1 as components # type: ignore
+import streamlit.components.v1 as components 
 
 st.set_page_config(page_title="Price Comparison Dashboard", page_icon=":bar_chart:", layout="wide", menu_items={
     'Get Help': 'https://insulation4less.co.uk/pages/contact-us',
@@ -63,7 +63,7 @@ if 'previous_date_str' not in st.session_state:
 
 st.sidebar.title("Price Comparison Dashboard 💷")
 
-brands = ["Celotex", "Recticel", "Ecotherm", "Unilin", "IKO", "Core-Products", "Cladco", "Novia", "Powerlon"]
+brands = ["Celotex", "Recticel", "Ecotherm", "Unilin", "IKO", "Mannok", "Core-Products", "Cladco", "Novia", "Powerlon"]
 st.session_state.selected_brand = st.sidebar.selectbox("Select Brand", brands)
 
 if st.session_state.selected_brand:
