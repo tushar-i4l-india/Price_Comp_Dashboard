@@ -44,7 +44,7 @@ def highlight_changes(row):
             elif today_price < prev_price:
                 style = "color: green; font-weight: bold;"
             elif today_price == prev_price:
-                style = "color: blue; font-weight: bold;"
+                style = "color: blue;"
         styles.append(style)
     return styles
 
