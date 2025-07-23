@@ -1,11 +1,11 @@
-import streamlit as st
-import pandas as pd
+import streamlit as st 
+import pandas as pd 
 import os
-import plotly.express as px 
+import plotly.express as px  
 from datetime import datetime, timedelta
 import re
 import glob
-import plotly.graph_objs as go
+import streamlit.components.v1 as components 
 
 st.set_page_config(page_title="Price Comparison Dashboard", page_icon=":bar_chart:", layout="wide", menu_items={
     'Get Help': 'https://insulation4less.co.uk/pages/contact-us',
@@ -44,7 +44,7 @@ def highlight_changes(row):
             elif today_price < prev_price:
                 style = "color: green; font-weight: bold;"
             elif today_price == prev_price:
-                style = "color: blue; font-weight: bold;"
+                style = "color: blue;"
         styles.append(style)
     return styles
 
@@ -63,7 +63,7 @@ if 'previous_date_str' not in st.session_state:
 
 st.sidebar.title("Price Comparison Dashboard 💷")
 
-brands = ["Celotex", "Recticel", "Ecotherm", "Unilin"]
+brands = ["Celotex", "Recticel", "Ecotherm", "Unilin", "IKO", "Mannok", "Core-Products", "Cladco", "Novia", "Powerlon", "Superfoil"]
 st.session_state.selected_brand = st.sidebar.selectbox("Select Brand", brands)
 
 if st.session_state.selected_brand:
@@ -71,13 +71,13 @@ if st.session_state.selected_brand:
     files = [f for f in os.listdir(brand_directory) if f.endswith(".xlsx")]
 
     dates = sorted([datetime.strptime(f.split("_")[-1].replace(".xlsx", ""), "%d-%m-%Y") for f in files], reverse=True)
+    sorted_dates = [date.strftime("%d-%m-%Y") for date in dates]
     st.session_state.selected_date = st.sidebar.date_input("Select Date", value=max(dates).date() if dates else datetime.today().date(),
                                                     min_value=min(dates).date() if dates else datetime.today().date())
     st.session_state.selected_date = st.session_state.selected_date.strftime("%d-%m-%Y")
 
     file_name = f"{st.session_state.selected_brand}_Prices_{st.session_state.selected_date}.xlsx"
     data_path = os.path.join(brand_directory, file_name)
-
     if st.session_state.selected_date and os.path.exists(data_path):
         selected_date_obj = datetime.strptime(st.session_state.selected_date, "%d-%m-%Y")
         previous_date_obj = selected_date_obj - timedelta(days=1)
@@ -142,7 +142,7 @@ if st.session_state.selected_brand:
                             title=f"Price Comparison for {st.session_state.selected_product}",
                             text="Price"
                         )
-                        st.plotly_chart(fig, use_container_width = True)
+                        st.plotly_chart(fig)
 
             with tab3:
                 folder_path = brand_directory
@@ -164,14 +164,12 @@ if st.session_state.selected_brand:
                     selected_product = st.session_state.selected_product
                     avg_price_trend = df_long[df_long["product"] == selected_product].groupby("date")["price_numeric"].mean().reset_index()
                     avg_price_trend["product"] = selected_product
-                    avg_price_trend["price_numeric"] = avg_price_trend["price_numeric"].apply(lambda x: round(x, 2))
-                    st.write(f"📈 Average Price Trend for `{selected_product}` over time: ")                 
+                    st.write(f"📈 Average Price Trend for `{selected_product}` over time: ")
                     fig = px.line(avg_price_trend, x="date", y="price_numeric", title=f"Average Price Trend for {selected_product}", hover_data= ["price_numeric"], 
                                   markers=True, labels={"date": "Date", "price_numeric": "Price in £"}, hover_name="product")
-                    st.plotly_chart(fig, use_container_width=True)
-                    # st.plotly_chart(fig)
+                    st.plotly_chart(fig)
         else:
-            import streamlit.components.v1 as components
+             
             components.html(
                 """
                 <!DOCTYPE html>
