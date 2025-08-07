@@ -18,14 +18,27 @@ def load_data(file_path):
     df = pd.read_excel(file_path)
     return df
 
+# def extract_price(price):
+#     if isinstance(price, str):
+#         if "price not found" in price.lower() or "no link" in price.lower() or price.lower().startswith("error:"):
+#             return None
+#         match = re.search(r"[\d,.]+", price)
+#         if match:
+#             return round(float(match.group().replace(",", "")), 2)
+        
+#     return None
+
 def extract_price(price):
+    if pd.isna(price):
+        return None
+    if isinstance(price, (int, float)):
+        return round(float(price), 2)
     if isinstance(price, str):
         if "price not found" in price.lower() or "no link" in price.lower() or price.lower().startswith("error:"):
             return None
         match = re.search(r"[\d,.]+", price)
         if match:
             return round(float(match.group().replace(",", "")), 2)
-        
     return None
 
 def highlight_changes(row):
