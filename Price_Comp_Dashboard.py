@@ -63,7 +63,7 @@ if 'previous_date_str' not in st.session_state:
 
 st.sidebar.title("Price Comparison Dashboard 💷")
 
-brands = ["Celotex", "Recticel", "Ecotherm", "Unilin", "IKO", "Mannok", "Core-Products", "Cladco", "Novia", "Powerlon", "Superfoil"]
+brands = ["Celotex", "Recticel", "Ecotherm", "Unilin", "IKO", "Mannok", "Core-Products", "Cladco", "Novia", "Powerlon", "Superfoil", "Rockwool"]
 st.session_state.selected_brand = st.sidebar.selectbox("Select Brand", brands)
 
 if st.session_state.selected_brand:
