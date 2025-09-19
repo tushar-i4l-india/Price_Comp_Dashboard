@@ -26,7 +26,7 @@ def load_data(file_path):
 #         if match:
 #             return round(float(match.group().replace(",", "")), 2)
         
-#     return None
+#     return None.
 
 def extract_price(price):
     if pd.isna(price):
