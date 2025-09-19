@@ -101,7 +101,7 @@ if st.session_state.selected_brand:
 
         if st.sidebar.button("Preview Data") or st.session_state.data_loaded:
             st.session_state.data_loaded = True
-            tab1, tab2, tab3 = st.tabs(["🗃 Data", ":bar_chart: Price Comparison", ":chart_with_upwards_trend: Price Trend (Average Price)"])
+            tab1, tab2, tab3 = st.tabs(["🗃 Data Preview", ":bar_chart: Price Comparison", ":chart_with_upwards_trend: Price Trend (Average Price)"])
             df = load_data(data_path)
 
             with tab1:
