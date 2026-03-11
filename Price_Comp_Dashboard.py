@@ -7,6 +7,109 @@ import re
 import glob
 import streamlit.components.v1 as components 
 from PIL import Image
+import streamlit as st
+
+USERS = {
+    "admin": "price@123",
+    "Nicola": "admin@123",
+    "Shubham": "admin@123",
+    "Ashish": "admin@123"
+}
+
+if "logged_in" not in st.session_state:
+    st.session_state.logged_in = False
+
+
+def login_page():
+
+    st.markdown("""
+<style>
+
+[data-testid="stAppViewContainer"]{
+background: linear-gradient(135deg,#667eea,#764ba2);
+}
+
+.form-card{
+width:420px;
+margin:auto;
+margin-top:120px;
+background:white;
+padding:40px;
+border-radius:12px;
+box-shadow:0 20px 40px rgba(0,0,0,0.2);
+text-align:center;
+}
+
+.title{
+font-size:28px;
+font-weight:700;
+margin-bottom:10px;
+}
+
+.subtitle{
+color:gray;
+margin-bottom:30px;
+}
+
+.stTextInput input{
+border-radius:8px;
+height:45px;
+}
+
+.stButton button{
+width:100%;
+height:45px;
+border-radius:8px;
+background:#667eea;
+color:white;
+font-size:18px;
+border:none;
+}
+
+.stButton button:hover{
+background:#5563d1;
+}
+
+</style>
+""", unsafe_allow_html=True)
+
+    col1,col2,col3 = st.columns([1,2,1])
+
+    with col2:
+
+        st.markdown('<div class="form-card">',unsafe_allow_html=True)
+
+        st.image(
+            "https://cdn.shopify.com/s/files/1/0250/6198/2261/files/Insulation4less_main_logo.png",
+            width=180
+        )
+
+        st.markdown('<div class="title">Sign in</div>',unsafe_allow_html=True)
+        st.markdown('<div class="subtitle">Access the Price Dashboard</div>',unsafe_allow_html=True)
+
+        username = st.text_input("Username")
+        password = st.text_input("Password",type="password")
+
+        if st.button("Login"):
+
+            if username in USERS and USERS[username] == password:
+
+                st.session_state.logged_in = True
+                st.session_state.user = username
+                st.success("Login successful")
+                st.rerun()
+
+            else:
+                st.error("Invalid login")
+
+        st.markdown('</div>',unsafe_allow_html=True)
+
+
+if not st.session_state.logged_in:
+    login_page()
+    st.stop()
+
+
 
 # ✅ MUST BE FIRST STREAMLIT COMMAND
 st.set_page_config(
