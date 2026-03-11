@@ -19,83 +19,117 @@ components.html("""
 
 <style>
 
+*{
+margin:0;
+padding:0;
+box-sizing:border-box;
+font-family:Arial;
+}
+
 body{
-font-family: Arial;
-background: linear-gradient(135deg,#6a11cb,#2575fc);
+height:100vh;
 display:flex;
 justify-content:center;
 align-items:center;
-height:100vh;
-}
-
-.container{
-background:white;
-width:800px;
-height:450px;
-border-radius:10px;
-box-shadow:0 10px 30px rgba(0,0,0,0.2);
-position:relative;
+background:linear-gradient(-45deg,#667eea,#764ba2,#6a11cb,#2575fc);
+background-size:400% 400%;
+animation:gradient 12s ease infinite;
 overflow:hidden;
 }
 
-.form-container{
+@keyframes gradient{
+0%{background-position:0% 50%;}
+50%{background-position:100% 50%;}
+100%{background-position:0% 50%;}
+}
+
+/* Floating shapes */
+
+.circle{
 position:absolute;
-top:0;
-height:100%;
-transition: all 0.6s ease-in-out;
+border-radius:50%;
+background:rgba(255,255,255,0.15);
+animation:float 8s infinite ease-in-out;
 }
 
-.login{
-left:0;
-width:50%;
-padding:60px;
+.circle:nth-child(1){
+width:200px;
+height:200px;
+top:10%;
+left:10%;
 }
 
-.signup{
-left:100%;
-width:50%;
-padding:60px;
+.circle:nth-child(2){
+width:150px;
+height:150px;
+bottom:10%;
+right:10%;
 }
 
-.container.active .login{
-transform:translateX(100%);
+.circle:nth-child(3){
+width:120px;
+height:120px;
+bottom:40%;
+left:40%;
 }
 
-.container.active .signup{
-transform:translateX(-100%);
+@keyframes float{
+0%,100%{transform:translateY(0)}
+50%{transform:translateY(-40px)}
 }
 
-.overlay{
-position:absolute;
-top:0;
-left:50%;
-width:50%;
-height:100%;
-background:linear-gradient(135deg,#f6b300,#ffd54f);
-display:flex;
-align-items:center;
-justify-content:center;
-transition:transform 0.6s ease-in-out;
-}
+/* Login Card */
 
-.container.active .overlay{
-transform:translateX(-100%);
-}
-
-button{
-padding:10px 30px;
-border:none;
-background:#000;
+.card{
+width:380px;
+padding:40px;
+border-radius:15px;
+background:rgba(255,255,255,0.15);
+backdrop-filter:blur(15px);
+box-shadow:0 10px 30px rgba(0,0,0,0.3);
+text-align:center;
 color:white;
-cursor:pointer;
-margin-top:20px;
 }
 
-input{
-display:block;
+.card h2{
+margin-bottom:20px;
+font-size:28px;
+}
+
+/* Inputs */
+
+.input{
 width:100%;
-margin:10px 0;
-padding:10px;
+margin:12px 0;
+padding:12px;
+border:none;
+border-radius:8px;
+outline:none;
+}
+
+/* Button */
+
+.btn{
+width:100%;
+padding:12px;
+margin-top:10px;
+border:none;
+border-radius:8px;
+background:#f6b300;
+font-weight:bold;
+cursor:pointer;
+transition:0.3s;
+}
+
+.btn:hover{
+transform:scale(1.05);
+background:#ffd34d;
+}
+
+.logo{
+font-size:26px;
+font-weight:bold;
+margin-bottom:15px;
 }
 
 </style>
@@ -104,44 +138,26 @@ padding:10px;
 
 <body>
 
-<div class="container" id="container">
+<div class="circle"></div>
+<div class="circle"></div>
+<div class="circle"></div>
 
-<div class="form-container login">
+<div class="card">
 
-<h2>Login</h2>
-<input placeholder="Username">
-<input type="password" placeholder="Password">
-<button>Login</button>
+<div class="logo">INSULATION4LESS</div>
 
-</div>
+<h2>Dashboard Login</h2>
 
-<div class="form-container signup">
+<input class="input" placeholder="Username">
+<input class="input" type="password" placeholder="Password">
 
-<h2>Create Account</h2>
-<input placeholder="Username">
-<input placeholder="Email">
-<input type="password" placeholder="Password">
-<button>Sign Up</button>
+<button class="btn">Login</button>
 
 </div>
-
-<div class="overlay">
-<button onclick="toggle()">Switch</button>
-</div>
-
-</div>
-
-<script>
-
-function toggle(){
-document.getElementById("container").classList.toggle("active");
-}
-
-</script>
 
 </body>
 </html>
-""", height=600)
+""", height=650)
 
 # ✅ MUST BE FIRST STREAMLIT COMMAND
 st.set_page_config(
