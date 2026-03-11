@@ -8,6 +8,109 @@ import glob
 import streamlit.components.v1 as components 
 from PIL import Image
 
+# ---------------- LOGIN SYSTEM ---------------- #
+
+users = {
+    "admin": "price@123",
+    "Nicola": "admin@123",
+    "Shubham": "admin@123",
+    "Ashish": "admin@123"
+}
+
+if "logged_in" not in st.session_state:
+    st.session_state.logged_in = False
+
+
+def login_page():
+
+    st.markdown("""
+    <style>
+
+    .login-box{
+        width:420px;
+        margin:auto;
+        margin-top:120px;
+        padding:40px;
+        background: rgba(255,255,255,0.1);
+        backdrop-filter: blur(15px);
+        border-radius:15px;
+        box-shadow:0 10px 40px rgba(0,0,0,0.3);
+        text-align:center;
+        animation: fadeIn 1.5s ease-in-out;
+    }
+
+    @keyframes fadeIn{
+        from{opacity:0; transform:translateY(-30px);}
+        to{opacity:1; transform:translateY(0);}
+    }
+
+    .title{
+        font-size:28px;
+        font-weight:700;
+        margin-bottom:20px;
+        color:#ffffff;
+    }
+
+    .stTextInput>div>div>input{
+        border-radius:8px;
+        padding:10px;
+    }
+
+    .stButton>button{
+        width:100%;
+        border-radius:8px;
+        height:45px;
+        font-size:18px;
+        background:linear-gradient(90deg,#00c6ff,#0072ff);
+        color:white;
+        border:none;
+        transition:0.3s;
+    }
+
+    .stButton>button:hover{
+        transform:scale(1.05);
+    }
+
+    body{
+        background: linear-gradient(135deg,#1d2b64,#f8cdda);
+        background-attachment: fixed;
+    }
+
+    </style>
+    """, unsafe_allow_html=True)
+
+    col1, col2, col3 = st.columns([1,2,1])
+
+    with col2:
+        st.markdown('<div class="login-box">', unsafe_allow_html=True)
+
+        st.markdown('<div class="title">🔐 Login Dashboard</div>', unsafe_allow_html=True)
+
+        username = st.text_input("Username")
+        password = st.text_input("Password", type="password")
+
+        if st.button("Login"):
+            if username in users and users[username] == password:
+                st.session_state.logged_in = True
+                st.session_state.user = username
+                st.success("Login successful")
+                st.rerun()
+            else:
+                st.error("Invalid Username or Password")
+
+        st.markdown('</div>', unsafe_allow_html=True)
+
+
+if not st.session_state.logged_in:
+    login_page()
+    st.stop()
+
+st.sidebar.write(f"👤 Logged in as: {st.session_state.user}")
+
+if st.sidebar.button("Logout"):
+    st.session_state.logged_in = False
+    st.rerun()
+
 # ✅ MUST BE FIRST STREAMLIT COMMAND
 st.set_page_config(
     page_title="Price Comparison Dashboard",
