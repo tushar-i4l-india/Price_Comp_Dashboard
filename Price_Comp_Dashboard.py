@@ -55,6 +55,46 @@ if not st.session_state.logged_in:
     login()
     st.stop()
 
+def login():
+
+    st.markdown("""
+    <style>
+    .login-box {
+        background-color: white;
+        padding: 40px;
+        border-radius: 12px;
+        box-shadow: 0px 4px 20px rgba(0,0,0,0.15);
+        text-align: center;
+    }
+    .stTextInput>div>div>input {
+        border-radius: 8px;
+    }
+    </style>
+    """, unsafe_allow_html=True)
+
+    col1, col2, col3 = st.columns([1,1,1])
+
+    with col2:
+        st.markdown('<div class="login-box">', unsafe_allow_html=True)
+
+        st.title("🔐 Login")
+        st.write("Price Comparison Dashboard")
+
+        username = st.text_input("Username")
+        password = st.text_input("Password", type="password")
+
+        if st.button("Login", use_container_width=True):
+
+            if username in USER_CREDENTIALS and USER_CREDENTIALS[username] == password:
+                st.session_state.logged_in = True
+                st.session_state.user = username
+                st.success("Login successful")
+                st.rerun()
+            else:
+                st.error("Invalid username or password")
+
+        st.markdown('</div>', unsafe_allow_html=True)
+
 # ✅ MUST BE FIRST STREAMLIT COMMAND
 st.set_page_config(
     page_title="Price Comparison Dashboard",
