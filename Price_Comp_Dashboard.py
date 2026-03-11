@@ -8,41 +8,6 @@ import glob
 import streamlit.components.v1 as components 
 from PIL import Image
 
-# ---------------- LOGIN SYSTEM ---------------- #
-
-USER_CREDENTIALS = {
-    "admin": "price@123",
-    "ashish": "admin123"
-}
-
-def login():
-    st.title("🔐 Login - Price Comparison Dashboard")
-
-    username = st.text_input("Username")
-    password = st.text_input("Password", type="password")
-
-    if st.button("Login"):
-
-        if username in USER_CREDENTIALS and USER_CREDENTIALS[username] == password:
-            st.session_state.logged_in = True
-            st.session_state.user = username
-            st.success("Login successful ✅")
-            st.rerun()
-
-        else:
-            st.error("Invalid username or password")
-
-
-# Initialize login state
-if "logged_in" not in st.session_state:
-    st.session_state.logged_in = False
-
-
-# If not logged in → show login page
-if not st.session_state.logged_in:
-    login()
-    st.stop()
-
 # ✅ MUST BE FIRST STREAMLIT COMMAND
 st.set_page_config(
     page_title="Price Comparison Dashboard",
@@ -54,6 +19,57 @@ st.set_page_config(
         'About': "This app is a price comparison dashboard",
     }
 )
+
+
+USER_CREDENTIALS = {
+    "admin": "price@123",
+    "Ashish": "admin123",
+    "Shubham": "admin@123",
+    "Nicola": "admin@123"
+}
+
+def login():
+
+    # Center the login box
+    col1, col2, col3 = st.columns([3,2,3])
+
+    with col2:
+        st.markdown(
+            """
+            <div style="
+                background-color:#f7f7f7;
+                padding:35px;
+                border-radius:12px;
+                box-shadow:0px 4px 15px rgba(0,0,0,0.15);
+                text-align:center;">
+                <h2>🔐 Login</h2>
+                <p>Price Comparison Dashboard</p>
+            </div>
+            """,
+            unsafe_allow_html=True
+        )
+
+        username = st.text_input("Username")
+        password = st.text_input("Password", type="password")
+
+        if st.button("Login", use_container_width=True):
+
+            if username in USER_CREDENTIALS and USER_CREDENTIALS[username] == password:
+                st.session_state.logged_in = True
+                st.session_state.user = username
+                st.success("Login successful ✅")
+                st.rerun()
+            else:
+                st.error("Invalid username or password")
+
+# Initialize login state
+if "logged_in" not in st.session_state:
+    st.session_state.logged_in = False
+
+# If not logged in → show login page
+if not st.session_state.logged_in:
+    login()
+    st.stop()
 
 # ✅ Sidebar logo (NOW SAFE)
 st.sidebar.image(
