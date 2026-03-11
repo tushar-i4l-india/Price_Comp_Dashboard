@@ -8,79 +8,40 @@ import glob
 import streamlit.components.v1 as components 
 from PIL import Image
 
-# ---------------- LOGIN USERS ---------------- #
+# ---------------- LOGIN SYSTEM ---------------- #
 
 USER_CREDENTIALS = {
-    "Admin": "price@123",
-    "Ashish": "admin@123",
-    "Shubham": "admin@123",
-    "Nicola": "admin@123"
+    "admin": "price@123",
+    "ashish": "admin123"
 }
 
-
-# ---------------- LOGIN PAGE ---------------- #
-
 def login():
+    st.title("🔐 Login - Price Comparison Dashboard")
 
-    st.markdown("""
-    <style>
+    username = st.text_input("Username")
+    password = st.text_input("Password", type="password")
 
-    .stApp{
-        background-color:#f2f4f8;
-    }
+    if st.button("Login"):
 
-    .login-card{
-        background:white;
-        padding:40px;
-        border-radius:15px;
-        box-shadow:0px 8px 25px rgba(0,0,0,0.15);
-    }
+        if username in USER_CREDENTIALS and USER_CREDENTIALS[username] == password:
+            st.session_state.logged_in = True
+            st.session_state.user = username
+            st.success("Login successful ✅")
+            st.rerun()
 
-    </style>
-    """, unsafe_allow_html=True)
-
-    col1,col2,col3 = st.columns([1,2,1])
-
-    with col2:
-
-        st.markdown('<div class="login-card">', unsafe_allow_html=True)
-
-        st.image(
-            "https://cdn.shopify.com/s/files/1/0250/6198/2261/files/Insulation4less_main_logo.png?v=1767346032",
-            width=240
-        )
-
-        st.markdown("### 🔐 Login")
-
-        username = st.text_input("Username")
-        password = st.text_input("Password", type="password")
-
-        if st.button("Login", use_container_width=True):
-
-            if username in USER_CREDENTIALS and USER_CREDENTIALS[username] == password:
-
-                st.session_state.logged_in = True
-                st.session_state.user = username
-                st.rerun()
-
-            else:
-                st.error("Invalid username or password")
-
-        st.markdown("</div>", unsafe_allow_html=True)
+        else:
+            st.error("Invalid username or password")
 
 
-# ---------------- LOGIN CHECK ---------------- #
-
+# Initialize login state
 if "logged_in" not in st.session_state:
     st.session_state.logged_in = False
 
+
+# If not logged in → show login page
 if not st.session_state.logged_in:
     login()
     st.stop()
-
-
-
-
 
 # ✅ MUST BE FIRST STREAMLIT COMMAND
 st.set_page_config(
