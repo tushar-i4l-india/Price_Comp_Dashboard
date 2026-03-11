@@ -12,152 +12,126 @@ import streamlit.components.v1 as components
 
 st.set_page_config(layout="wide")
 
-components.html("""
-<!DOCTYPE html>
-<html>
-<head>
+# ---- USER LOGIN ---- #
 
-<style>
-
-*{
-margin:0;
-padding:0;
-box-sizing:border-box;
-font-family:Arial;
+USER_CREDENTIALS = {
+    "admin": "price@123",
+    "Ashish": "admin123",
+    "Shubham": "admin@123",
+    "Nicola": "admin@123"
 }
 
-body{
-height:100vh;
-display:flex;
-justify-content:center;
-align-items:center;
-background:linear-gradient(-45deg,#667eea,#764ba2,#6a11cb,#2575fc);
-background-size:400% 400%;
-animation:gradient 12s ease infinite;
-overflow:hidden;
-}
+if "logged_in" not in st.session_state:
+    st.session_state.logged_in = False
 
-@keyframes gradient{
-0%{background-position:0% 50%;}
-50%{background-position:100% 50%;}
-100%{background-position:0% 50%;}
-}
 
-/* Floating shapes */
+# ---- LOGIN PAGE ---- #
 
-.circle{
-position:absolute;
-border-radius:50%;
-background:rgba(255,255,255,0.15);
-animation:float 8s infinite ease-in-out;
-}
+def animated_login():
 
-.circle:nth-child(1){
-width:200px;
-height:200px;
-top:10%;
-left:10%;
-}
+    components.html("""
+    <!DOCTYPE html>
+    <html>
+    <head>
 
-.circle:nth-child(2){
-width:150px;
-height:150px;
-bottom:10%;
-right:10%;
-}
+    <style>
 
-.circle:nth-child(3){
-width:120px;
-height:120px;
-bottom:40%;
-left:40%;
-}
+    body{
+    margin:0;
+    height:100vh;
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    background:linear-gradient(-45deg,#667eea,#764ba2,#6a11cb,#2575fc);
+    background-size:400% 400%;
+    animation:gradient 10s ease infinite;
+    font-family:Arial;
+    }
 
-@keyframes float{
-0%,100%{transform:translateY(0)}
-50%{transform:translateY(-40px)}
-}
+    @keyframes gradient{
+    0%{background-position:0% 50%;}
+    50%{background-position:100% 50%;}
+    100%{background-position:0% 50%;}
+    }
 
-/* Login Card */
+    .card{
+    width:350px;
+    padding:40px;
+    border-radius:12px;
+    background:rgba(255,255,255,0.15);
+    backdrop-filter:blur(12px);
+    text-align:center;
+    color:white;
+    }
 
-.card{
-width:380px;
-padding:40px;
-border-radius:15px;
-background:rgba(255,255,255,0.15);
-backdrop-filter:blur(15px);
-box-shadow:0 10px 30px rgba(0,0,0,0.3);
-text-align:center;
-color:white;
-}
+    input{
+    width:100%;
+    padding:10px;
+    margin:10px 0;
+    border:none;
+    border-radius:6px;
+    }
 
-.card h2{
-margin-bottom:20px;
-font-size:28px;
-}
+    button{
+    width:100%;
+    padding:12px;
+    border:none;
+    background:#f6b300;
+    border-radius:6px;
+    font-weight:bold;
+    cursor:pointer;
+    }
 
-/* Inputs */
+    </style>
 
-.input{
-width:100%;
-margin:12px 0;
-padding:12px;
-border:none;
-border-radius:8px;
-outline:none;
-}
+    </head>
 
-/* Button */
+    <body>
 
-.btn{
-width:100%;
-padding:12px;
-margin-top:10px;
-border:none;
-border-radius:8px;
-background:#f6b300;
-font-weight:bold;
-cursor:pointer;
-transition:0.3s;
-}
+    <div class="card">
 
-.btn:hover{
-transform:scale(1.05);
-background:#ffd34d;
-}
+    <h2>INSULATION4LESS</h2>
+    <p>Dashboard Login</p>
 
-.logo{
-font-size:26px;
-font-weight:bold;
-margin-bottom:15px;
-}
+    <input placeholder="Username">
+    <input type="password" placeholder="Password">
 
-</style>
+    <button>Login</button>
 
-</head>
+    </div>
 
-<body>
+    </body>
+    </html>
+    """, height=700)
 
-<div class="circle"></div>
-<div class="circle"></div>
-<div class="circle"></div>
 
-<div class="card">
+# ---- SHOW LOGIN FIRST ---- #
 
-<div class="logo">INSULATION4LESS</div>
+if not st.session_state.logged_in:
+    animated_login()
 
-<h2>Dashboard Login</h2>
+    # Real login form below animation
+    st.markdown("### Login")
 
-<input class="input" placeholder="Username">
-<input class="input" type="password" placeholder="Password">
+    username = st.text_input("Username")
+    password = st.text_input("Password", type="password")
 
-<button class="btn">Login</button>
+    if st.button("Login"):
 
-</div>
+        if username in USER_CREDENTIALS and USER_CREDENTIALS[username] == password:
+            st.session_state.logged_in = True
+            st.rerun()
 
-</body>
-</html>
-""", height=650)
+        else:
+            st.error("Invalid username or password")
+
+    st.stop()
+
+
+# ---- DASHBOARD AFTER LOGIN ---- #
+
+st.title("Price Comparison Dashboard")
+st.success("Welcome Ashish 🎉")
 
 # ✅ MUST BE FIRST STREAMLIT COMMAND
 st.set_page_config(
