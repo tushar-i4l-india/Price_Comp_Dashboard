@@ -7,17 +7,6 @@ import re
 import glob
 import streamlit.components.v1 as components 
 from PIL import Image
-# ✅ MUST BE FIRST STREAMLIT COMMAND
-st.set_page_config(
-    page_title="Price Comparison Dashboard",
-    page_icon=":bar_chart:",
-    layout="wide",
-    menu_items={
-        'Get Help': 'https://insulation4less.co.uk/pages/contact-us',
-        'Report a bug': "https://www.insulation4less.co.uk",
-        'About': "This app is a price comparison dashboard",
-    }
-)
 
 # ---------------- LOGIN SYSTEM ---------------- #
 
@@ -27,33 +16,6 @@ USER_CREDENTIALS = {
     "Shubham": "admin@123",
     "Nicola": "admin@123"
 }
-def login():
-    st.title("🔐 Login - Price Comparison Dashboard")
-
-    username = st.text_input("Username")
-    password = st.text_input("Password", type="password")
-
-    if st.button("Login"):
-
-        if username in USER_CREDENTIALS and USER_CREDENTIALS[username] == password:
-            st.session_state.logged_in = True
-            st.session_state.user = username
-            st.success("Login successful ✅")
-            st.rerun()
-
-        else:
-            st.error("Invalid username or password")
-
-
-# Initialize login state
-if "logged_in" not in st.session_state:
-    st.session_state.logged_in = False
-
-
-# If not logged in → show login page
-if not st.session_state.logged_in:
-    login()
-    st.stop()
 
 def login():
 
@@ -63,11 +25,8 @@ def login():
         background-color: white;
         padding: 40px;
         border-radius: 12px;
-        box-shadow: 0px 4px 20px rgba(0,0,0,0.15);
+        box-shadow: 0px 4px 25px rgba(0,0,0,0.2);
         text-align: center;
-    }
-    .stTextInput>div>div>input {
-        border-radius: 8px;
     }
     </style>
     """, unsafe_allow_html=True)
@@ -75,10 +34,15 @@ def login():
     col1, col2, col3 = st.columns([1,1,1])
 
     with col2:
+
         st.markdown('<div class="login-box">', unsafe_allow_html=True)
 
-        st.title("🔐 Login")
-        st.write("Price Comparison Dashboard")
+        st.image(
+            "https://cdn.shopify.com/s/files/1/0250/6198/2261/files/Insulation4less_main_logo.png?v=1767346032",
+            width=200
+        )
+
+        st.subheader("🔐 Login")
 
         username = st.text_input("Username")
         password = st.text_input("Password", type="password")
@@ -88,12 +52,22 @@ def login():
             if username in USER_CREDENTIALS and USER_CREDENTIALS[username] == password:
                 st.session_state.logged_in = True
                 st.session_state.user = username
-                st.success("Login successful")
                 st.rerun()
+
             else:
                 st.error("Invalid username or password")
 
         st.markdown('</div>', unsafe_allow_html=True)
+
+
+# Initialize login state
+if "logged_in" not in st.session_state:
+    st.session_state.logged_in = False
+
+# Show login page
+if not st.session_state.logged_in:
+    login()
+    st.stop()
 
 # ✅ MUST BE FIRST STREAMLIT COMMAND
 st.set_page_config(
