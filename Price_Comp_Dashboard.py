@@ -11,19 +11,8 @@ from PIL import Image
 
 import streamlit as st
 
-st.set_page_config(page_title="Login", layout="wide")
+st.set_page_config(page_title="Price Dashboard Login", layout="wide")
 
-# Hide default streamlit menu
-st.markdown("""
-<style>
-#MainMenu {visibility:hidden;}
-footer {visibility:hidden;}
-header {visibility:hidden;}
-</style>
-""", unsafe_allow_html=True)
-
-
-# ---------------- LOGIN USERS ---------------- #
 USER_CREDENTIALS = {
     "admin": "price@123",
     "Ashish": "admin123",
@@ -31,94 +20,111 @@ USER_CREDENTIALS = {
     "Nicola": "admin@123"
 }
 
+# -------- STYLE -------- #
+
+st.markdown("""
+<style>
+
+.stApp{
+background: linear-gradient(135deg,#f5f7fa,#e4ecfb);
+}
+
+.login-container{
+display:flex;
+justify-content:center;
+align-items:center;
+height:80vh;
+}
+
+.login-card{
+background:white;
+padding:50px;
+border-radius:15px;
+box-shadow:0 10px 30px rgba(0,0,0,0.15);
+width:420px;
+}
+
+.login-title{
+font-size:32px;
+font-weight:700;
+text-align:center;
+margin-bottom:10px;
+}
+
+.login-sub{
+text-align:center;
+color:gray;
+margin-bottom:30px;
+}
+
+.stTextInput>div>div>input{
+border-radius:8px;
+padding:10px;
+}
+
+.stButton>button{
+width:100%;
+border-radius:8px;
+padding:12px;
+background:#f6b300;
+color:black;
+font-weight:600;
+border:none;
+}
+
+.stButton>button:hover{
+background:#e2a500;
+}
+
+.logo{
+display:flex;
+justify-content:center;
+margin-bottom:25px;
+}
+
+</style>
+""", unsafe_allow_html=True)
+
+
+# -------- LOGIN PAGE -------- #
 
 def login():
 
-    st.markdown("""
-    <style>
+    st.markdown('<div class="login-container">', unsafe_allow_html=True)
+    st.markdown('<div class="login-card">', unsafe_allow_html=True)
 
-    .main-container{
-        display:flex;
-        justify-content:center;
-        align-items:center;
-        height:100vh;
-        background:#d9d6f3;
-    }
+    st.markdown('<div class="logo">', unsafe_allow_html=True)
+    st.image("https://cdn.shopify.com/s/files/1/0250/6198/2261/files/Insulation4less_main_logo.png?v=1767346032", width=220)
+    st.markdown('</div>', unsafe_allow_html=True)
 
-    .login-box{
-        display:flex;
-        width:900px;
-        border-radius:12px;
-        overflow:hidden;
-        background:white;
-        box-shadow:0 10px 30px rgba(0,0,0,0.2);
-    }
+    st.markdown('<div class="login-title">Login</div>', unsafe_allow_html=True)
+    st.markdown('<div class="login-sub">Price Comparison Dashboard</div>', unsafe_allow_html=True)
 
-    .left{
-        width:50%;
-        padding:60px;
-    }
+    username = st.text_input("Username")
+    password = st.text_input("Password", type="password")
 
-    .right{
-        width:50%;
-        background:linear-gradient(135deg,#6c63ff,#5a4bff);
-        display:flex;
-        justify-content:center;
-        align-items:center;
-    }
+    if st.button("Login"):
 
-    .right img{
-        width:260px;
-    }
+        if username in USER_CREDENTIALS and USER_CREDENTIALS[username] == password:
+            st.session_state.logged_in = True
+            st.success("Login successful ✅")
+            st.rerun()
 
-    .login-title{
-        font-size:28px;
-        font-weight:700;
-        margin-bottom:20px;
-    }
+        else:
+            st.error("Invalid username or password")
 
-    </style>
-    """, unsafe_allow_html=True)
-
-    col1, col2 = st.columns([1,1])
-
-    with col1:
-
-        st.markdown("### LOGIN")
-        st.write("Please login to continue")
-
-        username = st.text_input("Username")
-        password = st.text_input("Password", type="password")
-
-        if st.button("Login", use_container_width=True):
-
-            if username in USER_CREDENTIALS and USER_CREDENTIALS[username] == password:
-                st.session_state.logged_in = True
-                st.success("Login successful")
-                st.rerun()
-            else:
-                st.error("Invalid username or password")
-
-    with col2:
-
-        st.image(
-            "https://cdn.shopify.com/s/files/1/0250/6198/2261/files/Insulation4less_main_logo.png?v=1767346032",
-            use_column_width=True
-        )
+    st.markdown('</div>', unsafe_allow_html=True)
+    st.markdown('</div>', unsafe_allow_html=True)
 
 
-# ---------------- SESSION ---------------- #
+# -------- SESSION -------- #
 
 if "logged_in" not in st.session_state:
     st.session_state.logged_in = False
 
-
 if not st.session_state.logged_in:
     login()
     st.stop()
-
-
-st.success("Welcome to Price Comparison Dashboard 🎉")
 
 # ✅ MUST BE FIRST STREAMLIT COMMAND
 st.set_page_config(
