@@ -8,7 +8,6 @@ import glob
 import streamlit.components.v1 as components 
 from PIL import Image
 
-# ---------------- LOGIN SYSTEM ---------------- #
 
 USER_CREDENTIALS = {
     "Admin": "price@123",
@@ -17,32 +16,40 @@ USER_CREDENTIALS = {
     "Nicola": "admin@123"
 }
 
+
+# ---------------- LOGIN PAGE ---------------- #
+
 def login():
 
     st.markdown("""
     <style>
-    .login-box {
-        background-color: white;
-        padding: 40px;
-        border-radius: 12px;
-        box-shadow: 0px 4px 25px rgba(0,0,0,0.2);
-        text-align: center;
+
+    .stApp{
+        background-color:#f2f4f8;
     }
+
+    .login-card{
+        background:white;
+        padding:40px;
+        border-radius:15px;
+        box-shadow:0px 8px 25px rgba(0,0,0,0.15);
+    }
+
     </style>
     """, unsafe_allow_html=True)
 
-    col1, col2, col3 = st.columns([1,1,1])
+    col1,col2,col3 = st.columns([1,2,1])
 
     with col2:
 
-        st.markdown('<div class="login-box">', unsafe_allow_html=True)
+        st.markdown('<div class="login-card">', unsafe_allow_html=True)
 
         st.image(
             "https://cdn.shopify.com/s/files/1/0250/6198/2261/files/Insulation4less_main_logo.png?v=1767346032",
-            width=200
+            width=240
         )
 
-        st.subheader("🔐 Login")
+        st.markdown("### 🔐 Login")
 
         username = st.text_input("Username")
         password = st.text_input("Password", type="password")
@@ -50,6 +57,7 @@ def login():
         if st.button("Login", use_container_width=True):
 
             if username in USER_CREDENTIALS and USER_CREDENTIALS[username] == password:
+
                 st.session_state.logged_in = True
                 st.session_state.user = username
                 st.rerun()
@@ -57,17 +65,37 @@ def login():
             else:
                 st.error("Invalid username or password")
 
-        st.markdown('</div>', unsafe_allow_html=True)
+        st.markdown("</div>", unsafe_allow_html=True)
 
 
-# Initialize login state
+# ---------------- SESSION STATE ---------------- #
+
 if "logged_in" not in st.session_state:
     st.session_state.logged_in = False
 
-# Show login page
+
+# ---------------- SHOW LOGIN ---------------- #
+
 if not st.session_state.logged_in:
     login()
     st.stop()
+
+
+# ---------------- SIDEBAR ---------------- #
+
+st.sidebar.image(
+    "https://cdn.shopify.com/s/files/1/0250/6198/2261/files/Insulation4less_main_logo.png?v=1767346032",
+    width=200
+)
+
+st.sidebar.write(f"👤 Logged in as: {st.session_state.user}")
+
+if st.sidebar.button("Logout"):
+    st.session_state.logged_in = False
+    st.rerun()
+
+
+st.sidebar.title("Price Comparison Dashboard 💷")
 
 # ✅ MUST BE FIRST STREAMLIT COMMAND
 st.set_page_config(
