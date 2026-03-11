@@ -7,122 +7,141 @@ import re
 import glob
 import streamlit.components.v1 as components 
 from PIL import Image
-
-
 import streamlit as st
+import streamlit.components.v1 as components
 
-st.set_page_config(page_title="Login", layout="wide")
+st.set_page_config(layout="wide")
 
-USER_CREDENTIALS = {
-    "admin": "price@123",
-    "Ashish": "admin123",
-    "Shubham": "admin@123",
-    "Nicola": "admin@123"
-}
+components.html("""
+<!DOCTYPE html>
+<html>
+<head>
 
-# ----- CUSTOM CSS ----- #
-
-st.markdown("""
 <style>
 
-.stApp{
-background: linear-gradient(135deg,#eef2f7,#f8f9fb);
-}
-
-/* Login card */
-.login-card{
-background:white;
-padding:50px;
-border-radius:16px;
-box-shadow:0px 15px 40px rgba(0,0,0,0.15);
-}
-
-/* Right branding section */
-.brand-box{
+body{
+font-family: Arial;
+background: linear-gradient(135deg,#6a11cb,#2575fc);
 display:flex;
-flex-direction:column;
 justify-content:center;
 align-items:center;
-height:75vh;
-background: linear-gradient(135deg,#f6b300,#ffd34d);
-border-radius:16px;
+height:100vh;
 }
 
-.brand-title{
-font-size:55px;
-font-weight:800;
-color:black;
+.container{
+background:white;
+width:800px;
+height:450px;
+border-radius:10px;
+box-shadow:0 10px 30px rgba(0,0,0,0.2);
+position:relative;
+overflow:hidden;
 }
 
-.brand-sub{
-font-size:18px;
-margin-top:10px;
-color:#333;
+.form-container{
+position:absolute;
+top:0;
+height:100%;
+transition: all 0.6s ease-in-out;
 }
 
-/* Button */
-.stButton>button{
-width:100%;
-background:#f6b300;
+.login{
+left:0;
+width:50%;
+padding:60px;
+}
+
+.signup{
+left:100%;
+width:50%;
+padding:60px;
+}
+
+.container.active .login{
+transform:translateX(100%);
+}
+
+.container.active .signup{
+transform:translateX(-100%);
+}
+
+.overlay{
+position:absolute;
+top:0;
+left:50%;
+width:50%;
+height:100%;
+background:linear-gradient(135deg,#f6b300,#ffd54f);
+display:flex;
+align-items:center;
+justify-content:center;
+transition:transform 0.6s ease-in-out;
+}
+
+.container.active .overlay{
+transform:translateX(-100%);
+}
+
+button{
+padding:10px 30px;
 border:none;
-padding:12px;
-border-radius:8px;
-font-weight:600;
+background:#000;
+color:white;
+cursor:pointer;
+margin-top:20px;
 }
 
-.stButton>button:hover{
-background:#e3a600;
+input{
+display:block;
+width:100%;
+margin:10px 0;
+padding:10px;
 }
 
 </style>
-""", unsafe_allow_html=True)
 
+</head>
 
-# ----- LOGIN FUNCTION ----- #
+<body>
 
-def login():
+<div class="container" id="container">
 
-    col1, col2 = st.columns([1,1])
+<div class="form-container login">
 
-    with col1:
+<h2>Login</h2>
+<input placeholder="Username">
+<input type="password" placeholder="Password">
+<button>Login</button>
 
-        st.markdown('<div class="login-card">', unsafe_allow_html=True)
+</div>
 
-        st.markdown("### LOGIN")
-        st.write("Please login to continue")
+<div class="form-container signup">
 
-        username = st.text_input("Username")
-        password = st.text_input("Password", type="password")
+<h2>Create Account</h2>
+<input placeholder="Username">
+<input placeholder="Email">
+<input type="password" placeholder="Password">
+<button>Sign Up</button>
 
-        if st.button("Login"):
+</div>
 
-            if username in USER_CREDENTIALS and USER_CREDENTIALS[username] == password:
-                st.session_state.logged_in = True
-                st.success("Login successful")
-                st.rerun()
-            else:
-                st.error("Invalid username or password")
+<div class="overlay">
+<button onclick="toggle()">Switch</button>
+</div>
 
-        st.markdown("</div>", unsafe_allow_html=True)
+</div>
 
-    with col2:
+<script>
 
-        st.markdown("""
-        <div class="brand-box">
-            <img src="https://cdn.shopify.com/s/files/1/0250/6198/2261/files/Insulation4less_main_logo.png?v=1767346032" width="350">
-            <div class="brand-sub">Price Comparison Dashboard</div>
-        </div>
-        """, unsafe_allow_html=True)
+function toggle(){
+document.getElementById("container").classList.toggle("active");
+}
 
+</script>
 
-# ----- SESSION ----- #
-
-if "logged_in" not in st.session_state:
-    st.session_state.logged_in = False
-
-if not st.session_state.logged_in:
-    login()
-    st.stop()
+</body>
+</html>
+""", height=600)
 
 # ✅ MUST BE FIRST STREAMLIT COMMAND
 st.set_page_config(
