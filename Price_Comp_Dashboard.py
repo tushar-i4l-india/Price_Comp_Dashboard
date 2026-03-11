@@ -8,10 +8,13 @@ import glob
 import streamlit.components.v1 as components 
 from PIL import Image
 import streamlit as st
+import time
 import streamlit.components.v1 as components
 
-st.set_page_config(page_title="Login", layout="wide")
+# -------- PAGE CONFIG --------
+st.set_page_config(page_title="Price Dashboard Login", layout="wide")
 
+# -------- USERS --------
 USERS = {
     "admin": "price@123",
     "Nicola": "admin@123",
@@ -19,105 +22,147 @@ USERS = {
     "Ashish": "admin@123"
 }
 
+SESSION_TIMEOUT = 1800
+
 if "logged_in" not in st.session_state:
     st.session_state.logged_in = False
 
+if "last_activity" not in st.session_state:
+    st.session_state.last_activity = time.time()
 
+# -------- AUTO LOGOUT --------
+if st.session_state.logged_in:
+    if time.time() - st.session_state.last_activity > SESSION_TIMEOUT:
+        st.session_state.logged_in = False
+        st.warning("Session expired. Please login again.")
+        st.rerun()
+
+st.session_state.last_activity = time.time()
+
+# -------- LOGIN PAGE --------
 def login_page():
 
     st.markdown("""
-    <style>
+<style>
 
-    [data-testid="stAppViewContainer"]{
-    background: linear-gradient(135deg,#667eea,#764ba2);
-    }
+[data-testid="stAppViewContainer"]{
+background:#0f172a;
+overflow:hidden;
+}
 
-    .login-card{
-    background:white;
-    padding:40px;
-    border-radius:15px;
-    box-shadow:0 20px 50px rgba(0,0,0,0.3);
-    }
+/* glass card */
 
-    </style>
-    """, unsafe_allow_html=True)
+.login-card{
+background:rgba(255,255,255,0.08);
+backdrop-filter:blur(20px);
+padding:40px;
+border-radius:20px;
+box-shadow:0 10px 40px rgba(0,0,0,0.5);
+}
 
-    col1,col2 = st.columns([1,1])
+/* particles */
 
-    # ---------- Animated Avatar ----------
+.particle{
+position:absolute;
+width:6px;
+height:6px;
+background:white;
+border-radius:50%;
+opacity:0.5;
+animation:move 10s linear infinite;
+}
+
+@keyframes move{
+0%{transform:translateY(0)}
+100%{transform:translateY(-1000px)}
+}
+
+/* avatar */
+
+.avatar{
+width:220px;
+height:220px;
+border-radius:50%;
+background:linear-gradient(45deg,#6366f1,#9333ea);
+display:flex;
+align-items:center;
+justify-content:center;
+font-size:80px;
+color:white;
+animation:float 4s ease-in-out infinite;
+}
+
+@keyframes float{
+0%{transform:translateY(0)}
+50%{transform:translateY(-20px)}
+100%{transform:translateY(0)}
+}
+
+</style>
+""", unsafe_allow_html=True)
+
+    # particles background
+    for i in range(30):
+        st.markdown(
+            f'<div class="particle" style="left:{i*3}%; animation-duration:{5+i%5}s;"></div>',
+            unsafe_allow_html=True
+        )
+
+    col1,col2,col3 = st.columns([1,1,1])
+
     with col1:
+        st.markdown(
+            """
+<div style="display:flex;justify-content:center;margin-top:120px;">
+<div class="avatar">👨‍💼</div>
+</div>
+""",
+            unsafe_allow_html=True
+        )
 
-        components.html("""
-        <div style="display:flex;justify-content:center;align-items:center;height:500px;">
-
-        <div class="avatar"></div>
-
-        <style>
-
-        .avatar{
-        width:220px;
-        height:220px;
-        border-radius:50%;
-        background:linear-gradient(45deg,#ff9966,#ff5e62);
-        position:relative;
-        animation: float 4s ease-in-out infinite;
-        }
-
-        .avatar:before{
-        content:'';
-        position:absolute;
-        top:40px;
-        left:60px;
-        width:100px;
-        height:100px;
-        background:white;
-        border-radius:50%;
-        }
-
-        @keyframes float{
-        0%{transform:translateY(0px)}
-        50%{transform:translateY(-20px)}
-        100%{transform:translateY(0px)}
-        }
-
-        </style>
-
-        </div>
-        """, height=500)
-
-    # ---------- Login Form ----------
     with col2:
 
-        st.markdown("## Sign In")
+        st.markdown('<div class="login-card">',unsafe_allow_html=True)
+
+        st.markdown("### 🔐 Login Dashboard")
 
         username = st.text_input("Username")
-        password = st.text_input("Password", type="password")
+        password = st.text_input("Password",type="password")
 
         if st.button("Login"):
 
-            if username in USERS and USERS[username] == password:
+            with st.spinner("Authenticating..."):
 
-                st.session_state.logged_in = True
-                st.session_state.user = username
-                st.success("Login successful")
-                st.rerun()
+                time.sleep(1.5)
 
-            else:
-                st.error("Invalid username or password")
+                if username in USERS and USERS[username] == password:
 
+                    st.session_state.logged_in = True
+                    st.session_state.user = username
+                    st.success("Login successful")
+                    st.rerun()
 
+                else:
+                    st.error("Invalid login")
+
+        st.markdown('</div>',unsafe_allow_html=True)
+
+# -------- BLOCK DASHBOARD --------
 if not st.session_state.logged_in:
     login_page()
     st.stop()
 
-
-st.sidebar.write(f"Logged in as {st.session_state.user}")
+# -------- SIDEBAR --------
+st.sidebar.write(f"👤 Logged in as: {st.session_state.user}")
 
 if st.sidebar.button("Logout"):
     st.session_state.logged_in = False
     st.rerun()
 
+# -------- YOUR DASHBOARD --------
 st.title("Price Comparison Dashboard")
+st.write("Your dashboard starts here.")
+
 # ✅ MUST BE FIRST STREAMLIT COMMAND
 st.set_page_config(
     page_title="Price Comparison Dashboard",
