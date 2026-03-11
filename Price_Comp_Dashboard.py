@@ -11,7 +11,7 @@ from PIL import Image
 
 import streamlit as st
 
-st.set_page_config(page_title="Price Dashboard Login", layout="wide")
+st.set_page_config(page_title="Login", layout="wide")
 
 USER_CREDENTIALS = {
     "admin": "price@123",
@@ -20,104 +20,102 @@ USER_CREDENTIALS = {
     "Nicola": "admin@123"
 }
 
-# -------- STYLE -------- #
+# ----- CUSTOM CSS ----- #
 
 st.markdown("""
 <style>
 
 .stApp{
-background: linear-gradient(135deg,#f5f7fa,#e4ecfb);
+background: linear-gradient(135deg,#eef2f7,#f8f9fb);
 }
 
-.login-container{
-display:flex;
-justify-content:center;
-align-items:center;
-height:80vh;
-}
-
+/* Login card */
 .login-card{
 background:white;
 padding:50px;
-border-radius:15px;
-box-shadow:0 10px 30px rgba(0,0,0,0.15);
-width:420px;
+border-radius:16px;
+box-shadow:0px 15px 40px rgba(0,0,0,0.15);
 }
 
-.login-title{
-font-size:32px;
-font-weight:700;
-text-align:center;
-margin-bottom:10px;
+/* Right branding section */
+.brand-box{
+display:flex;
+flex-direction:column;
+justify-content:center;
+align-items:center;
+height:75vh;
+background: linear-gradient(135deg,#f6b300,#ffd34d);
+border-radius:16px;
 }
 
-.login-sub{
-text-align:center;
-color:gray;
-margin-bottom:30px;
+.brand-title{
+font-size:55px;
+font-weight:800;
+color:black;
 }
 
-.stTextInput>div>div>input{
-border-radius:8px;
-padding:10px;
+.brand-sub{
+font-size:18px;
+margin-top:10px;
+color:#333;
 }
 
+/* Button */
 .stButton>button{
 width:100%;
-border-radius:8px;
-padding:12px;
 background:#f6b300;
-color:black;
-font-weight:600;
 border:none;
+padding:12px;
+border-radius:8px;
+font-weight:600;
 }
 
 .stButton>button:hover{
-background:#e2a500;
-}
-
-.logo{
-display:flex;
-justify-content:center;
-margin-bottom:25px;
+background:#e3a600;
 }
 
 </style>
 """, unsafe_allow_html=True)
 
 
-# -------- LOGIN PAGE -------- #
+# ----- LOGIN FUNCTION ----- #
 
 def login():
 
-    st.markdown('<div class="login-container">', unsafe_allow_html=True)
-    st.markdown('<div class="login-card">', unsafe_allow_html=True)
+    col1, col2 = st.columns([1,1])
 
-    st.markdown('<div class="logo">', unsafe_allow_html=True)
-    st.image("https://cdn.shopify.com/s/files/1/0250/6198/2261/files/Insulation4less_main_logo.png?v=1767346032", width=220)
-    st.markdown('</div>', unsafe_allow_html=True)
+    with col1:
 
-    st.markdown('<div class="login-title">Login</div>', unsafe_allow_html=True)
-    st.markdown('<div class="login-sub">Price Comparison Dashboard</div>', unsafe_allow_html=True)
+        st.markdown('<div class="login-card">', unsafe_allow_html=True)
 
-    username = st.text_input("Username")
-    password = st.text_input("Password", type="password")
+        st.markdown("### LOGIN")
+        st.write("Please login to continue")
 
-    if st.button("Login"):
+        username = st.text_input("Username")
+        password = st.text_input("Password", type="password")
 
-        if username in USER_CREDENTIALS and USER_CREDENTIALS[username] == password:
-            st.session_state.logged_in = True
-            st.success("Login successful ✅")
-            st.rerun()
+        if st.button("Login"):
 
-        else:
-            st.error("Invalid username or password")
+            if username in USER_CREDENTIALS and USER_CREDENTIALS[username] == password:
+                st.session_state.logged_in = True
+                st.success("Login successful")
+                st.rerun()
+            else:
+                st.error("Invalid username or password")
 
-    st.markdown('</div>', unsafe_allow_html=True)
-    st.markdown('</div>', unsafe_allow_html=True)
+        st.markdown("</div>", unsafe_allow_html=True)
+
+    with col2:
+
+        st.markdown("""
+        <div class="brand-box">
+            <img src="https://cdn.shopify.com/s/files/1/0250/6198/2261/files/Insulation4less_main_logo.png?v=1767346032" width="350">
+            <div class="brand-sub">Price Comparison Dashboard</div>
+        </div>
+        """, unsafe_allow_html=True)
 
 
-# -------- SESSION -------- #
+# ----- SESSION ----- #
 
 if "logged_in" not in st.session_state:
     st.session_state.logged_in = False
