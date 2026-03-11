@@ -102,7 +102,7 @@ def login():
     with col2:
 
         st.image(
-            "https://cdn-icons-png.flaticon.com/512/3135/3135715.png",
+            "https://cdn.shopify.com/s/files/1/0250/6198/2261/files/Insulation4less_main_logo.png?v=1767346032",
             use_column_width=True
         )
 
