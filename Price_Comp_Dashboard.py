@@ -7,7 +7,20 @@ import re
 import glob
 import streamlit.components.v1 as components 
 from PIL import Image
+
 import streamlit as st
+import streamlit.components.v1 as components
+import time
+
+# ---------------- PAGE CONFIG ---------------- #
+
+st.set_page_config(
+    page_title="Price Comparison Dashboard",
+    page_icon="📊",
+    layout="wide"
+)
+
+# ---------------- USERS ---------------- #
 
 USERS = {
     "admin": "price@123",
@@ -16,100 +29,236 @@ USERS = {
     "Ashish": "admin@123"
 }
 
+# ---------------- SESSION ---------------- #
+
 if "logged_in" not in st.session_state:
     st.session_state.logged_in = False
 
 
+# ---------------- LOGIN PAGE ---------------- #
+
 def login_page():
 
-    st.markdown("""
+    components.html(
+        """
+<!DOCTYPE html>
+<html>
+
+<head>
+
+<script src="https://cdn.jsdelivr.net/npm/particles.js"></script>
+
 <style>
 
-[data-testid="stAppViewContainer"]{
-background: linear-gradient(135deg,#667eea,#764ba2);
+body{
+margin:0;
+font-family:Arial;
+background:#0f172a;
+overflow:hidden;
 }
 
-.form-card{
-width:420px;
-margin:auto;
-margin-top:120px;
-background:white;
-padding:40px;
-border-radius:12px;
-box-shadow:0 20px 40px rgba(0,0,0,0.2);
-text-align:center;
-}
-
-.title{
-font-size:28px;
-font-weight:700;
-margin-bottom:10px;
-}
-
-.subtitle{
-color:gray;
-margin-bottom:30px;
-}
-
-.stTextInput input{
-border-radius:8px;
-height:45px;
-}
-
-.stButton button{
+#particles-js{
+position:absolute;
 width:100%;
-height:45px;
-border-radius:8px;
-background:#667eea;
-color:white;
-font-size:18px;
-border:none;
+height:100%;
 }
 
-.stButton button:hover{
-background:#5563d1;
+/* FLOATING CARD */
+
+.login-card{
+
+position:absolute;
+top:50%;
+left:50%;
+transform:translate(-50%,-50%);
+width:420px;
+
+padding:40px;
+
+background:rgba(255,255,255,0.08);
+
+backdrop-filter: blur(12px);
+
+border-radius:16px;
+
+box-shadow:0 20px 60px rgba(0,0,0,0.6);
+
+text-align:center;
+
+animation:float 6s ease-in-out infinite;
+}
+
+/* FLOAT ANIMATION */
+
+@keyframes float{
+
+0%{transform:translate(-50%,-50%)}
+
+50%{transform:translate(-50%,-55%)}
+
+100%{transform:translate(-50%,-50%)}
+
+}
+
+/* LOGO GLOW */
+
+.logo{
+width:160px;
+margin-bottom:20px;
+animation:glow 3s infinite;
+}
+
+@keyframes glow{
+
+0%{filter:drop-shadow(0 0 5px #00d4ff)}
+
+50%{filter:drop-shadow(0 0 20px #00d4ff)}
+
+100%{filter:drop-shadow(0 0 5px #00d4ff)}
+
+}
+
+input{
+
+width:100%;
+
+padding:12px;
+
+margin:10px 0;
+
+border:none;
+
+border-radius:8px;
+
+font-size:16px;
+
+}
+
+/* LOGIN BUTTON */
+
+button{
+
+width:100%;
+
+padding:12px;
+
+background:#2563eb;
+
+color:white;
+
+border:none;
+
+border-radius:8px;
+
+font-size:18px;
+
+cursor:pointer;
+
+transition:0.3s;
+
+}
+
+button:hover{
+
+transform:scale(1.05);
+
+background:#1d4ed8;
+
 }
 
 </style>
-""", unsafe_allow_html=True)
 
-    col1,col2,col3 = st.columns([1,2,1])
+</head>
 
-    with col2:
+<body>
 
-        st.markdown('<div class="form-card">',unsafe_allow_html=True)
+<div id="particles-js"></div>
 
-        st.image(
-            "https://cdn.shopify.com/s/files/1/0250/6198/2261/files/Insulation4less_main_logo.png",
-            width=180
-        )
+<div class="login-card">
 
-        st.markdown('<div class="title">Sign in</div>',unsafe_allow_html=True)
-        st.markdown('<div class="subtitle">Access the Price Dashboard</div>',unsafe_allow_html=True)
+<img class="logo" src="https://cdn.shopify.com/s/files/1/0250/6198/2261/files/Insulation4less_main_logo.png">
 
-        username = st.text_input("Username")
-        password = st.text_input("Password",type="password")
+<input id="user" placeholder="Username">
 
-        if st.button("Login"):
+<input id="pass" type="password" placeholder="Password">
 
-            if username in USERS and USERS[username] == password:
+<button onclick="sendLogin()">Login</button>
 
-                st.session_state.logged_in = True
-                st.session_state.user = username
-                st.success("Login successful")
-                st.rerun()
+</div>
 
-            else:
-                st.error("Invalid login")
+<script>
 
-        st.markdown('</div>',unsafe_allow_html=True)
+particlesJS("particles-js",{
+particles:{
+number:{value:90},
+size:{value:3},
+color:{value:"#ffffff"},
+line_linked:{enable:true},
+move:{speed:2}
+}
+})
+
+function sendLogin(){
+
+const user=document.getElementById("user").value
+const pass=document.getElementById("pass").value
+
+window.parent.postMessage({
+type:"streamlit:setComponentValue",
+value:user+"|"+pass
+},"*")
+
+}
+
+</script>
+
+</body>
+
+</html>
+""",
+height=720
+    )
+
+
+# ---------------- LOGIN CHECK ---------------- #
+
+login_data = login_page()
+
+if login_data:
+
+    username, password = login_data.split("|")
+
+    if username in USERS and USERS[username] == password:
+
+        st.success("Login successful")
+
+        with st.spinner("Loading dashboard..."):
+            time.sleep(2)
+
+        st.session_state.logged_in = True
+        st.session_state.user = username
+        st.rerun()
+
+    else:
+        st.error("Invalid username or password")
 
 
 if not st.session_state.logged_in:
-    login_page()
     st.stop()
 
 
+# ---------------- SIDEBAR ---------------- #
+
+st.sidebar.image(
+    "https://cdn.shopify.com/s/files/1/0250/6198/2261/files/Insulation4less_main_logo.png",
+    width=200
+)
+
+st.sidebar.write(f"👤 Logged in as: {st.session_state.user}")
+
+if st.sidebar.button("Logout"):
+    st.session_state.logged_in = False
+    st.rerun()
 
 # ✅ MUST BE FIRST STREAMLIT COMMAND
 st.set_page_config(
