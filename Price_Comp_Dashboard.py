@@ -22,10 +22,11 @@ st.set_page_config(
 # ---------------- LOGIN SYSTEM ---------------- #
 
 USER_CREDENTIALS = {
-    "admin": "price@123",
-    "ashish": "admin123"
+    "Admin": "price@123",
+    "Ashish": "admin@123",
+    "Shubham": "admin@123",
+    "Nicola": "admin@123"
 }
-
 def login():
     st.title("🔐 Login - Price Comparison Dashboard")
 
