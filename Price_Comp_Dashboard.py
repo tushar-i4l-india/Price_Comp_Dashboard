@@ -8,6 +8,41 @@ import glob
 import streamlit.components.v1 as components 
 from PIL import Image
 
+# ---------------- LOGIN SYSTEM ---------------- #
+
+USER_CREDENTIALS = {
+    "admin": "admin123",
+    "password": "price@123"
+}
+
+def login():
+    st.title("🔐 Login - Price Comparison Dashboard")
+
+    username = st.text_input("Username")
+    password = st.text_input("Password", type="password")
+
+    if st.button("Login"):
+        if username in USER_CREDENTIALS and USER_CREDENTIALS[username] == password:
+            st.session_state.logged_in = True
+            st.session_state.user = username
+            st.success("Login successful ✅")
+            st.rerun()
+        else:
+            st.error("Invalid username or password")
+
+# Initialize login state
+if "logged_in" not in st.session_state:
+    st.session_state.logged_in = False
+
+# If not logged in → show login page
+if not st.session_state.logged_in:
+    login()
+    st.stop()
+
+
+
+
+
 # ✅ MUST BE FIRST STREAMLIT COMMAND
 st.set_page_config(
     page_title="Price Comparison Dashboard",
@@ -30,6 +65,9 @@ st.set_page_config(page_title="Price Comparison Dashboard", page_icon=":bar_char
     'Report a bug': "https://www.insulation4less.co.uk",
     'About': "This app is a price comparison dashboard",
 })
+if st.sidebar.button("Logout"):
+    st.session_state.logged_in = False
+    st.rerun()
 
 @st.cache_data
 def load_data(file_path):
