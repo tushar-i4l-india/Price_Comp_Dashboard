@@ -100,7 +100,7 @@ transform:scale(1.03);
 
         components.html("""
         <div style="display:flex;justify-content:center;align-items:center;height:450px;">
-        <img src="https://media.giphy.com/media/QNFhOolVeCzPQ2Mx85/giphy.gif" width="350">
+        <img src="https://assets10.lottiefiles.com/packages/lf20_9cyyl8i7.gif" width="350">
         </div>
         """, height=450)
 
