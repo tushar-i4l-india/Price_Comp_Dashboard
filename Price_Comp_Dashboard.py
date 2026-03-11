@@ -7,6 +7,15 @@ import re
 import glob
 import streamlit.components.v1 as components 
 from PIL import Image
+
+import streamlit as st
+from streamlit_lottie import st_lottie
+import requests
+
+# ---------- PAGE CONFIG ----------
+st.set_page_config(page_title="Login Dashboard", layout="wide")
+
+# ---------- USERS ----------
 USERS = {
     "admin": "price@123",
     "Nicola": "admin@123",
@@ -14,103 +23,79 @@ USERS = {
     "Ashish": "admin@123"
 }
 
+# ---------- SESSION ----------
 if "logged_in" not in st.session_state:
     st.session_state.logged_in = False
 
 
+# ---------- LOAD LOTTIE ANIMATION ----------
+def load_lottie(url):
+    r = requests.get(url)
+    if r.status_code != 200:
+        return None
+    return r.json()
+
+
+lottie_animation = load_lottie(
+    "https://assets3.lottiefiles.com/packages/lf20_jcikwtux.json"
+)
+
+
+# ---------- LOGIN PAGE ----------
 def login_page():
 
     st.markdown("""
-<style>
+    <style>
 
-[data-testid="stAppViewContainer"]{
-background: linear-gradient(135deg,#667eea,#764ba2);
-}
+    [data-testid="stAppViewContainer"]{
+        background: linear-gradient(135deg,#667eea,#764ba2);
+    }
 
-/* login card */
+    .login-title{
+        font-size:40px;
+        font-weight:700;
+        margin-bottom:10px;
+    }
 
-.login-card{
-width:420px;
-margin:auto;
-margin-top:120px;
-background:white;
-padding:40px;
-border-radius:12px;
-box-shadow:0 20px 40px rgba(0,0,0,0.25);
-text-align:center;
+    .login-sub{
+        color:gray;
+        margin-bottom:30px;
+    }
 
-/* animation */
-animation: fadeIn 1s ease forwards, float 4s ease-in-out infinite;
-}
+    .stTextInput input{
+        border-radius:8px;
+        height:45px;
+    }
 
-/* fade animation */
+    .stButton button{
+        width:100%;
+        height:45px;
+        border-radius:8px;
+        background:#667eea;
+        color:white;
+        font-size:18px;
+        border:none;
+    }
 
-@keyframes fadeIn{
-from{
-opacity:0;
-transform:translateY(30px);
-}
-to{
-opacity:1;
-transform:translateY(0);
-}
-}
+    .stButton button:hover{
+        background:#5563d1;
+        transform:scale(1.02);
+    }
 
-/* floating animation */
+    </style>
+    """, unsafe_allow_html=True)
 
-@keyframes float{
-0%{transform:translateY(0px)}
-50%{transform:translateY(-8px)}
-100%{transform:translateY(0px)}
-}
+    col1, col2 = st.columns([1,1])
 
-.title{
-font-size:28px;
-font-weight:700;
-margin-bottom:10px;
-}
+    # Animation column
+    with col1:
+        st_lottie(lottie_animation, height=400)
 
-.subtitle{
-color:gray;
-margin-bottom:25px;
-}
-
-.stTextInput input{
-border-radius:8px;
-height:45px;
-}
-
-.stButton button{
-width:100%;
-height:45px;
-border-radius:8px;
-background:#667eea;
-color:white;
-font-size:18px;
-border:none;
-}
-
-.stButton button:hover{
-background:#5563d1;
-transform:scale(1.03);
-}
-
-</style>
-""", unsafe_allow_html=True)
-
-    col1,col2,col3 = st.columns([1,2,1])
-
+    # Login form column
     with col2:
 
-        st.markdown('<div class="login-card">', unsafe_allow_html=True)
-
-        st.image(
-            "https://cdn.shopify.com/s/files/1/0250/6198/2261/files/Insulation4less_main_logo.png",
-            width=180
-        )
-
-        st.markdown('<div class="title">Sign in</div>', unsafe_allow_html=True)
-        st.markdown('<div class="subtitle">Access the Price Dashboard</div>', unsafe_allow_html=True)
+        st.markdown('<div class="login-title">Sign In</div>', unsafe_allow_html=True)
+        st.markdown('<div class="login-sub">Access Price Comparison Dashboard</div>', unsafe_allow_html=True)
 
         username = st.text_input("Username")
         password = st.text_input("Password", type="password")
@@ -125,15 +110,25 @@ transform:scale(1.03);
                 st.rerun()
 
             else:
-                st.error("Invalid login")
-
-        st.markdown('</div>', unsafe_allow_html=True)
+                st.error("Invalid username or password")
 
 
+# ---------- LOGIN CHECK ----------
 if not st.session_state.logged_in:
     login_page()
     st.stop()
 
+
+# ---------- DASHBOARD ----------
+st.sidebar.write(f"👤 Logged in as: {st.session_state.user}")
+
+if st.sidebar.button("Logout"):
+    st.session_state.logged_in = False
+    st.rerun()
+
+st.title("Price Comparison Dashboard")
+
+st.write("Your dashboard content goes here.")
 
 # ✅ MUST BE FIRST STREAMLIT COMMAND
 st.set_page_config(
