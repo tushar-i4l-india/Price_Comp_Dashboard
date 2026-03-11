@@ -8,13 +8,12 @@ import glob
 import streamlit.components.v1 as components 
 from PIL import Image
 import streamlit as st
-import time
 import streamlit.components.v1 as components
+import time
 
-# -------- PAGE CONFIG --------
-st.set_page_config(page_title="Price Dashboard Login", layout="wide")
+st.set_page_config(page_title="Secure Dashboard Login", layout="wide")
 
-# -------- USERS --------
+# ---------- USERS ----------
 USERS = {
     "admin": "price@123",
     "Nicola": "admin@123",
@@ -30,7 +29,7 @@ if "logged_in" not in st.session_state:
 if "last_activity" not in st.session_state:
     st.session_state.last_activity = time.time()
 
-# -------- AUTO LOGOUT --------
+# ---------- AUTO LOGOUT ----------
 if st.session_state.logged_in:
     if time.time() - st.session_state.last_activity > SESSION_TIMEOUT:
         st.session_state.logged_in = False
@@ -39,129 +38,181 @@ if st.session_state.logged_in:
 
 st.session_state.last_activity = time.time()
 
-# -------- LOGIN PAGE --------
+
+# ---------- LOGIN PAGE ----------
 def login_page():
 
-    st.markdown("""
+    components.html("""
+<!DOCTYPE html>
+<html>
+
+<head>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+
 <style>
 
-[data-testid="stAppViewContainer"]{
-background:#0f172a;
+body{
+margin:0;
 overflow:hidden;
+font-family:Arial;
+background: linear-gradient(270deg,#667eea,#764ba2,#6dd5fa);
+background-size:600% 600%;
+animation:gradientMove 10s ease infinite;
 }
 
-/* glass card */
+@keyframes gradientMove{
+0%{background-position:0% 50%}
+50%{background-position:100% 50%}
+100%{background-position:0% 50%}
+}
+
+#avatarCanvas{
+position:absolute;
+left:10%;
+top:20%;
+width:400px;
+height:400px;
+}
 
 .login-card{
-background:rgba(255,255,255,0.08);
-backdrop-filter:blur(20px);
-padding:40px;
-border-radius:20px;
-box-shadow:0 10px 40px rgba(0,0,0,0.5);
-}
-
-/* particles */
-
-.particle{
 position:absolute;
-width:6px;
-height:6px;
-background:white;
-border-radius:50%;
-opacity:0.5;
-animation:move 10s linear infinite;
-}
-
-@keyframes move{
-0%{transform:translateY(0)}
-100%{transform:translateY(-1000px)}
-}
-
-/* avatar */
-
-.avatar{
-width:220px;
-height:220px;
-border-radius:50%;
-background:linear-gradient(45deg,#6366f1,#9333ea);
-display:flex;
-align-items:center;
-justify-content:center;
-font-size:80px;
+right:15%;
+top:25%;
+width:350px;
+padding:40px;
+border-radius:15px;
+background:rgba(255,255,255,0.15);
+backdrop-filter:blur(15px);
+box-shadow:0 10px 40px rgba(0,0,0,0.4);
 color:white;
-animation:float 4s ease-in-out infinite;
 }
 
-@keyframes float{
-0%{transform:translateY(0)}
-50%{transform:translateY(-20px)}
-100%{transform:translateY(0)}
+input{
+width:100%;
+padding:10px;
+margin-top:10px;
+border:none;
+border-radius:6px;
+}
+
+button{
+width:100%;
+padding:12px;
+margin-top:15px;
+background:#2563eb;
+border:none;
+border-radius:6px;
+color:white;
+font-size:16px;
+cursor:pointer;
+}
+
+button:hover{
+background:#1d4ed8;
 }
 
 </style>
-""", unsafe_allow_html=True)
+</head>
 
-    # particles background
-    for i in range(30):
-        st.markdown(
-            f'<div class="particle" style="left:{i*3}%; animation-duration:{5+i%5}s;"></div>',
-            unsafe_allow_html=True
-        )
+<body>
 
-    col1,col2,col3 = st.columns([1,1,1])
+<canvas id="avatarCanvas"></canvas>
 
-    with col1:
-        st.markdown(
-            """
-<div style="display:flex;justify-content:center;margin-top:120px;">
-<div class="avatar">👨‍💼</div>
+<div class="login-card">
+
+<h2>Secure Login</h2>
+
+<input id="user" placeholder="Username">
+
+<input id="pass" type="password" placeholder="Password">
+
+<button onclick="sendLogin()">Login</button>
+
 </div>
-""",
-            unsafe_allow_html=True
-        )
 
-    with col2:
+<script>
 
-        st.markdown('<div class="login-card">',unsafe_allow_html=True)
+const scene = new THREE.Scene()
+const camera = new THREE.PerspectiveCamera(75,1,0.1,1000)
+const renderer = new THREE.WebGLRenderer({canvas:document.getElementById("avatarCanvas"),alpha:true})
 
-        st.markdown("### 🔐 Login Dashboard")
+renderer.setSize(400,400)
 
-        username = st.text_input("Username")
-        password = st.text_input("Password",type="password")
+const geometry = new THREE.SphereGeometry(1,32,32)
+const material = new THREE.MeshStandardMaterial({color:0x3b82f6})
+const sphere = new THREE.Mesh(geometry,material)
 
-        if st.button("Login"):
+scene.add(sphere)
 
-            with st.spinner("Authenticating..."):
+const light = new THREE.PointLight(0xffffff,1)
+light.position.set(5,5,5)
+scene.add(light)
 
-                time.sleep(1.5)
+camera.position.z = 3
 
-                if username in USERS and USERS[username] == password:
+document.addEventListener("mousemove",(e)=>{
+sphere.rotation.y = e.clientX/300
+sphere.rotation.x = e.clientY/300
+})
 
-                    st.session_state.logged_in = True
-                    st.session_state.user = username
-                    st.success("Login successful")
-                    st.rerun()
+function animate(){
+requestAnimationFrame(animate)
+renderer.render(scene,camera)
+}
 
-                else:
-                    st.error("Invalid login")
+animate()
 
-        st.markdown('</div>',unsafe_allow_html=True)
+function sendLogin(){
 
-# -------- BLOCK DASHBOARD --------
+const user=document.getElementById("user").value
+const pass=document.getElementById("pass").value
+
+window.parent.postMessage({
+type:"streamlit:setComponentValue",
+value:user+"|"+pass
+},"*")
+}
+
+</script>
+
+</body>
+
+</html>
+""",height=600)
+
+# ---------- LOGIN LOGIC ----------
+login_data = st.session_state.get("login_data")
+
+if login_data:
+    username,password = login_data.split("|")
+
+    if username in USERS and USERS[username] == password:
+
+        with st.spinner("Logging in..."):
+            time.sleep(1.5)
+
+        st.session_state.logged_in = True
+        st.session_state.user = username
+        st.success("Login successful")
+        st.rerun()
+
+    else:
+        st.error("Invalid login")
+
+
 if not st.session_state.logged_in:
     login_page()
     st.stop()
 
-# -------- SIDEBAR --------
-st.sidebar.write(f"👤 Logged in as: {st.session_state.user}")
+# ---------- DASHBOARD ----------
+st.sidebar.write(f"👤 Logged in as {st.session_state.user}")
 
 if st.sidebar.button("Logout"):
     st.session_state.logged_in = False
     st.rerun()
 
-# -------- YOUR DASHBOARD --------
 st.title("Price Comparison Dashboard")
-st.write("Your dashboard starts here.")
 
 # ✅ MUST BE FIRST STREAMLIT COMMAND
 st.set_page_config(
