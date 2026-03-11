@@ -9,210 +9,146 @@ import streamlit.components.v1 as components
 from PIL import Image
 import streamlit as st
 import streamlit.components.v1 as components
-import time
 
-st.set_page_config(page_title="Secure Dashboard Login", layout="wide")
+st.set_page_config(layout="wide")
 
-# ---------- USERS ----------
-USERS = {
-    "admin": "price@123",
-    "Nicola": "admin@123",
-    "Shubham": "admin@123",
-    "Ashish": "admin@123"
-}
-
-SESSION_TIMEOUT = 1800
-
-if "logged_in" not in st.session_state:
-    st.session_state.logged_in = False
-
-if "last_activity" not in st.session_state:
-    st.session_state.last_activity = time.time()
-
-# ---------- AUTO LOGOUT ----------
-if st.session_state.logged_in:
-    if time.time() - st.session_state.last_activity > SESSION_TIMEOUT:
-        st.session_state.logged_in = False
-        st.warning("Session expired. Please login again.")
-        st.rerun()
-
-st.session_state.last_activity = time.time()
-
-
-# ---------- LOGIN PAGE ----------
-def login_page():
-
-    components.html("""
+components.html("""
 <!DOCTYPE html>
 <html>
 
 <head>
 
-<script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
-
 <style>
 
 body{
 margin:0;
-overflow:hidden;
 font-family:Arial;
-background: linear-gradient(270deg,#667eea,#764ba2,#6dd5fa);
-background-size:600% 600%;
-animation:gradientMove 10s ease infinite;
+background:#b8b7d7;
 }
 
-@keyframes gradientMove{
-0%{background-position:0% 50%}
-50%{background-position:100% 50%}
-100%{background-position:0% 50%}
+/* layout */
+
+.container{
+display:flex;
+align-items:center;
+justify-content:center;
+height:100vh;
 }
 
-#avatarCanvas{
-position:absolute;
-left:10%;
-top:20%;
-width:400px;
-height:400px;
+/* avatar */
+
+.avatar{
+width:250px;
+margin-right:40px;
 }
 
-.login-card{
-position:absolute;
-right:15%;
-top:25%;
-width:350px;
-padding:40px;
-border-radius:15px;
-background:rgba(255,255,255,0.15);
-backdrop-filter:blur(15px);
-box-shadow:0 10px 40px rgba(0,0,0,0.4);
-color:white;
+/* form card */
+
+.form-box{
+width:500px;
 }
+
+.title{
+text-align:center;
+font-size:36px;
+font-weight:bold;
+color:#3b3b5c;
+}
+
+.subtitle{
+text-align:center;
+color:#444;
+margin-bottom:30px;
+}
+
+/* inputs */
 
 input{
 width:100%;
-padding:10px;
+padding:15px;
 margin-top:10px;
+border-radius:10px;
 border:none;
-border-radius:6px;
+background:#ececec;
+font-size:16px;
 }
+
+/* checkboxes */
+
+.checkbox{
+margin-top:15px;
+}
+
+.checkbox label{
+display:block;
+margin-top:10px;
+background:#ececec;
+padding:12px;
+border-radius:10px;
+}
+
+/* button */
 
 button{
 width:100%;
-padding:12px;
-margin-top:15px;
-background:#2563eb;
+padding:15px;
+margin-top:20px;
 border:none;
-border-radius:6px;
+border-radius:10px;
+background:#1f2a44;
 color:white;
-font-size:16px;
+font-size:18px;
 cursor:pointer;
 }
 
 button:hover{
-background:#1d4ed8;
+background:#111827;
 }
 
 </style>
+
 </head>
 
 <body>
 
-<canvas id="avatarCanvas"></canvas>
+<div class="container">
 
-<div class="login-card">
+<img class="avatar" src="https://cdn3d.iconscout.com/3d/premium/thumb/businessman-standing-3d-character-5878221-4921889.png">
 
-<h2>Secure Login</h2>
+<div class="form-box">
 
-<input id="user" placeholder="Username">
+<div class="title">SUBSCRIBE</div>
 
-<input id="pass" type="password" placeholder="Password">
+<div class="subtitle">
+Get the latest data about our new services, client success stories, and market analytics.
+</div>
 
-<button onclick="sendLogin()">Login</button>
+<input placeholder="Full Name">
+
+<input placeholder="Ex. username@email.com">
+
+<div class="checkbox">
+
+<p><b>What are you interested in?</b></p>
+
+<label><input type="checkbox"> Cloud Insights</label>
+
+<label><input type="checkbox"> Tech Updates</label>
+
+<label><input type="checkbox"> Service Alerts</label>
 
 </div>
 
-<script>
+<button>Subscribe</button>
 
-const scene = new THREE.Scene()
-const camera = new THREE.PerspectiveCamera(75,1,0.1,1000)
-const renderer = new THREE.WebGLRenderer({canvas:document.getElementById("avatarCanvas"),alpha:true})
+</div>
 
-renderer.setSize(400,400)
-
-const geometry = new THREE.SphereGeometry(1,32,32)
-const material = new THREE.MeshStandardMaterial({color:0x3b82f6})
-const sphere = new THREE.Mesh(geometry,material)
-
-scene.add(sphere)
-
-const light = new THREE.PointLight(0xffffff,1)
-light.position.set(5,5,5)
-scene.add(light)
-
-camera.position.z = 3
-
-document.addEventListener("mousemove",(e)=>{
-sphere.rotation.y = e.clientX/300
-sphere.rotation.x = e.clientY/300
-})
-
-function animate(){
-requestAnimationFrame(animate)
-renderer.render(scene,camera)
-}
-
-animate()
-
-function sendLogin(){
-
-const user=document.getElementById("user").value
-const pass=document.getElementById("pass").value
-
-window.parent.postMessage({
-type:"streamlit:setComponentValue",
-value:user+"|"+pass
-},"*")
-}
-
-</script>
+</div>
 
 </body>
 
 </html>
-""",height=600)
-
-# ---------- LOGIN LOGIC ----------
-login_data = st.session_state.get("login_data")
-
-if login_data:
-    username,password = login_data.split("|")
-
-    if username in USERS and USERS[username] == password:
-
-        with st.spinner("Logging in..."):
-            time.sleep(1.5)
-
-        st.session_state.logged_in = True
-        st.session_state.user = username
-        st.success("Login successful")
-        st.rerun()
-
-    else:
-        st.error("Invalid login")
-
-
-if not st.session_state.logged_in:
-    login_page()
-    st.stop()
-
-# ---------- DASHBOARD ----------
-st.sidebar.write(f"👤 Logged in as {st.session_state.user}")
-
-if st.sidebar.button("Logout"):
-    st.session_state.logged_in = False
-    st.rerun()
-
-st.title("Price Comparison Dashboard")
+""", height=700)
 
 # ✅ MUST BE FIRST STREAMLIT COMMAND
 st.set_page_config(
