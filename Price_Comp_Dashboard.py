@@ -7,8 +7,7 @@ import re
 import glob
 import streamlit.components.v1 as components 
 from PIL import Image
-
-# ────────────────────────────── LOGIN SYSTEM ──────────────────────────────
+# ---------------- LOGIN SYSTEM ---------------- #
 
 USERS = {
     "Admin": "Price@123",
@@ -17,92 +16,131 @@ USERS = {
     "Ashish": "admin@123"
 }
 
-# Initialize session state
 if "logged_in" not in st.session_state:
     st.session_state.logged_in = False
-if "user" not in st.session_state:
-    st.session_state.user = None
 
 def login_page():
+
     st.markdown("""
     <style>
+
     .stApp {
         background-image: url("https://cdn.shopify.com/s/files/1/0845/8443/1893/files/Streamlit.png?v=1773315005");
         background-size: cover;
         background-position: center;
         background-repeat: no-repeat;
     }
-    .login-title {
-        font-size:34px;
-        font-weight:bold;
-        color:white;
-        margin-bottom:20px;
+
+
+
+/*Login In Title */
+.login-title{
+    font-size:34px;
+    font-weight:bold;
+    color:white;
+    margin-bottom:20px;
+}
+
+/* Username & Password Labels */
+label{
+    color:white !important;
+    font-weight:bold !important;
+}
+
+/* Input Fields */
+.stTextInput input{
+    background-color:#333;
+    color:white;
+    border-radius:6px;
+    border:1px solid #555;
+}
+
+
+/* Login Button */
+.stButton button{
+    background:#E50914;
+    color:white;
+    font-weight:bold;
+    border-radius:6px;
+    width:100%;
+    height:45px;
+}
+                
+.login-title{
+    font-size:32px;
+    font-weight:bold;
+    color:white;
+    margin-bottom:25px;
+} 
+
+.logo-container{
+    text-align:center;
+    margin-bottom:25px;
+}
+
+.logo-container img{
+    width:420px;
+    position: relative;
+    top: -60px;   /* move logo upward */
+    animation: glow 2.5s infinite alternate;
+}
+
+@keyframes glow{
+    0%{
+        filter: drop-shadow(0px 0px 5px rgba(255,255,255,0.2));
     }
-    label {
-        color:white !important;
-        font-weight:bold !important;
+    50%{
+        filter: drop-shadow(0px 0px 20px rgba(255,255,255,0.9));
     }
-    .stTextInput input {
-        background-color:#333;
-        color:white;
-        border-radius:6px;
-        border:1px solid #555;
+    100%{
+        filter: drop-shadow(0px 0px 5px rgba(255,255,255,0.2));
     }
-    .stButton button {
-        background:#E50914;
-        color:white;
-        font-weight:bold;
-        border-radius:6px;
-        width:100%;
-        height:45px;
-    }
-    .logo-container {
-        text-align:center;
-        margin-bottom:25px;
-    }
-    .logo-container img {
-        width:420px;
-        position: relative;
-        top: -60px;
-        animation: glow 2.5s infinite alternate;
-    }
-    @keyframes glow {
-        0% { filter: drop-shadow(0px 0px 5px rgba(255,255,255,0.2)); }
-        50% { filter: drop-shadow(0px 0px 20px rgba(255,255,255,0.9)); }
-        100% { filter: drop-shadow(0px 0px 5px rgba(255,255,255,0.2)); }
-    }
-    div[data-testid="stVerticalBlock"] {
-        text-align:center;
-        margin-top:150px;
-    }
-    </style>
-    """, unsafe_allow_html=True)
+}
+                                        
+                
+div[data-testid="stVerticalBlock"]{
+    text-align:center;
+    margin-top:150px;
+}
+
+</style>
+""", unsafe_allow_html=True)
+    
+
+
+
+
 
     st.markdown("""
-    <div class="logo-container">
-        <img src="https://cdn.shopify.com/s/files/1/0250/6198/2261/files/Insulation4less_main_logo.png?v=1767346032">
-    </div>
-    <div class="login-title">Login In</div>
-    """, unsafe_allow_html=True)
+<div class="logo-container">
+    <img src="https://cdn.shopify.com/s/files/1/0250/6198/2261/files/Insulation4less_main_logo.png?v=1767346032">
+</div>
+
+<div class="login-title">Login In</div>
+""", unsafe_allow_html=True)
 
     username = st.text_input("Username")
     password = st.text_input("Password", type="password")
 
     if st.button("Login In"):
+
         if username in USERS and USERS[username] == password:
             st.session_state.logged_in = True
-            st.session_state.user = username
             st.rerun()
+
         else:
             st.error("Invalid username or password")
 
-# Show login page if not authenticated
+
+
+
 if not st.session_state.logged_in:
     login_page()
     st.stop()
 
-# ──────────────────────── LOGGED IN ────────────────────────
+# ---------------- END LOGIN ---------------- #
 
+# ✅ MUST BE FIRST STREAMLIT COMMAND
 st.set_page_config(
     page_title="Price Comparison Dashboard",
     page_icon=":bar_chart:",
@@ -114,34 +152,12 @@ st.set_page_config(
     }
 )
 
-# Sidebar - User info + Logout
-with st.sidebar:
-    st.image(
-        "https://cdn.shopify.com/s/files/1/0250/6198/2261/files/Insulation4less_main_logo.png?v=1767346032",
-        width=200
-    )
-    st.markdown("---")
-    
-    if st.session_state.user:
-        st.markdown(f"**👤 Logged in as:**  \n**{st.session_state.user}**")
-    
-    if st.button("🚪 Logout", type="primary", use_container_width=True):
-        st.session_state.logged_in = False
-        st.session_state.user = None
-        # Optional: clear other session state if desired
-        # for key in list(st.session_state.keys()):
-        #     if key not in ['some_key_you_want_to_keep']:
-        #         del st.session_state[key]
-        st.rerun()
+# ✅ Sidebar logo (NOW SAFE)
+st.sidebar.image(
+    "https://cdn.shopify.com/s/files/1/0250/6198/2261/files/Insulation4less_main_logo.png?v=1767346032",
+    width=200
+)
 
-    st.markdown("---")
-
-# Optional: Welcome header
-st.title(f"Price Comparison Dashboard")
-st.markdown(f"Welcome back, **{st.session_state.user}** 👋")
-
-# ──────────────────────── YOUR ORIGINAL APP CODE ────────────────────────
-# (paste the rest of your code here - data loading, tabs, charts, etc.)
 
 @st.cache_data
 def load_data(file_path):
@@ -166,6 +182,7 @@ def highlight_changes(row):
     for col in website_columns:
         today_price = extract_price(row[col])
         prev_col = col + "_yesterday"
+
         prev_price_str = df_merged.loc[row.name, prev_col] if prev_col in df_merged.columns else None
         prev_price = extract_price(prev_price_str)
 
@@ -197,9 +214,6 @@ st.sidebar.title("Price Comparison Dashboard 💷")
 
 brands = ["Celotex", "Recticel", "Ecotherm", "Unilin", "IKO", "Mannok", "Core-Products", "Cladco", "Novia", "Powerlon", "Superfoil", "Rockwool"]
 st.session_state.selected_brand = st.sidebar.selectbox("Select Brand", brands)
-
-# ... rest of your brand/date selection, tabs, charts, slideshow, etc. ...
-# (just continue with your original logic from here)
 
 if st.session_state.selected_brand:
     brand_directory = os.path.join(base_directory, f"{st.session_state.selected_brand}_Prices")
