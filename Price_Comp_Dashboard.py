@@ -113,9 +113,21 @@ label{
 }
                                         
                 
-div[data-testid="stVerticalBlock"]{
+div[data-testid="stVerticalBlock"]:has(.login-title){
     text-align:center;
     margin-top:150px;
+}
+
+/* Center login inputs */
+div[data-testid="stTextInput"]{
+    max-width:500px;
+    margin:auto;
+}
+
+/* Center login button */
+div[data-testid="stButton"]{
+    max-width:200px;
+    margin:auto;
 }
 
 </style>
