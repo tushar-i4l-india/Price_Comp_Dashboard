@@ -7,6 +7,93 @@ import re
 import glob
 import streamlit.components.v1 as components 
 from PIL import Image
+import streamlit as st
+
+st.set_page_config(page_title="Login", layout="wide")
+
+# users
+USERS = {
+    "admin": "price@123",
+    "Nicola": "admin@123",
+    "Shubham": "admin@123",
+    "Ashish": "admin@123"
+}
+
+if "logged_in" not in st.session_state:
+    st.session_state.logged_in = False
+
+
+def login_page():
+
+    st.markdown("""
+    <style>
+
+    [data-testid="stAppViewContainer"]{
+    background:#b8b7d7;
+    }
+
+    .login-card{
+    background:white;
+    padding:35px;
+    border-radius:15px;
+    box-shadow:0 10px 30px rgba(0,0,0,0.2);
+    }
+
+    .title{
+    font-size:32px;
+    font-weight:bold;
+    text-align:center;
+    }
+
+    </style>
+    """, unsafe_allow_html=True)
+
+    col1, col2 = st.columns([1,1])
+
+    # avatar side
+    with col1:
+
+        st.video("avatar-walking.mp4")
+
+    # login form
+    with col2:
+
+        st.markdown('<div class="login-card">', unsafe_allow_html=True)
+
+        st.markdown('<div class="title">LOGIN</div>', unsafe_allow_html=True)
+
+        username = st.text_input("Username")
+        password = st.text_input("Password", type="password")
+
+        remember = st.checkbox("Remember me")
+
+        if st.button("Login"):
+
+            if username in USERS and USERS[username] == password:
+
+                st.session_state.logged_in = True
+                st.session_state.user = username
+                st.success("Login successful")
+                st.rerun()
+
+            else:
+                st.error("Invalid username or password")
+
+        st.markdown('</div>', unsafe_allow_html=True)
+
+
+if not st.session_state.logged_in:
+    login_page()
+    st.stop()
+
+# dashboard
+st.sidebar.write(f"Logged in as {st.session_state.user}")
+
+if st.sidebar.button("Logout"):
+    st.session_state.logged_in = False
+    st.rerun()
+
+st.title("Price Comparison Dashboard")
 
 # ✅ MUST BE FIRST STREAMLIT COMMAND
 st.set_page_config(
