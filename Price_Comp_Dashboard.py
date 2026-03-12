@@ -77,19 +77,41 @@ def login_page():
     st.markdown("""
     <div class="welcome-text">
 
-    <h1>📊 Welcome to Price Comparison Dashboard</h1>
+<h1>📊 Welcome to Price Comparison Dashboard</h1>
 
-    <p>
-    Monitor competitor insulation product prices across multiple websites and track market trends in real time.
-    </p>
+<p>
+The <b>Price Comparison Dashboard</b> is designed to monitor and analyse competitor insulation product prices across multiple supplier websites.
+It provides a centralized view of market pricing to help identify trends, track price movements, and support competitive pricing decisions.
+</p>
 
-    <ul>
-    <li>Compare competitor prices</li>
-    <li>Track price increases & decreases</li>
-    <li>Analyse historical price trends</li>
-    <li>View product price comparisons</li>
-    </ul>
+<p>
+By collecting and comparing daily pricing data from various online retailers, the dashboard allows users to quickly understand how products are positioned in the market and respond effectively to pricing changes.
+</p>
 
+<h3>Key Capabilities</h3>
+
+<ul>
+<li>🔎 <b>Competitor Price Monitoring</b> – View and track insulation product prices across multiple competitor websites in one place.</li>
+
+<li>📊 <b>Product Price Comparison</b> – Compare prices for the same product across different suppliers to identify the most competitive offers.</li>
+
+<li>📈 <b>Historical Price Trend Analysis</b> – Analyse how prices change over time using historical data and visual charts.</li>
+
+<li>🔺 <b>Price Change Detection</b> – Quickly identify price increases or decreases compared to previous days.</li>
+
+<li>📦 <b>Brand & Product Insights</b> – Explore pricing data by brand and product SKU to gain detailed market insights.</li>
+
+<li>🗓 <b>Date-Based Data Exploration</b> – Select specific dates to review pricing data and track daily market movements.</li>
+</ul>
+
+<h3>Quick Overview</h3>
+
+<ul>
+<li>Compare competitor prices</li>
+<li>Track price increases and decreases</li>
+<li>Analyse historical price trends</li>
+<li>View product price comparisons</li>
+</ul>
     </div>
     """, unsafe_allow_html=True)
 
