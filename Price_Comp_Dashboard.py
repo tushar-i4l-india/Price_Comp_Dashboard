@@ -7,6 +7,89 @@ import re
 import glob
 import streamlit.components.v1 as components 
 from PIL import Image
+# ---------------- LOGIN SYSTEM ---------------- #
+
+USERS = {
+    "Admin": "Price@123",
+    "Nicola": "admin@123",
+    "Shubham": "admin@123",
+    "Ashish": "admin@123"
+}
+
+if "logged_in" not in st.session_state:
+    st.session_state.logged_in = False
+
+def login_page():
+
+    st.markdown("""
+    <style>
+
+    .stApp {
+        background-image: url("https://images.unsplash.com/photo-1524985069026-dd778a71c7b4");
+        background-size: cover;
+        background-position: center;
+        background-repeat: no-repeat;
+    }
+
+    .login-box{
+        background: rgba(0,0,0,0.80);
+        padding:40px;
+        border-radius:12px;
+        width:400px;
+        margin:auto;
+        margin-top:120px;
+        color:white;
+        text-align:center;
+    }
+
+    .login-title{
+        font-size:32px;
+        font-weight:bold;
+        margin-bottom:20px;
+    }
+
+    .stTextInput input{
+        background-color:#333;
+        color:white;
+        border-radius:6px;
+        border:1px solid #555;
+    }
+
+    .stButton button{
+        background:#E50914;
+        color:white;
+        font-weight:bold;
+        border-radius:6px;
+        width:100%;
+        height:45px;
+    }
+
+    </style>
+    """, unsafe_allow_html=True)
+
+    st.markdown('<div class="login-box">', unsafe_allow_html=True)
+    st.markdown('<div class="login-title">Sign In</div>', unsafe_allow_html=True)
+
+    username = st.text_input("Username")
+    password = st.text_input("Password", type="password")
+
+    if st.button("Sign In"):
+
+        if username in USERS and USERS[username] == password:
+            st.session_state.logged_in = True
+            st.rerun()
+
+        else:
+            st.error("Invalid username or password")
+
+    st.markdown('</div>', unsafe_allow_html=True)
+
+
+if not st.session_state.logged_in:
+    login_page()
+    st.stop()
+
+# ---------------- END LOGIN ---------------- #
 
 # ✅ MUST BE FIRST STREAMLIT COMMAND
 st.set_page_config(
