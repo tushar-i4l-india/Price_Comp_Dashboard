@@ -7,6 +7,18 @@ import re
 import glob
 import streamlit.components.v1 as components 
 from PIL import Image
+
+# ✅ MUST BE FIRST STREAMLIT COMMAND
+st.set_page_config(
+    page_title="Price Comparison Dashboard",
+    page_icon=":bar_chart:",
+    layout="wide",
+    menu_items={
+        'Get Help': 'https://insulation4less.co.uk/pages/contact-us',
+        'Report a bug': "https://www.insulation4less.co.uk",
+        'About': "This app is a price comparison dashboard",
+    }
+)
 # ---------------- LOGIN SYSTEM ---------------- #
 
 USERS = {
@@ -157,17 +169,7 @@ with col2:
 
 # ---------------- END LOGIN ---------------- #
 
-# ✅ MUST BE FIRST STREAMLIT COMMAND
-st.set_page_config(
-    page_title="Price Comparison Dashboard",
-    page_icon=":bar_chart:",
-    layout="wide",
-    menu_items={
-        'Get Help': 'https://insulation4less.co.uk/pages/contact-us',
-        'Report a bug': "https://www.insulation4less.co.uk",
-        'About': "This app is a price comparison dashboard",
-    }
-)
+
 
 # ✅ Sidebar logo (NOW SAFE)
 st.sidebar.image(
