@@ -8,6 +8,89 @@ import glob
 import streamlit.components.v1 as components 
 from PIL import Image
 
+import streamlit as st
+import base64
+
+# MUST BE FIRST
+st.set_page_config(page_title="Price Comparison Dashboard", layout="wide")
+
+# ---------------- LOGIN USERS ----------------
+USERS = {
+    "Admin": "Price@123",
+    "Nicola": "admin@123",
+    "Shubham": "admin@123",
+    "Ashish": "admin@123"
+}
+
+# ---------------- SESSION ----------------
+if "logged_in" not in st.session_state:
+    st.session_state.logged_in = False
+
+
+# ---------------- LOGIN PAGE ----------------
+def login_page():
+
+    st.markdown("""
+    <style>
+
+    .stApp {
+        background-image: url("https://cdn.shopify.com/s/files/1/0845/8443/1893/files/Streamlit.png?v=1773315005");
+        background-size: cover;
+        background-position: center;
+    }
+
+    .login-box {
+        background: rgba(0,0,0,0.75);
+        padding:40px;
+        border-radius:10px;
+        width:350px;
+        margin:auto;
+        margin-top:120px;
+    }
+
+    .login-title {
+        color:white;
+        font-size:32px;
+        font-weight:bold;
+        margin-bottom:20px;
+    }
+
+    .stTextInput input {
+        background-color:#333;
+        color:white;
+        border:none;
+    }
+
+    .stButton button {
+        background-color:#e50914;
+        color:white;
+        font-weight:bold;
+        border:none;
+        width:100%;
+        height:45px;
+        font-size:18px;
+    }
+
+    </style>
+    """, unsafe_allow_html=True)
+
+    st.markdown('<div class="login-box">', unsafe_allow_html=True)
+
+    st.markdown('<div class="login-title">Sign In</div>', unsafe_allow_html=True)
+
+    username = st.text_input("Username")
+    password = st.text_input("Password", type="password")
+
+    if st.button("Sign In"):
+
+        if username in USERS and USERS[username] == password:
+            st.session_state.logged_in = True
+            st.rerun()
+        else:
+            st.error("Invalid Username or Password")
+
+    st.markdown('</div>', unsafe_allow_html=True)
+
 # ✅ MUST BE FIRST STREAMLIT COMMAND
 st.set_page_config(
     page_title="Price Comparison Dashboard",
