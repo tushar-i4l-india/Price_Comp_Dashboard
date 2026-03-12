@@ -25,7 +25,7 @@ def login_page():
     <style>
 
     .stApp {
-        background-image: url("https://images.unsplash.com/photo-1524985069026-dd778a71c7b4");
+        background-image: url("https://cdn.shopify.com/s/files/1/0845/8443/1893/files/Streamlit.png?v=1773315005");
         background-size: cover;
         background-position: center;
         background-repeat: no-repeat;
