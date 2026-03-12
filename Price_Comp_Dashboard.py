@@ -1,3 +1,41 @@
+st.markdown("""
+<style>
+
+/* Remove top blank container */
+.block-container {
+    padding-top: 1rem;
+}
+
+/* Hide Streamlit header */
+header {
+    visibility: hidden;
+}
+
+/* Remove extra spacing */
+[data-testid="stAppViewContainer"]{
+    margin-top: -50px;
+}
+
+/* Optional: remove footer */
+footer {visibility: hidden;}
+
+</style>
+""", unsafe_allow_html=True)
+
+st.markdown("""
+<style>
+
+header {display:none;}
+
+.block-container{
+    padding-top:0rem;
+    margin-top:-80px;
+}
+
+</style>
+""", unsafe_allow_html=True)
+
+
 import streamlit as st
 
 # ---------- LOGIN USERS ----------
