@@ -165,6 +165,59 @@ with col2:
         st.session_state.username = ""
         st.rerun()
 # ---------------- END LOGIN ---------------- #
+st.markdown("""
+<style>
+
+.welcome-box{
+    position: fixed;
+    left: 80px;
+    top: 220px;
+    width: 420px;
+    background: rgba(0,0,0,0.65);
+    padding: 30px;
+    border-radius: 20px;
+    backdrop-filter: blur(6px);
+}
+
+.welcome-box h2{
+    color:white;
+    margin-bottom:10px;
+}
+
+.welcome-box p{
+    color:#dddddd;
+    font-size:14px;
+}
+
+.welcome-box ul{
+    color:#cccccc;
+    font-size:14px;
+    padding-left:18px;
+}
+
+</style>
+""", unsafe_allow_html=True)
+
+
+st.markdown("""
+<div class="welcome-box">
+
+<h2>📊 Price Comparison Dashboard</h2>
+
+<p>
+Monitor competitor insulation product prices across multiple websites.
+Track market trends and analyse price changes easily.
+</p>
+
+<ul>
+<li>Compare competitor prices</li>
+<li>Track price increases & decreases</li>
+<li>Analyse historical price trends</li>
+<li>View product price comparisons</li>
+</ul>
+
+</div>
+""", unsafe_allow_html=True)
 
 
 
