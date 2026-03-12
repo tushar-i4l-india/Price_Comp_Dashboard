@@ -111,7 +111,7 @@ def login_page():
     padding:40px;
     border-radius:30px;
     max-width:550px;
-    margin:auto;
+    margin:centre;
 }
 
     </style>
