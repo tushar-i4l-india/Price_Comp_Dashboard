@@ -28,14 +28,13 @@ def login_page():
     .stApp {
         background-image: url("https://assets.nflxext.com/ffe/siteui/vlv3/9b8c59d7-9a4d-4f22-a3fa-33caa7eac191/86a51e7f-cc5e-46ae-92b4-96b86c09f70f/IN-en-20230828-popsignuptwoweeks-perspective_alpha_website_medium.jpg");
         background-size: cover;
-        background-position: center;
     }
 
-    .login-box{
-        background-color: rgba(0,0,0,0.75);
-        padding:40px;
-        border-radius:8px;
-        width:350px;
+    .login-card {
+        background: rgba(0,0,0,0.80);
+        padding:50px;
+        border-radius:10px;
+        width:400px;
         margin:auto;
         margin-top:120px;
     }
@@ -44,13 +43,13 @@ def login_page():
         color:white;
         font-size:32px;
         font-weight:bold;
-        margin-bottom:20px;
+        margin-bottom:30px;
+        text-align:center;
     }
 
-    .stTextInput>div>div>input{
-        background-color:#333;
-        color:white;
-        border-radius:4px;
+    div[data-baseweb="input"] input{
+        background-color:#333 !important;
+        color:white !important;
     }
 
     .stButton>button{
@@ -64,34 +63,36 @@ def login_page():
         border:none;
     }
 
-    .stButton>button:hover{
-        background-color:#f6121d;
-    }
-
     </style>
     """, unsafe_allow_html=True)
 
-    st.markdown('<div class="login-box">', unsafe_allow_html=True)
+    col1, col2, col3 = st.columns([1,2,1])
 
-    st.markdown('<div class="login-title">Sign In</div>', unsafe_allow_html=True)
+    with col2:
 
-    username = st.text_input("Email or mobile number")
-    password = st.text_input("Password", type="password")
+        st.markdown('<div class="login-card">', unsafe_allow_html=True)
 
-    if st.button("Sign In"):
+        st.markdown('<div class="login-title">Sign In</div>', unsafe_allow_html=True)
 
-        if username in USERS and USERS[username] == password:
-            st.session_state.logged_in = True
-            st.rerun()
-        else:
-            st.error("Incorrect username or password")
+        username = st.text_input("Email or mobile number")
+        password = st.text_input("Password", type="password")
 
-    st.markdown("</div>", unsafe_allow_html=True)
+        if st.button("Sign In"):
+
+            if username in USERS and USERS[username] == password:
+                st.session_state.logged_in = True
+                st.rerun()
+
+            else:
+                st.error("Invalid login")
+
+        st.markdown("</div>", unsafe_allow_html=True)
 
 
 if not st.session_state.logged_in:
     login_page()
     st.stop()
+
 
 
 # ✅ MUST BE FIRST STREAMLIT COMMAND
