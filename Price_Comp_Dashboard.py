@@ -48,10 +48,7 @@ def login_page():
     username = st.text_input("Username")
     password = st.text_input("Password", type="password")
 
-    col1, col2, col3 = st.columns([1,1,1])
-
-    with col2:
-        login_clicked = st.button("Login In")
+    login_clicked = st.button("Login In")
 
     if login_clicked:
 
