@@ -115,11 +115,6 @@ label{
     }
 }
                                         
-                
-div[data-testid="stVerticalBlock"]{
-    text-align:center;
-    margin-top:150px;
-}
 
 </style>
 """, unsafe_allow_html=True)
@@ -137,18 +132,21 @@ div[data-testid="stVerticalBlock"]{
 <div class="login-title">Login In</div>
 """, unsafe_allow_html=True)
 
+col1, col2, col3 = st.columns([2,3,2])
+
+with col2:
     username = st.text_input("Username")
     password = st.text_input("Password", type="password")
 
-    if st.button("Login In"):
+    if st.button("Login In", use_container_width=True):
 
-     if username in USERS and USERS[username] == password:
-        st.session_state.logged_in = True
-        st.session_state.username = username
-        st.rerun()
+        if username in USERS and USERS[username] == password:
+            st.session_state.logged_in = True
+            st.session_state.username = username
+            st.rerun()
 
-    else:
-        st.error("Invalid username or password")
+        else:
+            st.error("Invalid username or password")
 
 
 if not st.session_state.logged_in:
