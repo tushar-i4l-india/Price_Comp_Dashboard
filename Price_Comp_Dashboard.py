@@ -75,50 +75,25 @@ label{
 
 .logo-container{
     text-align:center;
-    margin-top:-40px;   /* moves logo upward */
     margin-bottom:25px;
+    margin-top:-40px;   /* move logo upward */
 }
 
-/* Logo styling */
 .logo-container img{
     width:420px;
-    position:relative;
     animation: glow 2.5s infinite alternate;
 }
 
-/* White glow */
 @keyframes glow{
     0%{
-        filter: drop-shadow(0px 0px 8px rgba(255,255,255,0.3));
+        filter: drop-shadow(0px 0px 5px rgba(255,255,255,0.2));
     }
     50%{
-        filter: drop-shadow(0px 0px 25px rgba(255,255,255,0.9));
+        filter: drop-shadow(0px 0px 20px rgba(255,255,255,0.9));
     }
     100%{
-        filter: drop-shadow(0px 0px 8px rgba(255,255,255,0.3));
+        filter: drop-shadow(0px 0px 5px rgba(255,255,255,0.2));
     }
-}
-
-/* Gloss light sweep */
-.logo-container::after{
-    content:"";
-    position:absolute;
-    top:0;
-    left:-120%;
-    width:50%;
-    height:100%;
-    background:linear-gradient(
-        120deg,
-        rgba(255,255,255,0) 0%,
-        rgba(255,255,255,0.6) 50%,
-        rgba(255,255,255,0) 100%
-    );
-    animation: shine 4s infinite;
-}
-
-@keyframes shine{
-    0%{ left:-120%; }
-    100%{ left:120%; }
 }
                                         
                 
