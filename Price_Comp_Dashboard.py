@@ -7,6 +7,21 @@ import re
 import glob
 import streamlit.components.v1 as components 
 from PIL import Image
+# ✅ MUST BE FIRST STREAMLIT COMMAND
+st.set_page_config(
+    page_title="Price Comparison Dashboard",
+    page_icon=":bar_chart:",
+    layout="wide",
+    menu_items={
+        'Get Help': 'https://insulation4less.co.uk/pages/contact-us',
+        'Report a bug': "https://www.insulation4less.co.uk",
+        'About': "This app is a price comparison dashboard",
+    }
+)
+
+
+
+
 # ---------------- LOGIN SYSTEM ---------------- #
 
 USERS = {
@@ -18,6 +33,9 @@ USERS = {
 
 if "logged_in" not in st.session_state:
     st.session_state.logged_in = False
+
+if "username" not in st.session_state:
+    st.session_state.username = None
 
 def login_page():
 
@@ -124,14 +142,13 @@ div[data-testid="stVerticalBlock"]{
 
     if st.button("Login In"):
 
-        if username in USERS and USERS[username] == password:
-            st.session_state.logged_in = True
-            st.rerun()
+     if username in USERS and USERS[username] == password:
+        st.session_state.logged_in = True
+        st.session_state.username = username
+        st.rerun()
 
-        else:
-            st.error("Invalid username or password")
-
-
+    else:
+        st.error("Invalid username or password")
 
 
 if not st.session_state.logged_in:
@@ -140,28 +157,13 @@ if not st.session_state.logged_in:
 
 # ---------------- END LOGIN ---------------- #
 
-# ✅ MUST BE FIRST STREAMLIT COMMAND
-st.set_page_config(
-    page_title="Price Comparison Dashboard",
-    page_icon=":bar_chart:",
-    layout="wide",
-    menu_items={
-        'Get Help': 'https://insulation4less.co.uk/pages/contact-us',
-        'Report a bug': "https://www.insulation4less.co.uk",
-        'About': "This app is a price comparison dashboard",
-    }
-)
+
 
 # ✅ Sidebar logo (NOW SAFE)
 st.sidebar.image(
     "https://cdn.shopify.com/s/files/1/0250/6198/2261/files/Insulation4less_main_logo.png?v=1767346032",
     width=200
 )
-st.set_page_config(page_title="Price Comparison Dashboard", page_icon=":bar_chart:", layout="wide", menu_items={
-    'Get Help': 'https://insulation4less.co.uk/pages/contact-us',
-    'Report a bug': "https://www.insulation4less.co.uk",
-    'About': "This app is a price comparison dashboard",
-})
 
 @st.cache_data
 def load_data(file_path):
