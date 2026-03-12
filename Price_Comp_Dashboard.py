@@ -169,7 +169,7 @@ div[data-testid="stVerticalBlock"]:has(.login-title){
     padding:40px;
     border-radius:30px;
     max-width:550px;
-    margin:auto;
+    margin:right;
     margin-top:120px;   /* move box down */
 }
 
