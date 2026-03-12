@@ -28,66 +28,68 @@ if "username" not in st.session_state:
 
 def login_page():
 
-    st.markdown("""
-    <style>
+    # Force centered layout
+    left, center, right = st.columns([3,2,3])
 
-    .stApp{
-    background-image:url("https://cdn.shopify.com/s/files/1/0845/8443/1893/files/Streamlit.png?v=1773315005");
-    background-size:cover;
-    background-position:center;
-    }
+    with center:
 
-    .login-card{
-        background-color: rgba(0,0,0,0.85);
-        padding:40px;
-        border-radius:10px;
-        width:350px;
-        margin:auto;
-        margin-top:120px;
-        box-shadow:0px 0px 40px rgba(0,0,0,0.8);
-    }
+        st.markdown("""
+        <style>
 
-    .title{
-        color:white;
-        font-size:32px;
-        text-align:center;
-        margin-bottom:20px;
-        font-weight:bold;
-    }
+        .stApp{
+        background-image:url("https://cdn.shopify.com/s/files/1/0845/8443/1893/files/Streamlit.png?v=1773315005");
+        background-size:cover;
+        background-position:center;
+        }
 
-    .stTextInput>div>div>input{
-        background-color:#333;
-        color:white;
-        border:none;
-    }
+        .login-card{
+            background-color: rgba(0,0,0,0.85);
+            padding:40px;
+            border-radius:10px;
+            box-shadow:0px 0px 40px rgba(0,0,0,0.8);
+        }
 
-    .stButton button{
-        background-color:#E50914;
-        color:white;
-        font-weight:bold;
-        width:100%;
-        border:none;
-    }
+        .title{
+            color:white;
+            font-size:32px;
+            text-align:center;
+            margin-bottom:20px;
+            font-weight:bold;
+        }
 
-    </style>
-    """, unsafe_allow_html=True)
+        .stTextInput>div>div>input{
+            background-color:#333;
+            color:white;
+        }
 
-    st.markdown('<div class="login-card">', unsafe_allow_html=True)
-    st.markdown('<div class="title">Sign In</div>', unsafe_allow_html=True)
+        .stButton button{
+            background-color:#E50914;
+            color:white;
+            font-weight:bold;
+            width:100%;
+        }
 
-    username = st.text_input("Username")
-    password = st.text_input("Password", type="password")
+        </style>
+        """, unsafe_allow_html=True)
 
-    if st.button("Login"):
+        st.markdown('<div class="login-card">', unsafe_allow_html=True)
 
-        if username in USERS and USERS[username] == password:
-            st.session_state.logged_in = True
-            st.session_state.username = username
-            st.rerun()
-        else:
-            st.error("Invalid username or password")
+        st.markdown('<div class="title">Sign In</div>', unsafe_allow_html=True)
 
-    st.markdown('</div>', unsafe_allow_html=True)
+        username = st.text_input("Username")
+        password = st.text_input("Password", type="password")
+
+        if st.button("Login"):
+
+            if username in USERS and USERS[username] == password:
+                st.session_state.logged_in = True
+                st.session_state.username = username
+                st.rerun()
+
+            else:
+                st.error("Invalid username or password")
+
+        st.markdown('</div>', unsafe_allow_html=True)
 
 def logout():
     st.session_state.logged_in = False
