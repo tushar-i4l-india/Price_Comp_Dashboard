@@ -80,7 +80,7 @@ label{
 
 .logo-container img{
     width:420px;
-    margin-top:-40px;   /* moves logo upward */
+    margin-top:-100px;   /* moves logo upward */
     animation: glow 2.5s infinite alternate;
 }
 @keyframes glow{
