@@ -19,9 +19,6 @@ USERS = {
 if "logged_in" not in st.session_state:
     st.session_state.logged_in = False
 
-if "username" not in st.session_state:
-    st.session_state.username = None
-
 def login_page():
 
     st.markdown("""
@@ -34,74 +31,93 @@ def login_page():
         background-repeat: no-repeat;
     }
 
-    .login-box{
-        width:420px;
-        margin:auto;
-        margin-top:120px;
-        padding:40px;
-        background:rgba(0,0,0,0.65);
-        border-radius:10px;
-    }
 
-    .login-title{
-        font-size:32px;
-        font-weight:bold;
-        color:white;
-        margin-bottom:25px;
-        text-align:center;
-    }
 
-    label{
-        color:white !important;
-        font-weight:bold !important;
-    }
+/*Login In Title */
+.login-title{
+    font-size:34px;
+    font-weight:bold;
+    color:white;
+    margin-bottom:20px;
+}
 
-    .stTextInput input{
-        background:#333;
-        color:white;
-        border-radius:6px;
-        border:1px solid #555;
-    }
+/* Username & Password Labels */
+label{
+    color:white !important;
+    font-weight:bold !important;
+}
 
-    .stButton button{
-        background:#E50914;
-        color:white;
-        font-weight:bold;
-        border-radius:6px;
-        width:100%;
-        height:45px;
-    }
+/* Input Fields */
+.stTextInput input{
+    background-color:#333;
+    color:white;
+    border-radius:6px;
+    border:1px solid #555;
+}
 
-    .logo-container{
-        text-align:center;
-        margin-bottom:25px;
-    }
 
-    .logo-container img{
-        width:420px;
-        position: relative;
-        top: -60px;
-        animation: glow 2.5s infinite alternate;
-    }
+/* Login Button */
+.stButton button{
+    background:#E50914;
+    color:white;
+    font-weight:bold;
+    border-radius:6px;
+    width:100%;
+    height:45px;
+}
+                
+.login-title{
+    font-size:32px;
+    font-weight:bold;
+    color:white;
+    margin-bottom:25px;
+} 
 
-    @keyframes glow{
-        0%{filter: drop-shadow(0px 0px 5px rgba(255,255,255,0.2));}
-        50%{filter: drop-shadow(0px 0px 20px rgba(255,255,255,0.9));}
-        100%{filter: drop-shadow(0px 0px 5px rgba(255,255,255,0.2));}
-    }
+.logo-container{
+    text-align:center;
+    margin-bottom:25px;
+}
 
-    </style>
-    """, unsafe_allow_html=True)
+.logo-container img{
+    width:420px;
+    position: relative;
+    top: -60px;   /* move logo upward */
+    animation: glow 2.5s infinite alternate;
+}
+
+@keyframes glow{
+    0%{
+        filter: drop-shadow(0px 0px 5px rgba(255,255,255,0.2));
+    }
+    50%{
+        filter: drop-shadow(0px 0px 20px rgba(255,255,255,0.9));
+    }
+    100%{
+        filter: drop-shadow(0px 0px 5px rgba(255,255,255,0.2));
+    }
+}
+                                        
+                
+div[data-testid="stVerticalBlock"]{
+    text-align:center;
+    margin-top:150px;
+}
+
+</style>
+""", unsafe_allow_html=True)
+    
+
+
+
+
 
     st.markdown("""
-    <div class="logo-container">
-        <img src="https://cdn.shopify.com/s/files/1/0250/6198/2261/files/Insulation4less_main_logo.png?v=1767346032">
-    </div>
-    """, unsafe_allow_html=True)
+<div class="logo-container">
+    <img src="https://cdn.shopify.com/s/files/1/0250/6198/2261/files/Insulation4less_main_logo.png?v=1767346032">
+</div>
 
-    st.markdown('<div class="login-box">', unsafe_allow_html=True)
-
-    st.markdown('<div class="login-title">Login In</div>', unsafe_allow_html=True)
+<div class="login-title">Login In</div>
+""", unsafe_allow_html=True)
 
     username = st.text_input("Username")
     password = st.text_input("Password", type="password")
@@ -110,27 +126,19 @@ def login_page():
 
         if username in USERS and USERS[username] == password:
             st.session_state.logged_in = True
-            st.session_state.username = username
             st.rerun()
 
         else:
             st.error("Invalid username or password")
 
-    st.markdown('</div>', unsafe_allow_html=True)
+
+
+
+if not st.session_state.logged_in:
+    login_page()
+    st.stop()
 
 # ---------------- END LOGIN ---------------- #
-# -------- USER INFO + LOGOUT -------- #
-
-col1, col2 = st.columns([8,2])
-
-with col1:
-    st.markdown(f"### 👤 Logged in as: **{st.session_state.username}**")
-
-with col2:
-    if st.button("🚪 Logout"):
-        st.session_state.logged_in = False
-        st.session_state.username = None
-        st.rerun()
 
 # ✅ MUST BE FIRST STREAMLIT COMMAND
 st.set_page_config(
@@ -149,7 +157,11 @@ st.sidebar.image(
     "https://cdn.shopify.com/s/files/1/0250/6198/2261/files/Insulation4less_main_logo.png?v=1767346032",
     width=200
 )
-
+st.set_page_config(page_title="Price Comparison Dashboard", page_icon=":bar_chart:", layout="wide", menu_items={
+    'Get Help': 'https://insulation4less.co.uk/pages/contact-us',
+    'Report a bug': "https://www.insulation4less.co.uk",
+    'About': "This app is a price comparison dashboard",
+})
 
 @st.cache_data
 def load_data(file_path):
