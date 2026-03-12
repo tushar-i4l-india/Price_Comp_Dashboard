@@ -7,6 +7,224 @@ import re
 import glob
 import streamlit.components.v1 as components 
 from PIL import Image
+import streamlit as st
+import bcrypt
+import pandas as pd
+import plotly.express as px
+from datetime import datetime
+import time, os
+
+# ---------------- PAGE CONFIG ----------------
+st.set_page_config(page_title="Price Comparison Dashboard", layout="wide")
+
+# ---------------- USERS (bcrypt hashed) ----------------
+# NOTE: These hashes are generated at runtime for demo.
+# In production, store fixed hashes (e.g., in users.json/db).
+def hash_pw(pw: str):
+    return bcrypt.hashpw(pw.encode(), bcrypt.gensalt())
+
+USERS = {
+    "admin": hash_pw("price@123"),
+    "Nicola": hash_pw("admin@123"),
+    "Shubham": hash_pw("admin@123"),
+    "Ashish": hash_pw("admin@123"),
+}
+
+# ---------------- SESSION ----------------
+SESSION_TIMEOUT = 1800  # 30 minutes
+
+if "logged_in" not in st.session_state:
+    st.session_state.logged_in = False
+if "user" not in st.session_state:
+    st.session_state.user = ""
+if "last_activity" not in st.session_state:
+    st.session_state.last_activity = time.time()
+
+# ---------------- AUTO LOGOUT ----------------
+if st.session_state.logged_in:
+    if time.time() - st.session_state.last_activity > SESSION_TIMEOUT:
+        st.session_state.logged_in = False
+        st.warning("Session expired. Please login again.")
+        st.rerun()
+
+st.session_state.last_activity = time.time()
+
+# ---------------- LOGIN LOG ----------------
+LOG_FILE = "login_logs.csv"
+
+def log_login(user, status):
+    rec = {
+        "user": user,
+        "status": status,
+        "time": datetime.now().strftime("%Y-%m-%d %H:%M:%S"),
+    }
+    df = pd.DataFrame([rec])
+    if os.path.exists(LOG_FILE):
+        old = pd.read_csv(LOG_FILE)
+        df = pd.concat([old, df], ignore_index=True)
+    df.to_csv(LOG_FILE, index=False)
+
+# ---------------- PASSWORD VERIFY ----------------
+def verify_login(username, password):
+    if username in USERS:
+        return bcrypt.checkpw(password.encode(), USERS[username])
+    return False
+
+# ---------------- LOGIN PAGE ----------------
+def login_page():
+
+    # ----------- CSS (glass + animation) -----------
+    st.markdown("""
+    <style>
+
+    /* page background */
+    [data-testid="stAppViewContainer"]{
+        background: radial-gradient(circle at 20% 20%, #c7c6e6, #a9a8d6);
+        overflow:hidden;
+    }
+
+    /* glass card */
+    .login-card{
+        background: rgba(255,255,255,0.15);
+        backdrop-filter: blur(12px);
+        padding: 40px;
+        border-radius: 18px;
+        box-shadow: 0 10px 40px rgba(0,0,0,0.25);
+        margin-top: 100px;
+        animation: fadeIn 1.2s ease;
+    }
+
+    @keyframes fadeIn{
+        from{opacity:0; transform:translateY(20px);}
+        to{opacity:1; transform:translateY(0);}
+    }
+
+    .title{
+        font-size:36px;
+        font-weight:700;
+        text-align:center;
+        margin-bottom:20px;
+        color:#1f2a44;
+    }
+
+    .stTextInput input{
+        border-radius:12px;
+        height:45px;
+    }
+
+    .stButton button{
+        width:100%;
+        height:45px;
+        border-radius:12px;
+        background:#1f2a44;
+        color:white;
+        font-size:18px;
+    }
+
+    /* particles */
+    .particle{
+        position:absolute;
+        width:6px;
+        height:6px;
+        background:white;
+        border-radius:50%;
+        opacity:0.5;
+        animation: float 10s linear infinite;
+    }
+
+    @keyframes float{
+        0%{transform:translateY(0);}
+        100%{transform:translateY(-1000px);}
+    }
+
+    </style>
+    """, unsafe_allow_html=True)
+
+    # ----------- particles background -----------
+    for i in range(40):
+        st.markdown(
+            f'<div class="particle" style="left:{i*2.5}%; animation-duration:{6+i%5}s;"></div>',
+            unsafe_allow_html=True
+        )
+
+    col1, col2 = st.columns([1,1])
+
+    # ----------- Avatar / Animation side -----------
+    with col1:
+        # Use your Shopify CDN animation here
+        st.video(
+            "https://cdn.shopify.com/s/files/1/0250/6198/2261/files/businessman-walking-60fps.mp4"
+        )
+
+    # ----------- Login Form -----------
+    with col2:
+
+        st.markdown('<div class="login-card">', unsafe_allow_html=True)
+        st.markdown('<div class="title">Secure Login</div>', unsafe_allow_html=True)
+
+        username = st.text_input("Username")
+        password = st.text_input("Password", type="password")
+
+        if st.button("Login"):
+
+            if verify_login(username, password):
+
+                log_login(username, "success")
+
+                with st.spinner("Authenticating..."):
+                    time.sleep(1)
+
+                st.session_state.logged_in = True
+                st.session_state.user = username
+                st.success("Login successful")
+                st.rerun()
+
+            else:
+
+                log_login(username, "failed")
+                st.error("Invalid username or password")
+
+        st.markdown('</div>', unsafe_allow_html=True)
+
+# ---------------- BLOCK DASHBOARD ----------------
+if not st.session_state.logged_in:
+    login_page()
+    st.stop()
+
+# ---------------- SIDEBAR ----------------
+st.sidebar.write(f"👤 Logged in as: **{st.session_state.user}**")
+
+if st.sidebar.button("Logout"):
+    st.session_state.logged_in = False
+    st.rerun()
+
+# ---------------- MAIN DASHBOARD ----------------
+st.title("Price Comparison Dashboard")
+st.write("Your dashboard content goes here.")
+
+# ---------------- ADMIN ANALYTICS ----------------
+if st.session_state.user == "admin":
+
+    st.header("📊 Login Analytics")
+
+    if os.path.exists(LOG_FILE):
+
+        df = pd.read_csv(LOG_FILE)
+
+        fig = px.histogram(
+            df,
+            x="user",
+            color="status",
+            title="Login Attempts",
+            barmode="group"
+        )
+
+        st.plotly_chart(fig, use_container_width=True)
+
+        st.dataframe(df)
+
+    else:
+        st.info("No login logs yet.")
 
 # ✅ MUST BE FIRST STREAMLIT COMMAND
 st.set_page_config(
