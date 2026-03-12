@@ -7,6 +7,83 @@ import re
 import glob
 import streamlit.components.v1 as components 
 from PIL import Image
+# ---------------- LOGIN SYSTEM ---------------- #
+
+# Allowed users
+USERS = {
+    "Admin": "Price@123",
+    "Nicola": "admin@123",
+    "Shubham": "admin@123",
+    "Ashish": "admin@123"
+}
+
+# Session login state
+if "logged_in" not in st.session_state:
+    st.session_state.logged_in = False
+
+def login_page():
+
+    st.markdown("""
+    <style>
+
+    body {
+        background-color:#0e1117;
+    }
+
+    .login-container{
+        display:flex;
+        justify-content:center;
+        align-items:center;
+        height:80vh;
+    }
+
+    .login-box{
+        background:#141414;
+        padding:40px;
+        border-radius:10px;
+        width:350px;
+        box-shadow:0px 0px 20px rgba(0,0,0,0.6);
+    }
+
+    .login-title{
+        font-size:28px;
+        font-weight:bold;
+        margin-bottom:20px;
+        color:white;
+        text-align:center;
+    }
+
+    </style>
+    """, unsafe_allow_html=True)
+
+    st.markdown('<div class="login-container">', unsafe_allow_html=True)
+    st.markdown('<div class="login-box">', unsafe_allow_html=True)
+
+    st.markdown('<div class="login-title">Welcome Back</div>', unsafe_allow_html=True)
+
+    username = st.text_input("Username")
+    password = st.text_input("Password", type="password")
+
+    if st.button("Login"):
+
+        if username in USERS and USERS[username] == password:
+            st.session_state.logged_in = True
+            st.success("Login successful")
+            st.rerun()
+
+        else:
+            st.error("Invalid username or password")
+
+    st.markdown("</div></div>", unsafe_allow_html=True)
+
+
+# If NOT logged in → show login page
+if not st.session_state.logged_in:
+    login_page()
+    st.stop()
+
+
+
 
 # ✅ MUST BE FIRST STREAMLIT COMMAND
 st.set_page_config(
