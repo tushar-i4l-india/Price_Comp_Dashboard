@@ -1,3 +1,76 @@
+import streamlit as st
+
+# ---------------- LOGIN USERS ----------------
+users = {
+    "Admin": "Price@123",
+    "Nicola": "admin@123",
+    "Shubham": "admin@123",
+    "Ashish": "admin@123"
+}
+
+# Session state
+if "logged_in" not in st.session_state:
+    st.session_state.logged_in = False
+
+# ---------------- LOGIN PAGE ----------------
+def login_page():
+
+    st.markdown(
+        """
+        <style>
+
+        .stApp{
+            background-image: url("https://images.unsplash.com/photo-1501785888041-af3ef285b470");
+            background-size: cover;
+            background-position: center;
+            background-repeat: no-repeat;
+        }
+
+        .login-box{
+            background: rgba(0,0,0,0.55);
+            padding:40px;
+            border-radius:12px;
+            width:350px;
+            margin:auto;
+            margin-top:150px;
+            color:white;
+            text-align:center;
+        }
+
+        .login-title{
+            font-size:35px;
+            font-weight:600;
+            margin-bottom:20px;
+        }
+
+        </style>
+        """,
+        unsafe_allow_html=True
+    )
+
+    st.markdown('<div class="login-box">', unsafe_allow_html=True)
+    st.markdown('<div class="login-title">Sign In</div>', unsafe_allow_html=True)
+
+    username = st.text_input("Username")
+    password = st.text_input("Password", type="password")
+
+    if st.button("Login"):
+        if username in users and users[username] == password:
+            st.session_state.logged_in = True
+            st.success("Login Successful")
+            st.rerun()
+        else:
+            st.error("Invalid Username or Password")
+
+    st.markdown("</div>", unsafe_allow_html=True)
+
+
+# ---------------- LOGIN CHECK ----------------
+if not st.session_state.logged_in:
+    login_page()
+    st.stop()
+
+
 import streamlit as st 
 import pandas as pd 
 import os
