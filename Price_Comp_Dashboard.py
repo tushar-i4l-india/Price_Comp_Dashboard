@@ -19,6 +19,9 @@ USERS = {
 if "logged_in" not in st.session_state:
     st.session_state.logged_in = False
 
+if "username" not in st.session_state:
+    st.session_state.username = ""
+
 def login_page():
 
     st.markdown("""
@@ -125,8 +128,9 @@ div[data-testid="stVerticalBlock"]{
     if st.button("Login In"):
 
         if username in USERS and USERS[username] == password:
-            st.session_state.logged_in = True
-            st.rerun()
+          st.session_state.logged_in = True
+          st.session_state.username = username
+          st.rerun()
 
         else:
             st.error("Invalid username or password")
@@ -137,6 +141,19 @@ div[data-testid="stVerticalBlock"]{
 if not st.session_state.logged_in:
     login_page()
     st.stop()
+
+# ---------------- USER HEADER ---------------- #
+
+col1, col2 = st.columns([6,1])
+
+with col1:
+    st.markdown(f"### 👤 Logged in as: **{st.session_state.username}**")
+
+with col2:
+    if st.button("Logout"):
+        st.session_state.logged_in = False
+        st.session_state.username = ""
+        st.rerun()
 
 # ---------------- END LOGIN ---------------- #
 
