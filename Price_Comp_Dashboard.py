@@ -169,14 +169,15 @@ st.markdown("""
 <style>
 
 .welcome-box{
-    position: fixed;
-    left: 80px;
+    position: absolute;
+    left: 120px;
     top: 220px;
     width: 420px;
     background: rgba(0,0,0,0.65);
     padding: 30px;
     border-radius: 20px;
     backdrop-filter: blur(6px);
+    box-shadow: 0 0 20px rgba(0,0,0,0.5);
 }
 
 .welcome-box h2{
