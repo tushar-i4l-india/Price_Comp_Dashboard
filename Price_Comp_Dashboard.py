@@ -22,9 +22,28 @@ st.set_page_config(
 
 import streamlit as st
 
-# MUST be first
-st.set_page_config(page_title="Price Comparison Dashboard", layout="wide")
+# MUST BE FIRST
+st.set_page_config(
+    page_title="Price Comparison Dashboard",
+    layout="wide"
+)
 
+# ---------------- BACKGROUND ---------------- #
+
+st.markdown("""
+<style>
+
+.stApp {
+    background: linear-gradient(135deg,#1f4037,#99f2c8);
+}
+
+/* remove default padding */
+.block-container{
+    padding-top:2rem;
+}
+
+</style>
+""", unsafe_allow_html=True)
 
 # ---------------- USERS ---------------- #
 
@@ -34,7 +53,6 @@ users = {
     "Shubham": {"password": "admin@123", "role": "Staff"},
     "Ashish": {"password": "admin@123", "role": "Staff"},
 }
-
 
 # ---------------- SESSION ---------------- #
 
@@ -49,15 +67,15 @@ if "role" not in st.session_state:
 
 def login_page():
 
-    st.markdown("<br><br>", unsafe_allow_html=True)
+    st.markdown("<br>", unsafe_allow_html=True)
 
-    # Logo
+    # Logo centered
     col_logo1, col_logo2, col_logo3 = st.columns([2,2,2])
 
     with col_logo2:
         st.image(
             "https://cdn.shopify.com/s/files/1/0250/6198/2261/files/Insulation4less_main_logo.png?v=1767346032",
-            width=260
+            width=250
         )
 
     st.markdown("<br>", unsafe_allow_html=True)
@@ -93,7 +111,7 @@ if not st.session_state.logged_in:
     st.stop()
 
 
-# ---------------- SIDEBAR ---------------- #
+# ---------------- SIDEBAR AFTER LOGIN ---------------- #
 
 st.sidebar.image(
     "https://cdn.shopify.com/s/files/1/0250/6198/2261/files/Insulation4less_main_logo.png?v=1767346032",
@@ -108,26 +126,24 @@ if st.sidebar.button("Logout"):
     st.rerun()
 
 
-# ---------------- DASHBOARD ACCESS ---------------- #
+# ---------------- DASHBOARD ---------------- #
 
 st.title("Price Comparison Dashboard")
 
 if st.session_state.role == "Admin":
 
     st.write("### 🔑 Admin Access")
-    st.write("Admin can manage data and settings.")
+    st.write("Admin can manage pricing data and dashboard settings.")
 
 elif st.session_state.role == "Manager":
 
     st.write("### 📊 Manager Access")
-    st.write("Manager can analyze price comparisons.")
+    st.write("Manager can view price analysis and reports.")
 
 else:
 
     st.write("### 👨‍💻 Staff Access")
     st.write("Staff can view limited dashboard data.")
-
-
 
 
 
@@ -142,6 +158,9 @@ st.set_page_config(page_title="Price Comparison Dashboard", page_icon=":bar_char
     'Report a bug': "https://www.insulation4less.co.uk",
     'About': "This app is a price comparison dashboard",
 })
+
+
+
 
 @st.cache_data
 def load_data(file_path):
