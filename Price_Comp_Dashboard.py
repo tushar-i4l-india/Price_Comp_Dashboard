@@ -135,20 +135,23 @@ div[data-testid="stTextInput"]{
 <div class="login-title">Login In</div>
 """, unsafe_allow_html=True)
 
-    username = st.text_input("Username")
-    password = st.text_input("Password", type="password")
+username = st.text_input("Username")
+password = st.text_input("Password", type="password")
 
-    if st.button("Login In"):
+col1, col2, col3 = st.columns([1,1,1])
 
-        if username in USERS and USERS[username] == password:
-          st.session_state.logged_in = True
-          st.session_state.username = username
-          st.rerun()
+with col2:
+    login_clicked = st.button("Login In")
 
-        else:
-            st.error("Invalid username or password")
+if login_clicked:
 
+    if username in USERS and USERS[username] == password:
+        st.session_state.logged_in = True
+        st.session_state.username = username
+        st.rerun()
 
+    else:
+        st.error("Invalid username or password")
 
 
 if not st.session_state.logged_in:
