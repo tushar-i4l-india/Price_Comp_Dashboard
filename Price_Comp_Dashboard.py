@@ -1,113 +1,89 @@
 import streamlit as st
 
-# ---------------- USERS ----------------
-users = {
+# ---------- LOGIN USERS ----------
+USERS = {
     "Admin": "Price@123",
     "Nicola": "admin@123",
     "Shubham": "admin@123",
     "Ashish": "admin@123"
 }
 
+# ---------- SESSION STATE ----------
 if "logged_in" not in st.session_state:
     st.session_state.logged_in = False
 
-
-# ---------------- LOGIN PAGE ----------------
+# ---------- LOGIN PAGE ----------
 def login_page():
 
     st.markdown("""
     <style>
 
-    .stApp{
-        background-image: linear-gradient(
-        rgba(0,0,0,0.65),
-        rgba(0,0,0,0.65)),
-        url("https://images.unsplash.com/photo-1501785888041-af3ef285b470");
-        background-size: cover;
-        background-position: center;
+    .stApp {
+        background: linear-gradient(135deg,#0f2027,#203a43,#2c5364);
     }
 
-    .main-container{
-        display:flex;
-        justify-content:center;
-        align-items:center;
-        height:90vh;
-        gap:120px;
-    }
-
-    .left-box{
-        color:white;
-        width:400px;
-    }
-
-    .welcome{
-        font-size:55px;
-        font-weight:700;
-        line-height:60px;
-    }
-
-    .subtitle{
-        margin-top:20px;
-        font-size:15px;
-        color:#ddd;
-    }
-
-    .login-card{
+    .login-card {
+        width: 350px;
+        padding: 40px;
+        border-radius: 12px;
         background: rgba(255,255,255,0.08);
-        backdrop-filter: blur(12px);
-        padding:35px;
-        border-radius:12px;
-        width:320px;
-        color:white;
+        backdrop-filter: blur(10px);
+        margin: auto;
+        margin-top: 12%;
+        text-align:center;
+        box-shadow:0px 0px 20px rgba(0,0,0,0.4);
     }
 
-    .signin{
+    .login-title{
         font-size:28px;
-        font-weight:600;
+        font-weight:700;
+        color:white;
         margin-bottom:20px;
-        text-align:center;
+    }
+
+    .stTextInput>div>div>input{
+        border-radius:8px;
+        padding:10px;
+    }
+
+    .stButton button{
+        width:100%;
+        border-radius:8px;
+        height:40px;
+        font-weight:bold;
+        background-color:#1f77ff;
+        color:white;
     }
 
     </style>
     """, unsafe_allow_html=True)
 
-    st.markdown('<div class="main-container">', unsafe_allow_html=True)
+    st.markdown('<div class="login-card">', unsafe_allow_html=True)
 
-    col1, col2 = st.columns([1.2,1])
+    st.image(
+        "https://cdn.shopify.com/s/files/1/0250/6198/2261/files/Insulation4less_main_logo.png?v=1767346032",
+        width=180
+    )
 
-    with col1:
-        st.markdown("""
-        <div class="left-box">
-            <div class="welcome">Welcome<br>Back</div>
-            <div class="subtitle">
-            Access the Price Comparison Dashboard securely.
-            Monitor competitor prices, track trends and manage
-            your insulation product pricing efficiently.
-            </div>
-        </div>
-        """, unsafe_allow_html=True)
+    st.markdown('<div class="login-title">Dashboard Login</div>', unsafe_allow_html=True)
 
-    with col2:
-        st.markdown('<div class="login-card">', unsafe_allow_html=True)
-        st.markdown('<div class="signin">Sign In</div>', unsafe_allow_html=True)
+    username = st.text_input("Username")
+    password = st.text_input("Password", type="password")
 
-        username = st.text_input("Username")
-        password = st.text_input("Password", type="password")
+    if st.button("Login"):
 
-        if st.button("Login"):
-            if username in users and users[username] == password:
-                st.session_state.logged_in = True
-                st.success("Login successful")
-                st.rerun()
-            else:
-                st.error("Invalid username or password")
+        if username in USERS and USERS[username] == password:
+            st.session_state.logged_in = True
+            st.session_state.user = username
+            st.rerun()
 
-        st.markdown('</div>', unsafe_allow_html=True)
+        else:
+            st.error("Invalid username or password")
 
     st.markdown('</div>', unsafe_allow_html=True)
 
 
-# ---------------- LOGIN CHECK ----------------
+# ---------- CHECK LOGIN ----------
 if not st.session_state.logged_in:
     login_page()
     st.stop()
@@ -145,6 +121,13 @@ st.set_page_config(page_title="Price Comparison Dashboard", page_icon=":bar_char
     'Report a bug': "https://www.insulation4less.co.uk",
     'About': "This app is a price comparison dashboard",
 })
+
+st.sidebar.write(f"👤 Logged in as: {st.session_state.user}")
+
+if st.sidebar.button("Logout"):
+    st.session_state.logged_in = False
+    st.rerun()
+
 
 @st.cache_data
 def load_data(file_path):
