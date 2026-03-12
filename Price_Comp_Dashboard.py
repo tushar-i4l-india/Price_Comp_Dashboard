@@ -19,6 +19,45 @@ st.set_page_config(
         'About': "This app is a price comparison dashboard",
     }
 )
+# ---------------- LOGIN SYSTEM ---------------- #
+
+users = {
+    "Admin": "Price@123",
+    "Nicola": "admin@123",
+    "Shubham": "admin@123",
+    "Ashish": "admin@123"
+}
+
+if "logged_in" not in st.session_state:
+    st.session_state.logged_in = False
+
+def login():
+    st.title("🔐 Login - Price Comparison Dashboard")
+
+    username = st.text_input("Username")
+    password = st.text_input("Password", type="password")
+
+    if st.button("Login"):
+        if username in users and users[username] == password:
+            st.session_state.logged_in = True
+            st.session_state.user = username
+            st.success(f"Welcome {username} 👋")
+            st.rerun()
+        else:
+            st.error("❌ Invalid Username or Password")
+
+def logout():
+    if st.sidebar.button("Logout"):
+        st.session_state.logged_in = False
+        st.rerun()
+
+if not st.session_state.logged_in:
+    login()
+    st.stop()
+
+logout()
+
+st.sidebar.success(f"Logged in as {st.session_state.user}")
 
 # ✅ Sidebar logo (NOW SAFE)
 st.sidebar.image(
