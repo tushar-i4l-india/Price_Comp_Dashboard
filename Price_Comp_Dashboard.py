@@ -84,7 +84,7 @@ The <b>Price Comparison Dashboard</b> helps monitor and analyse competitor insul
 It provides a centralized view of market pricing to track trends, identify price movements, and support better pricing decisions.
 </p>
 
-<h3>Key Features</h3>
+<h3 style="color:white;">Key Features</h3>
 
 <ul>
 <li>🔎 Monitor competitor prices across multiple websites</li>
