@@ -116,7 +116,7 @@ div[data-testid="stVerticalBlock"]{
     <img src="https://cdn.shopify.com/s/files/1/0250/6198/2261/files/Insulation4less_main_logo.png?v=1767346032">
 </div>
 
-<div class="login-title">Sign In</div>
+<div class="login-title">Login In</div>
 """, unsafe_allow_html=True)
 
     username = st.text_input("Username")
