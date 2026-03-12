@@ -36,6 +36,33 @@ if "username" not in st.session_state:
 
 def login_page():
 
+
+    st.markdown("""
+    <div class="logo-container">
+        <img src="https://cdn.shopify.com/s/files/1/0250/6198/2261/files/Insulation4less_main_logo.png?v=1767346032">
+    </div>
+
+    <div class="login-title">Login In</div>
+    """, unsafe_allow_html=True)
+
+    username = st.text_input("Username")
+    password = st.text_input("Password", type="password")
+
+    col1, col2, col3 = st.columns([1,1,1])
+
+    with col2:
+        login_clicked = st.button("Login In")
+
+    if login_clicked:
+
+        if username in USERS and USERS[username] == password:
+            st.session_state.logged_in = True
+            st.session_state.username = username
+            st.rerun()
+
+        else:
+            st.error("Invalid username or password")
+
     st.markdown("""
     <style>
 
@@ -122,37 +149,6 @@ div[data-testid="stTextInput"]{
 </style>
 """, unsafe_allow_html=True)
     
-
-
-
-
-
-    st.markdown("""
-<div class="logo-container">
-    <img src="https://cdn.shopify.com/s/files/1/0250/6198/2261/files/Insulation4less_main_logo.png?v=1767346032">
-</div>
-
-<div class="login-title">Login In</div>
-""", unsafe_allow_html=True)
-
-username = st.text_input("Username")
-password = st.text_input("Password", type="password")
-
-col1, col2, col3 = st.columns([1,1,1])
-
-with col2:
-    login_clicked = st.button("Login In")
-
-if login_clicked:
-
-    if username in USERS and USERS[username] == password:
-        st.session_state.logged_in = True
-        st.session_state.username = username
-        st.rerun()
-
-    else:
-        st.error("Invalid username or password")
-
 
 if not st.session_state.logged_in:
     login_page()
