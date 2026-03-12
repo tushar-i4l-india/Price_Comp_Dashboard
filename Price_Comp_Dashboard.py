@@ -8,64 +8,6 @@ import glob
 import streamlit.components.v1 as components 
 from PIL import Image
 
-import streamlit as st
-
-# ---------- LOGIN USERS ----------
-USERS = {
-    "Admin": "Price@123",
-    "Nicola": "admin@123",
-    "Shubham": "admin@123",
-    "Ashish": "admin@123"
-}
-
-# ---------- SESSION STATE ----------
-if "logged_in" not in st.session_state:
-    st.session_state.logged_in = False
-
-# ---------- LOGIN PAGE ----------
-def login():
-
-    st.markdown("""
-    <style>
-    .login-box {
-        width: 320px;
-        padding: 30px;
-        margin: auto;
-        margin-top: 120px;
-        border-radius: 10px;
-        background-color: #f5f5f5;
-        text-align: center;
-    }
-    </style>
-    """, unsafe_allow_html=True)
-
-    st.markdown('<div class="login-box">', unsafe_allow_html=True)
-
-    st.image(
-        "https://cdn.shopify.com/s/files/1/0250/6198/2261/files/Insulation4less_main_logo.png?v=1767346032",
-        width=180
-    )
-
-    username = st.text_input("Username")
-    password = st.text_input("Password", type="password")
-
-    if st.button("Login"):
-
-        if username in USERS and USERS[username] == password:
-            st.session_state.logged_in = True
-            st.session_state.user = username
-            st.rerun()
-        else:
-            st.error("Invalid username or password")
-
-    st.markdown('</div>', unsafe_allow_html=True)
-
-
-# ---------- LOGIN CHECK ----------
-if not st.session_state.logged_in:
-    login()
-    st.stop()
-
 # ✅ MUST BE FIRST STREAMLIT COMMAND
 st.set_page_config(
     page_title="Price Comparison Dashboard",
