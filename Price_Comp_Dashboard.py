@@ -77,7 +77,7 @@ def login_page():
     st.markdown("""
     <div class="welcome-text">
 
-    <h1>Price Comparison Dashboard</h1>
+    <h1>📊 Welcome to Price Comparison Dashboard</h1>
 
     <p>
     Monitor competitor insulation product prices across multiple websites and track market trends in real time.
