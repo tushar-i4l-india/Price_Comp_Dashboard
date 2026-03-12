@@ -19,6 +19,9 @@ USERS = {
 if "logged_in" not in st.session_state:
     st.session_state.logged_in = False
 
+if "username" not in st.session_state:
+    st.session_state.username = None
+
 def login_page():
 
     st.markdown("""
@@ -126,6 +129,7 @@ div[data-testid="stVerticalBlock"]{
 
         if username in USERS and USERS[username] == password:
             st.session_state.logged_in = True
+            st.session_state.username = username
             st.rerun()
 
         else:
@@ -139,6 +143,18 @@ if not st.session_state.logged_in:
     st.stop()
 
 # ---------------- END LOGIN ---------------- #
+# -------- USER INFO + LOGOUT -------- #
+
+col1, col2 = st.columns([8,2])
+
+with col1:
+    st.markdown(f"### 👤 Logged in as: **{st.session_state.username}**")
+
+with col2:
+    if st.button("🚪 Logout"):
+        st.session_state.logged_in = False
+        st.session_state.username = None
+        st.rerun()
 
 # ✅ MUST BE FIRST STREAMLIT COMMAND
 st.set_page_config(
