@@ -76,7 +76,7 @@ label{
 .logo-container{
     text-align:center;
     margin-bottom:25px;
-    margin-top:-40px;   /* move logo upward */
+    margin-top:-120px;   /* move logo upward */
 }
 
 .logo-container img{
