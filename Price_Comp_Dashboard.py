@@ -80,28 +80,19 @@ def login_page():
 <h1>📊 Welcome to Price Comparison Dashboard</h1>
 
 <p>
-The <b>Price Comparison Dashboard</b> is designed to monitor and analyse competitor insulation product prices across multiple supplier websites.
-It provides a centralized view of market pricing to help identify trends, track price movements, and support competitive pricing decisions.
+The <b>Price Comparison Dashboard</b> helps monitor and analyse competitor insulation product prices across multiple supplier websites. 
+It provides a centralized view of market pricing to track trends, identify price movements, and support better pricing decisions.
 </p>
 
-<p>
-By collecting and comparing daily pricing data from various online retailers, the dashboard allows users to quickly understand how products are positioned in the market and respond effectively to pricing changes.
-</p>
-
-<h3>Key Capabilities</h3>
+<h3>Key Features</h3>
 
 <ul>
-<li>🔎 <b>Competitor Price Monitoring</b> – View and track insulation product prices across multiple competitor websites in one place.</li>
-
-<li>📊 <b>Product Price Comparison</b> – Compare prices for the same product across different suppliers to identify the most competitive offers.</li>
-
-<li>📈 <b>Historical Price Trend Analysis</b> – Analyse how prices change over time using historical data and visual charts.</li>
-
-<li>🔺 <b>Price Change Detection</b> – Quickly identify price increases or decreases compared to previous days.</li>
-
-<li>📦 <b>Brand & Product Insights</b> – Explore pricing data by brand and product SKU to gain detailed market insights.</li>
-
-<li>🗓 <b>Date-Based Data Exploration</b> – Select specific dates to review pricing data and track daily market movements.</li>
+<li>🔎 Monitor competitor prices across multiple websites</li>
+<li>📊 Compare product prices between suppliers</li>
+<li>📈 Analyse historical price trends over time</li>
+<li>🔺 Detect daily price increases and decreases</li>
+<li>📦 Explore pricing insights by brand and product SKU</li>
+<li>🗓 View pricing data for specific dates</li>
 </ul>
 
     </div>
