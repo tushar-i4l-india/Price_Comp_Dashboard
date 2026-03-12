@@ -68,6 +68,12 @@ def login_page():
         font-size:16px;
         padding-left:20px;
     }
+    .welcome-text{
+    position: fixed;
+    left: 120px;
+    top: 260px;
+    width: 420px;
+}
 
     </style>
     """, unsafe_allow_html=True)
@@ -169,7 +175,7 @@ div[data-testid="stVerticalBlock"]:has(.login-title){
     padding:40px;
     border-radius:30px;
     max-width:550px;
-    margin:right;
+    margin:auto;
     margin-top:120px;   /* move box down */
 }
 
