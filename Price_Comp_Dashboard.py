@@ -157,7 +157,7 @@ if not st.session_state.logged_in:
 col1, col2 = st.columns([6,1])
 
 with col1:
-    st.markdown(f"### 👤 Logged in as: **{st.session_state.username}**")
+    st.markdown(f"### 👋 Welcome, **{st.session_state.username}**")
 
 with col2:
     if st.button("Logout"):
