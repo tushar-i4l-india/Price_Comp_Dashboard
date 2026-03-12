@@ -21,6 +21,8 @@ st.set_page_config(
 )
 # ---------------- LOGIN SYSTEM ---------------- #
 
+# ---------------- LOGIN SYSTEM ---------------- #
+
 USERS = {
     "Admin": "Price@123",
     "Nicola": "admin@123",
@@ -34,9 +36,81 @@ if "logged_in" not in st.session_state:
 if "username" not in st.session_state:
     st.session_state.username = ""
 
+
 def login_page():
 
+    # ---------- CSS ----------
+    st.markdown("""
+    <style>
 
+    .stApp {
+        background-image: url("https://cdn.shopify.com/s/files/1/0845/8443/1893/files/Streamlit.png?v=1773315005");
+        background-size: cover;
+        background-position: center;
+        background-repeat: no-repeat;
+    }
+
+    label{
+        color:white !important;
+        font-weight:bold !important;
+    }
+
+    div[data-testid="stTextInput"]{
+        max-width:500px;
+        margin:auto;
+    }
+
+    .stTextInput input{
+        background-color:#333;
+        color:white;
+        border-radius:6px;
+        border:1px solid #555;
+    }
+
+    div[data-testid="stButton"]{
+        max-width:500px;
+        margin:auto;
+    }
+
+    .stButton button{
+        background:#E50914;
+        color:white;
+        font-weight:bold;
+        border-radius:6px;
+        height:45px;
+        width:200px;
+        display:block;
+        margin:auto;
+    }
+
+    .logo-container{
+        text-align:center;
+        margin-bottom:20px;
+    }
+
+    .logo-container img{
+        width:420px;
+        animation: glow 2.5s infinite alternate;
+    }
+
+    @keyframes glow{
+        0%{filter: drop-shadow(0px 0px 5px rgba(255,255,255,0.2));}
+        50%{filter: drop-shadow(0px 0px 20px rgba(255,255,255,0.9));}
+        100%{filter: drop-shadow(0px 0px 5px rgba(255,255,255,0.2));}
+    }
+
+    .login-title{
+        font-size:32px;
+        font-weight:bold;
+        color:white;
+        text-align:center;
+        margin-bottom:30px;
+    }
+
+    </style>
+    """, unsafe_allow_html=True)
+
+    # ---------- LOGO ----------
     st.markdown("""
     <div class="logo-container">
         <img src="https://cdn.shopify.com/s/files/1/0250/6198/2261/files/Insulation4less_main_logo.png?v=1767346032">
@@ -45,13 +119,14 @@ def login_page():
     <div class="login-title">Login In</div>
     """, unsafe_allow_html=True)
 
-username = st.text_input("Username")
-password = st.text_input("Password", type="password")
+    # ---------- LOGIN FORM ----------
+    username = st.text_input("Username")
+    password = st.text_input("Password", type="password")
 
-col1, col2, col3 = st.columns([2,1,2])
+    col1, col2, col3 = st.columns([2,1,2])
 
-with col2:
-    login_clicked = st.button("Login In")
+    with col2:
+        login_clicked = st.button("Login In")
 
     if login_clicked:
 
@@ -63,101 +138,12 @@ with col2:
         else:
             st.error("Invalid username or password")
 
-    st.markdown("""
-    <style>
 
-    .stApp {
-        background-image: url("https://cdn.shopify.com/s/files/1/0845/8443/1893/files/Streamlit.png?v=1773315005");
-        background-size: cover;
-        background-position: center;
-        background-repeat: no-repeat;
-    }
-
-
-
-/* Username & Password Labels */
-label{
-    color:white !important;
-    font-weight:bold !important;
-}
-
-/* Input Fields */
-.stTextInput input{
-    background-color:#333;
-    color:white;
-    border-radius:6px;
-    border:1px solid #555;
-}
-/* CENTER BUTTON CONTAINER */
-div[data-testid="stButton"]{
-    max-width:500px;
-    margin:auto;
-}
-
-/* LOGIN BUTTON STYLE */
-.stButton button{
-    background:#E50914;
-    color:white;
-    font-weight:bold;
-    border-radius:6px;
-    height:45px;
-    width:200px;
-    display:block;
-    margin:auto;
-}
-                
-.logo-container{
-    text-align:center;
-    margin-bottom:25px;
-}
-
-.logo-container img{
-    width:420px;
-    position: relative;
-    top: -60px;   /* move logo upward */
-    animation: glow 2.5s infinite alternate;
-}
-
-@keyframes glow{
-    0%{
-        filter: drop-shadow(0px 0px 5px rgba(255,255,255,0.2));
-    }
-    50%{
-        filter: drop-shadow(0px 0px 20px rgba(255,255,255,0.9));
-    }
-    100%{
-        filter: drop-shadow(0px 0px 5px rgba(255,255,255,0.2));
-    }
-}
-                                        
-                
-div[data-testid="stVerticalBlock"]:has(.login-title){
-    text-align:center;
-    margin-top:150px;
-}
-
-/* Center login inputs */
-div[data-testid="stTextInput"]{
-    max-width:500px;
-    margin:auto;
-}
-
-.login-title{
-    font-size:32px;
-    font-weight:bold;
-    color:white;
-    margin-bottom:25px;
-    text-align:center;
-}
-
-
-</style>
-""", unsafe_allow_html=True)
-    
-
+# ---------- SHOW LOGIN ----------
 if not st.session_state.logged_in:
     login_page()
     st.stop()
+
 
 # ---------------- USER HEADER ---------------- #
 
@@ -171,7 +157,6 @@ with col2:
         st.session_state.logged_in = False
         st.session_state.username = ""
         st.rerun()
-
 # ---------------- END LOGIN ---------------- #
 
 
