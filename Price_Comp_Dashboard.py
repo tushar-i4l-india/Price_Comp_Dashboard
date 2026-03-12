@@ -7,6 +7,92 @@ import re
 import glob
 import streamlit.components.v1 as components 
 from PIL import Image
+# ---------------- NETFLIX STYLE LOGIN ---------------- #
+
+USERS = {
+    "Admin": "Price@123",
+    "Nicola": "admin@123",
+    "Shubham": "admin@123",
+    "Ashish": "admin@123"
+}
+
+if "logged_in" not in st.session_state:
+    st.session_state.logged_in = False
+
+
+def login_page():
+
+    st.markdown("""
+    <style>
+
+    .stApp {
+        background-image: url("https://assets.nflxext.com/ffe/siteui/vlv3/9b8c59d7-9a4d-4f22-a3fa-33caa7eac191/86a51e7f-cc5e-46ae-92b4-96b86c09f70f/IN-en-20230828-popsignuptwoweeks-perspective_alpha_website_medium.jpg");
+        background-size: cover;
+        background-position: center;
+    }
+
+    .login-box{
+        background-color: rgba(0,0,0,0.75);
+        padding:40px;
+        border-radius:8px;
+        width:350px;
+        margin:auto;
+        margin-top:120px;
+    }
+
+    .login-title{
+        color:white;
+        font-size:32px;
+        font-weight:bold;
+        margin-bottom:20px;
+    }
+
+    .stTextInput>div>div>input{
+        background-color:#333;
+        color:white;
+        border-radius:4px;
+    }
+
+    .stButton>button{
+        background-color:#E50914;
+        color:white;
+        width:100%;
+        height:45px;
+        border-radius:4px;
+        font-size:18px;
+        font-weight:bold;
+        border:none;
+    }
+
+    .stButton>button:hover{
+        background-color:#f6121d;
+    }
+
+    </style>
+    """, unsafe_allow_html=True)
+
+    st.markdown('<div class="login-box">', unsafe_allow_html=True)
+
+    st.markdown('<div class="login-title">Sign In</div>', unsafe_allow_html=True)
+
+    username = st.text_input("Email or mobile number")
+    password = st.text_input("Password", type="password")
+
+    if st.button("Sign In"):
+
+        if username in USERS and USERS[username] == password:
+            st.session_state.logged_in = True
+            st.rerun()
+        else:
+            st.error("Incorrect username or password")
+
+    st.markdown("</div>", unsafe_allow_html=True)
+
+
+if not st.session_state.logged_in:
+    login_page()
+    st.stop()
+
 
 # ✅ MUST BE FIRST STREAMLIT COMMAND
 st.set_page_config(
