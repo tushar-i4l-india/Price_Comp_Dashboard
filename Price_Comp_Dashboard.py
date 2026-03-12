@@ -1,3 +1,118 @@
+import streamlit as st
+
+# ---------------- USERS ----------------
+users = {
+    "Admin": "Price@123",
+    "Nicola": "admin@123",
+    "Shubham": "admin@123",
+    "Ashish": "admin@123"
+}
+
+if "logged_in" not in st.session_state:
+    st.session_state.logged_in = False
+
+
+# ---------------- LOGIN PAGE ----------------
+def login_page():
+
+    st.markdown("""
+    <style>
+
+    .stApp{
+        background-image: linear-gradient(
+        rgba(0,0,0,0.65),
+        rgba(0,0,0,0.65)),
+        url("https://images.unsplash.com/photo-1501785888041-af3ef285b470");
+        background-size: cover;
+        background-position: center;
+    }
+
+    .main-container{
+        display:flex;
+        justify-content:center;
+        align-items:center;
+        height:90vh;
+        gap:120px;
+    }
+
+    .left-box{
+        color:white;
+        width:400px;
+    }
+
+    .welcome{
+        font-size:55px;
+        font-weight:700;
+        line-height:60px;
+    }
+
+    .subtitle{
+        margin-top:20px;
+        font-size:15px;
+        color:#ddd;
+    }
+
+    .login-card{
+        background: rgba(255,255,255,0.08);
+        backdrop-filter: blur(12px);
+        padding:35px;
+        border-radius:12px;
+        width:320px;
+        color:white;
+    }
+
+    .signin{
+        font-size:28px;
+        font-weight:600;
+        margin-bottom:20px;
+        text-align:center;
+    }
+
+    </style>
+    """, unsafe_allow_html=True)
+
+    st.markdown('<div class="main-container">', unsafe_allow_html=True)
+
+    col1, col2 = st.columns([1.2,1])
+
+    with col1:
+        st.markdown("""
+        <div class="left-box">
+            <div class="welcome">Welcome<br>Back</div>
+            <div class="subtitle">
+            Access the Price Comparison Dashboard securely.
+            Monitor competitor prices, track trends and manage
+            your insulation product pricing efficiently.
+            </div>
+        </div>
+        """, unsafe_allow_html=True)
+
+    with col2:
+        st.markdown('<div class="login-card">', unsafe_allow_html=True)
+        st.markdown('<div class="signin">Sign In</div>', unsafe_allow_html=True)
+
+        username = st.text_input("Username")
+        password = st.text_input("Password", type="password")
+
+        if st.button("Login"):
+            if username in users and users[username] == password:
+                st.session_state.logged_in = True
+                st.success("Login successful")
+                st.rerun()
+            else:
+                st.error("Invalid username or password")
+
+        st.markdown('</div>', unsafe_allow_html=True)
+
+    st.markdown('</div>', unsafe_allow_html=True)
+
+
+# ---------------- LOGIN CHECK ----------------
+if not st.session_state.logged_in:
+    login_page()
+    st.stop()
+
+
 import streamlit as st 
 import pandas as pd 
 import os
