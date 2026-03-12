@@ -80,9 +80,11 @@ label{
 
 .logo-container img{
     width:420px;
-    margin-top:-40px;   /* moves logo upward */
+    position: relative;
+    top: -60px;   /* move logo upward */
     animation: glow 2.5s infinite alternate;
 }
+
 @keyframes glow{
     0%{
         filter: drop-shadow(0px 0px 5px rgba(255,255,255,0.2));
