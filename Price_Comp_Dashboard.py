@@ -1,6 +1,6 @@
 import streamlit as st
 
-# ---------------- LOGIN USERS ----------------
+# ---------------- USERS ----------------
 users = {
     "Admin": "Price@123",
     "Nicola": "admin@123",
@@ -12,43 +12,45 @@ users = {
 if "logged_in" not in st.session_state:
     st.session_state.logged_in = False
 
+
 # ---------------- LOGIN PAGE ----------------
 def login_page():
 
-    st.markdown(
-        """
-        <style>
+    st.markdown("""
+    <style>
 
-        .stApp{
-            background-image: url("https://images.unsplash.com/photo-1501785888041-af3ef285b470");
-            background-size: cover;
-            background-position: center;
-            background-repeat: no-repeat;
-        }
+    .stApp{
+        background-image: linear-gradient(
+        rgba(0,0,0,0.65),
+        rgba(0,0,0,0.65)),
+        url("https://images.unsplash.com/photo-1501785888041-af3ef285b470");
+        background-size: cover;
+        background-position: center;
+    }
 
-        .login-box{
-            background: rgba(0,0,0,0.55);
-            padding:40px;
-            border-radius:12px;
-            width:350px;
-            margin:auto;
-            margin-top:150px;
-            color:white;
-            text-align:center;
-        }
+    .login-card{
+        background: rgba(255,255,255,0.08);
+        backdrop-filter: blur(10px);
+        padding: 25px;
+        border-radius: 10px;
+        width: 320px;
+        margin: auto;
+        margin-top: 180px;
+        text-align:center;
+        color:white;
+    }
 
-        .login-title{
-            font-size:35px;
-            font-weight:600;
-            margin-bottom:20px;
-        }
+    .login-title{
+        font-size:28px;
+        font-weight:600;
+        margin-bottom:15px;
+    }
 
-        </style>
-        """,
-        unsafe_allow_html=True
-    )
+    </style>
+    """, unsafe_allow_html=True)
 
-    st.markdown('<div class="login-box">', unsafe_allow_html=True)
+    st.markdown('<div class="login-card">', unsafe_allow_html=True)
+
     st.markdown('<div class="login-title">Sign In</div>', unsafe_allow_html=True)
 
     username = st.text_input("Username")
@@ -57,12 +59,12 @@ def login_page():
     if st.button("Login"):
         if username in users and users[username] == password:
             st.session_state.logged_in = True
-            st.success("Login Successful")
+            st.success("Login successful")
             st.rerun()
         else:
-            st.error("Invalid Username or Password")
+            st.error("Invalid username or password")
 
-    st.markdown("</div>", unsafe_allow_html=True)
+    st.markdown('</div>', unsafe_allow_html=True)
 
 
 # ---------------- LOGIN CHECK ----------------
