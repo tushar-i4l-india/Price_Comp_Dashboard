@@ -71,7 +71,30 @@ label{
     font-weight:bold;
     color:white;
     margin-bottom:25px;
-}                
+} 
+
+.logo-container{
+    text-align:center;
+    margin-bottom:25px;
+}
+
+.logo-container img{
+    width:260px;
+    animation: glow 2.5s infinite alternate;
+}
+
+@keyframes glow{
+    0%{
+        filter: drop-shadow(0px 0px 5px rgba(255,255,255,0.2));
+    }
+    50%{
+        filter: drop-shadow(0px 0px 20px rgba(255,255,255,0.9));
+    }
+    100%{
+        filter: drop-shadow(0px 0px 5px rgba(255,255,255,0.2));
+    }
+}
+                                        
                 
 div[data-testid="stVerticalBlock"]{
     text-align:center;
@@ -87,8 +110,8 @@ div[data-testid="stVerticalBlock"]{
 
 
     st.markdown("""
-<div style="text-align:center;margin-bottom:20px;">
-    <img src="https://cdn.shopify.com/s/files/1/0250/6198/2261/files/Insulation4less_main_logo.png?v=1767346032" width="260">
+<div class="logo-container">
+    <img src="https://cdn.shopify.com/s/files/1/0250/6198/2261/files/Insulation4less_main_logo.png?v=1767346032">
 </div>
 
 <div class="login-title">Sign In</div>
