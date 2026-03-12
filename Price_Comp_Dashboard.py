@@ -1,40 +1,12 @@
-st.markdown("""
-<style>
-
-/* Remove top blank container */
-.block-container {
-    padding-top: 1rem;
-}
-
-/* Hide Streamlit header */
-header {
-    visibility: hidden;
-}
-
-/* Remove extra spacing */
-[data-testid="stAppViewContainer"]{
-    margin-top: -50px;
-}
-
-/* Optional: remove footer */
-footer {visibility: hidden;}
-
-</style>
-""", unsafe_allow_html=True)
-
-st.markdown("""
-<style>
-
-header {display:none;}
-
-.block-container{
-    padding-top:0rem;
-    margin-top:-80px;
-}
-
-</style>
-""", unsafe_allow_html=True)
-
+import streamlit as st 
+import pandas as pd 
+import os
+import plotly.express as px  
+from datetime import datetime, timedelta
+import re
+import glob
+import streamlit.components.v1 as components 
+from PIL import Image
 
 import streamlit as st
 
@@ -51,59 +23,28 @@ if "logged_in" not in st.session_state:
     st.session_state.logged_in = False
 
 # ---------- LOGIN PAGE ----------
-def login_page():
+def login():
 
     st.markdown("""
     <style>
-
-    .stApp {
-        background: linear-gradient(135deg,#0f2027,#203a43,#2c5364);
-    }
-
-    .login-card {
-        width: 350px;
-        padding: 40px;
-        border-radius: 12px;
-        background: rgba(255,255,255,0.08);
-        backdrop-filter: blur(10px);
+    .login-box {
+        width: 320px;
+        padding: 30px;
         margin: auto;
-        margin-top: 12%;
-        text-align:center;
-        box-shadow:0px 0px 20px rgba(0,0,0,0.4);
+        margin-top: 120px;
+        border-radius: 10px;
+        background-color: #f5f5f5;
+        text-align: center;
     }
-
-    .login-title{
-        font-size:28px;
-        font-weight:700;
-        color:white;
-        margin-bottom:20px;
-    }
-
-    .stTextInput>div>div>input{
-        border-radius:8px;
-        padding:10px;
-    }
-
-    .stButton button{
-        width:100%;
-        border-radius:8px;
-        height:40px;
-        font-weight:bold;
-        background-color:#1f77ff;
-        color:white;
-    }
-
     </style>
     """, unsafe_allow_html=True)
 
-    st.markdown('<div class="login-card">', unsafe_allow_html=True)
+    st.markdown('<div class="login-box">', unsafe_allow_html=True)
 
     st.image(
         "https://cdn.shopify.com/s/files/1/0250/6198/2261/files/Insulation4less_main_logo.png?v=1767346032",
         width=180
     )
-
-    st.markdown('<div class="login-title">Dashboard Login</div>', unsafe_allow_html=True)
 
     username = st.text_input("Username")
     password = st.text_input("Password", type="password")
@@ -114,28 +55,16 @@ def login_page():
             st.session_state.logged_in = True
             st.session_state.user = username
             st.rerun()
-
         else:
             st.error("Invalid username or password")
 
     st.markdown('</div>', unsafe_allow_html=True)
 
 
-# ---------- CHECK LOGIN ----------
+# ---------- LOGIN CHECK ----------
 if not st.session_state.logged_in:
-    login_page()
+    login()
     st.stop()
-
-
-import streamlit as st 
-import pandas as pd 
-import os
-import plotly.express as px  
-from datetime import datetime, timedelta
-import re
-import glob
-import streamlit.components.v1 as components 
-from PIL import Image
 
 # ✅ MUST BE FIRST STREAMLIT COMMAND
 st.set_page_config(
@@ -159,13 +88,6 @@ st.set_page_config(page_title="Price Comparison Dashboard", page_icon=":bar_char
     'Report a bug': "https://www.insulation4less.co.uk",
     'About': "This app is a price comparison dashboard",
 })
-
-st.sidebar.write(f"👤 Logged in as: {st.session_state.user}")
-
-if st.sidebar.button("Logout"):
-    st.session_state.logged_in = False
-    st.rerun()
-
 
 @st.cache_data
 def load_data(file_path):
