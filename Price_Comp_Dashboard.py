@@ -130,10 +130,9 @@ def login_page():
     username = st.text_input("Username")
     password = st.text_input("Password", type="password")
 
-    col1, col2, col3 = st.columns([2,1,2])
-
-    with col2:
-        login_clicked = st.button("Login In")
+    st.markdown("<div style='text-align:center'>", unsafe_allow_html=True)
+    login_clicked = st.button("Login In")
+    st.markdown("</div>", unsafe_allow_html=True)
 
     if login_clicked:
 
