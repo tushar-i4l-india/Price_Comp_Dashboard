@@ -19,6 +19,9 @@ USERS = {
 if "logged_in" not in st.session_state:
     st.session_state.logged_in = False
 
+if "username" not in st.session_state:
+    st.session_state.username = None
+
 def login_page():
 
     st.markdown("""
@@ -124,12 +127,13 @@ div[data-testid="stVerticalBlock"]{
 
     if st.button("Login In"):
 
-        if username in USERS and USERS[username] == password:
-            st.session_state.logged_in = True
-            st.rerun()
+       if username in USERS and USERS[username] == password:
+        st.session_state.logged_in = True
+        st.session_state.username = username
+        st.rerun()
 
-        else:
-            st.error("Invalid username or password")
+    else:
+        st.error("Invalid username or password")
 
 
 
@@ -139,6 +143,28 @@ if not st.session_state.logged_in:
     st.stop()
 
 # ---------------- END LOGIN ---------------- #
+# ---------------- USER HEADER ---------------- #
+
+col1, col2 = st.columns([8,1])
+
+with col1:
+    st.markdown(
+        f"""
+        <div style="
+        font-size:18px;
+        font-weight:bold;
+        padding-top:10px;">
+        👤 Logged in as: <span style='color:#E50914'>{st.session_state.username}</span>
+        </div>
+        """,
+        unsafe_allow_html=True
+    )
+
+with col2:
+    if st.button("Logout"):
+        st.session_state.logged_in = False
+        st.session_state.username = None
+        st.rerun()
 
 # ✅ MUST BE FIRST STREAMLIT COMMAND
 st.set_page_config(
