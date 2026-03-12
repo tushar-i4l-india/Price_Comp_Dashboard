@@ -19,6 +19,132 @@ st.set_page_config(
         'About': "This app is a price comparison dashboard",
     }
 )
+# ---------------- LOGIN SYSTEM ---------------- #
+
+users = {
+    "Admin": "Price@123",
+    "Nicola": "admin@123",
+    "Shubham": "admin@123",
+    "Ashish": "admin@123"
+}
+
+if "logged_in" not in st.session_state:
+    st.session_state.logged_in = False
+
+
+def login_page():
+
+    st.markdown("""
+    <style>
+
+    /* hide streamlit menu */
+    #MainMenu {visibility: hidden;}
+    footer {visibility: hidden;}
+    header {visibility: hidden;}
+
+    .main {
+        background-image: url("https://images.unsplash.com/photo-1501785888041-af3ef285b470");
+        background-size: cover;
+        background-position: center;
+        height: 100vh;
+    }
+
+    .login-container{
+        display:flex;
+        justify-content:space-between;
+        align-items:center;
+        height:100vh;
+        padding:80px;
+        color:white;
+    }
+
+    .left-section{
+        width:45%;
+    }
+
+    .left-title{
+        font-size:60px;
+        font-weight:700;
+        line-height:1.1;
+    }
+
+    .left-text{
+        margin-top:20px;
+        font-size:18px;
+        color:#ddd;
+        width:80%;
+    }
+
+    .right-section{
+        width:350px;
+        background:rgba(0,0,0,0.6);
+        padding:40px;
+        border-radius:10px;
+    }
+
+    .right-title{
+        font-size:30px;
+        font-weight:600;
+        margin-bottom:20px;
+    }
+
+    .stTextInput input{
+        background:white;
+        border-radius:5px;
+    }
+
+    .stButton button{
+        width:100%;
+        background:#ff7a18;
+        color:white;
+        font-weight:600;
+        height:40px;
+        border-radius:5px;
+    }
+
+    </style>
+    """, unsafe_allow_html=True)
+
+    st.markdown('<div class="login-container">', unsafe_allow_html=True)
+
+    col1, col2 = st.columns([2,1])
+
+    with col1:
+        st.markdown("""
+        <div class="left-section">
+            <div class="left-title">Welcome<br>Back</div>
+            <div class="left-text">
+            It is a long established fact that a reader will be distracted
+            by the readable content of a page when looking at its layout.
+            </div>
+        </div>
+        """, unsafe_allow_html=True)
+
+    with col2:
+
+        st.markdown('<div class="right-section">', unsafe_allow_html=True)
+        st.markdown('<div class="right-title">Sign in</div>', unsafe_allow_html=True)
+
+        username = st.text_input("Username")
+        password = st.text_input("Password", type="password")
+
+        if st.button("Sign in now"):
+
+            if username in users and users[username] == password:
+                st.session_state.logged_in = True
+                st.session_state.user = username
+                st.rerun()
+            else:
+                st.error("Invalid username or password")
+
+        st.markdown('</div>', unsafe_allow_html=True)
+
+    st.markdown('</div>', unsafe_allow_html=True)
+
+
+if not st.session_state.logged_in:
+    login_page()
+    st.stop()
 
 # ✅ Sidebar logo (NOW SAFE)
 st.sidebar.image(
