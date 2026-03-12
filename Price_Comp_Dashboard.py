@@ -40,68 +40,44 @@ def login():
     st.markdown("""
     <style>
 
-    /* Remove Streamlit padding */
     .block-container{
-        padding-top:0rem;
-        padding-bottom:0rem;
+        padding-top:2rem;
     }
 
-    .stApp{
-        background: linear-gradient(135deg,#1f4037,#99f2c8);
-    }
-
-    .login-wrapper{
-        height:100vh;
-        display:flex;
-        justify-content:center;
-        align-items:center;
-    }
-
-    .login-card{
-        width:260px;
-        padding:25px;
-        border-radius:16px;
-        background:rgba(255,255,255,0.15);
-        backdrop-filter:blur(10px);
-        box-shadow:0 10px 35px rgba(0,0,0,0.25);
+    .login-box{
+        max-width:320px;
+        margin:auto;
         text-align:center;
     }
 
-    .login-logo{
-        width:200px;
-        margin-bottom:15px;
+    .login-logo img{
+        width:260px;
+        margin-bottom:25px;
     }
 
     div.stTextInput input{
-        height:34px;
+        height:38px;
         border-radius:6px;
-        font-size:14px;
     }
 
     div.stButton > button{
         width:100%;
-        height:34px;
+        height:38px;
         border-radius:6px;
-        background:#00c6ff;
+        background:#00a6d6;
         color:white;
-        font-weight:bold;
+        font-weight:600;
         border:none;
-    }
-
-    div.stButton > button:hover{
-        background:#0072ff;
     }
 
     </style>
     """, unsafe_allow_html=True)
 
-    st.markdown('<div class="login-wrapper">', unsafe_allow_html=True)
+    st.markdown('<div class="login-box">', unsafe_allow_html=True)
 
-    st.markdown('<div class="login-card">', unsafe_allow_html=True)
-
-    st.image(
-        "https://cdn.shopify.com/s/files/1/0250/6198/2261/files/Insulation4less_main_logo.png?v=1767346032",
-        use_container_width=True
+    st.markdown(
+        '<div class="login-logo"><img src="https://cdn.shopify.com/s/files/1/0250/6198/2261/files/Insulation4less_main_logo.png?v=1767346032"></div>',
+        unsafe_allow_html=True
     )
 
     username = st.text_input("", placeholder="Username")
@@ -115,7 +91,6 @@ def login():
         else:
             st.error("Invalid username or password")
 
-    st.markdown("</div>", unsafe_allow_html=True)
     st.markdown("</div>", unsafe_allow_html=True)
 
 
