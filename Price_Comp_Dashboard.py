@@ -20,6 +20,173 @@ st.set_page_config(
     }
 )
 
+# ---------------- ADVANCED LOGIN SYSTEM ---------------- #
+
+import streamlit as st
+
+users = {
+    "Admin": {"password": "Price@123", "role": "Admin"},
+    "Nicola": {"password": "admin@123", "role": "Manager"},
+    "Shubham": {"password": "admin@123", "role": "Staff"},
+    "Ashish": {"password": "admin@123", "role": "Staff"},
+}
+
+if "logged_in" not in st.session_state:
+    st.session_state.logged_in = False
+
+if "role" not in st.session_state:
+    st.session_state.role = None
+
+
+def login():
+
+    st.markdown("""
+    <style>
+
+    /* remove padding */
+    .block-container{
+        padding-top:1rem;
+    }
+
+    /* page background */
+    .stApp{
+        background: linear-gradient(135deg,#1f4037,#99f2c8);
+    }
+
+    /* center login */
+    .login-wrapper{
+        height:90vh;
+        display:flex;
+        justify-content:center;
+        align-items:center;
+    }
+
+    /* glass card */
+    .login-card{
+        width:360px;
+        padding:40px;
+        border-radius:20px;
+        background: rgba(255,255,255,0.15);
+        backdrop-filter: blur(12px);
+        box-shadow: 0 20px 40px rgba(0,0,0,0.25);
+        text-align:center;
+        animation: float 4s ease-in-out infinite;
+    }
+
+    /* floating animation */
+    @keyframes float{
+        0%{transform:translateY(0px);}
+        50%{transform:translateY(-8px);}
+        100%{transform:translateY(0px);}
+    }
+
+    /* animated logo */
+    .logo img{
+        width:260px;
+        margin-bottom:25px;
+        animation: glow 3s ease-in-out infinite;
+    }
+
+    @keyframes glow{
+        0%{filter:drop-shadow(0px 0px 0px rgba(255,255,255,0.3));}
+        50%{filter:drop-shadow(0px 0px 10px rgba(255,255,255,0.6));}
+        100%{filter:drop-shadow(0px 0px 0px rgba(255,255,255,0.3));}
+    }
+
+    div.stTextInput input{
+        height:38px;
+        border-radius:6px;
+    }
+
+    div.stButton > button{
+        width:100%;
+        height:40px;
+        border-radius:6px;
+        background:#00c6ff;
+        color:white;
+        font-weight:600;
+        border:none;
+        transition:0.3s;
+    }
+
+    div.stButton > button:hover{
+        background:#0072ff;
+        transform:scale(1.02);
+    }
+
+    </style>
+    """, unsafe_allow_html=True)
+
+    st.markdown('<div class="login-wrapper">', unsafe_allow_html=True)
+    st.markdown('<div class="login-card">', unsafe_allow_html=True)
+
+    st.markdown(
+        '<div class="logo"><img src="https://cdn.shopify.com/s/files/1/0250/6198/2261/files/Insulation4less_main_logo.png?v=1767346032"></div>',
+        unsafe_allow_html=True
+    )
+
+    username = st.text_input("", placeholder="Username")
+    password = st.text_input("", type="password", placeholder="Password")
+
+    if st.button("Login"):
+
+        if username in users and users[username]["password"] == password:
+
+            st.session_state.logged_in = True
+            st.session_state.user = username
+            st.session_state.role = users[username]["role"]
+
+            st.success("Login successful...")
+            st.rerun()
+
+        else:
+            st.error("Invalid username or password")
+
+    st.markdown("</div>", unsafe_allow_html=True)
+    st.markdown("</div>", unsafe_allow_html=True)
+
+
+# show login first
+if not st.session_state.logged_in:
+    login()
+    st.stop()
+
+
+# ---------------- SIDEBAR AFTER LOGIN ---------------- #
+
+st.sidebar.image(
+    "https://cdn.shopify.com/s/files/1/0250/6198/2261/files/Insulation4less_main_logo.png?v=1767346032",
+    width=200
+)
+
+st.sidebar.success(f"Logged in as {st.session_state.user}")
+st.sidebar.write(f"Role: {st.session_state.role}")
+
+
+if st.sidebar.button("Logout"):
+    st.session_state.logged_in = False
+    st.rerun()
+
+
+# ---------------- ROLE BASED ACCESS ---------------- #
+
+if st.session_state.role == "Admin":
+
+    st.sidebar.markdown("### 🔑 Admin Access")
+    st.write("Admin can manage dashboard, pricing data, and settings.")
+
+elif st.session_state.role == "Manager":
+
+    st.sidebar.markdown("### 📊 Manager Access")
+    st.write("Manager can view and analyze price comparison.")
+
+else:
+
+    st.sidebar.markdown("### 👨‍💻 Staff Access")
+    st.write("Staff can view limited dashboard data.")
+
+
+
 # ✅ Sidebar logo (NOW SAFE)
 st.sidebar.image(
     "https://cdn.shopify.com/s/files/1/0250/6198/2261/files/Insulation4less_main_logo.png?v=1767346032",
