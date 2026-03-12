@@ -1,13 +1,3 @@
-import streamlit as st 
-import pandas as pd 
-import os
-import plotly.express as px  
-from datetime import datetime, timedelta
-import re
-import glob
-import streamlit.components.v1 as components 
-from PIL import Image
-
 import streamlit as st
 import base64
 
@@ -34,7 +24,7 @@ def login_page():
     <style>
 
     .stApp {
-        background-image: url("https://cdn.shopify.com/s/files/1/0845/8443/1893/files/Streamlit.png?v=1773315005");
+        background-image: url("https://assets.nflxext.com/ffe/siteui/vlv3/7e6c4f0d-9d7a-4fa4-bd4f-0a7f6209512f/1b1a79cd-5c0d-4a38-8a2c-3e7a7e567c90/IN-en-20240219-popsignuptwoweeks-perspective_alpha_website_large.jpg");
         background-size: cover;
         background-position: center;
     }
@@ -90,6 +80,17 @@ def login_page():
             st.error("Invalid Username or Password")
 
     st.markdown('</div>', unsafe_allow_html=True)
+
+
+import streamlit as st 
+import pandas as pd 
+import os
+import plotly.express as px  
+from datetime import datetime, timedelta
+import re
+import glob
+import streamlit.components.v1 as components 
+from PIL import Image
 
 # ✅ MUST BE FIRST STREAMLIT COMMAND
 st.set_page_config(
