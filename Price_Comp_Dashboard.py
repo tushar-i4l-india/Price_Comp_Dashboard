@@ -101,9 +101,11 @@ label{
 }
                                         
                 
-div[data-testid="stVerticalBlock"]{
-    text-align:center;
-    margin-top:150px;
+section.main > div{
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    height:80vh;
 }
 
 </style>
@@ -170,12 +172,6 @@ if st.sidebar.button("🚪 Logout"):
     st.session_state.username = None
     st.rerun()
 
-
-st.set_page_config(page_title="Price Comparison Dashboard", page_icon=":bar_chart:", layout="wide", menu_items={
-    'Get Help': 'https://insulation4less.co.uk/pages/contact-us',
-    'Report a bug': "https://www.insulation4less.co.uk",
-    'About': "This app is a price comparison dashboard",
-})
 
 @st.cache_data
 def load_data(file_path):
