@@ -23,7 +23,7 @@ def login_page():
         background-image: linear-gradient(
         rgba(0,0,0,0.65),
         rgba(0,0,0,0.65)),
-        url("https://images.unsplash.com/photo-1501785888041-af3ef285b470");
+        url("https://cdn.shopify.com/s/files/1/0250/6198/2261/files/Insulation4less_main_logo.png?v=1767346032");
         background-size: cover;
         background-position: center;
     }
