@@ -79,7 +79,7 @@ label{
 }
 
 .logo-container img{
-    width:260px;
+    width:420px;
     animation: glow 2.5s infinite alternate;
 }
 
