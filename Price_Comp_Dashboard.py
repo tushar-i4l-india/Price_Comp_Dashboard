@@ -117,7 +117,6 @@ div[data-testid="stVerticalBlock"]:has(.login-title){
 
     </style>
     """, unsafe_allow_html=True)
-    
 
     # ---------- LOGO ----------
     st.markdown("""
@@ -129,39 +128,6 @@ div[data-testid="stVerticalBlock"]:has(.login-title){
     """, unsafe_allow_html=True)
 
     # ---------- LOGIN FORM ----------
-col_left, col_right = st.columns([1.2,1])
-
-
-# LEFT SIDE - WELCOME TEXT
-with col_left:
-
-    st.markdown("""
-    <div style="color:white; padding-top:150px">
-
-    <h1>👋 Welcome</h1>
-
-    <h3>Price Comparison Dashboard</h3>
-
-    <p>
-    Monitor competitor insulation prices including
-    Celotex, Recticel, Ecotherm, Unilin, IKO and Mannok.
-    </p>
-
-    <p>
-    Track price changes, analyse competitors and make
-    faster pricing decisions.
-    </p>
-
-    </div>
-    """, unsafe_allow_html=True)
-
-
-
-# RIGHT SIDE - LOGIN BOX
-with col_right:
-
-    st.markdown("<div class='login-title'>Login In</div>", unsafe_allow_html=True)
-
     username = st.text_input("Username")
     password = st.text_input("Password", type="password")
 
