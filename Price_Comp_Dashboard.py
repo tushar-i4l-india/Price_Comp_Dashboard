@@ -7,10 +7,7 @@ import re
 import glob
 import streamlit.components.v1 as components 
 from PIL import Image
-
-
 # ---------------- LOGIN SYSTEM ---------------- #
-
 
 USERS = {
     "Admin": "Price@123",
@@ -22,94 +19,126 @@ USERS = {
 if "logged_in" not in st.session_state:
     st.session_state.logged_in = False
 
-if "username" not in st.session_state:
-    st.session_state.username = ""
-
-
 def login_page():
 
-    # Force centered layout
-    left, center, right = st.columns([3,2,3])
+    st.markdown("""
+    <style>
 
-    with center:
+    .stApp {
+        background-image: url("https://cdn.shopify.com/s/files/1/0845/8443/1893/files/Streamlit.png?v=1773315005");
+        background-size: cover;
+        background-position: center;
+        background-repeat: no-repeat;
+    }
 
-        st.markdown("""
-        <style>
 
-        .stApp{
-        background-image:url("https://cdn.shopify.com/s/files/1/0845/8443/1893/files/Streamlit.png?v=1773315005");
-        background-size:cover;
-        background-position:center;
-        }
 
-        .login-card{
-            background-color: rgba(0,0,0,0.85);
-            padding:40px;
-            border-radius:10px;
-            box-shadow:0px 0px 40px rgba(0,0,0,0.8);
-        }
+/*Login In Title */
+.login-title{
+    font-size:34px;
+    font-weight:bold;
+    color:white;
+    margin-bottom:20px;
+}
 
-        .title{
-            color:white;
-            font-size:32px;
-            text-align:center;
-            margin-bottom:20px;
-            font-weight:bold;
-        }
+/* Username & Password Labels */
+label{
+    color:white !important;
+    font-weight:bold !important;
+}
 
-        .stTextInput>div>div>input{
-            background-color:#333;
-            color:white;
-        }
+/* Input Fields */
+.stTextInput input{
+    background-color:#333;
+    color:white;
+    border-radius:6px;
+    border:1px solid #555;
+}
 
-        .stButton button{
-            background-color:#E50914;
-            color:white;
-            font-weight:bold;
-            width:100%;
-        }
 
-        </style>
-        """, unsafe_allow_html=True)
+/* Login Button */
+.stButton button{
+    background:#E50914;
+    color:white;
+    font-weight:bold;
+    border-radius:6px;
+    width:100%;
+    height:45px;
+}
+                
+.login-title{
+    font-size:32px;
+    font-weight:bold;
+    color:white;
+    margin-bottom:25px;
+} 
 
-        st.markdown('<div class="login-card">', unsafe_allow_html=True)
+.logo-container{
+    text-align:center;
+    margin-bottom:25px;
+}
 
-        st.markdown('<div class="title">Sign In</div>', unsafe_allow_html=True)
+.logo-container img{
+    width:420px;
+    position: relative;
+    top: -60px;   /* move logo upward */
+    animation: glow 2.5s infinite alternate;
+}
 
-        username = st.text_input("Username")
-        password = st.text_input("Password", type="password")
+@keyframes glow{
+    0%{
+        filter: drop-shadow(0px 0px 5px rgba(255,255,255,0.2));
+    }
+    50%{
+        filter: drop-shadow(0px 0px 20px rgba(255,255,255,0.9));
+    }
+    100%{
+        filter: drop-shadow(0px 0px 5px rgba(255,255,255,0.2));
+    }
+}
+                                        
+                
+div[data-testid="stVerticalBlock"]{
+    text-align:center;
+    margin-top:150px;
+}
 
-        if st.button("Login"):
+</style>
+""", unsafe_allow_html=True)
+    
 
-            if username in USERS and USERS[username] == password:
-                st.session_state.logged_in = True
-                st.session_state.username = username
-                st.rerun()
 
-            else:
-                st.error("Invalid username or password")
 
-        st.markdown('</div>', unsafe_allow_html=True)
 
-def logout():
-    st.session_state.logged_in = False
-    st.session_state.username = ""
-    st.rerun()
+
+    st.markdown("""
+<div class="logo-container">
+    <img src="https://cdn.shopify.com/s/files/1/0250/6198/2261/files/Insulation4less_main_logo.png?v=1767346032">
+</div>
+
+<div class="login-title">Login In</div>
+""", unsafe_allow_html=True)
+
+    username = st.text_input("Username")
+    password = st.text_input("Password", type="password")
+
+    if st.button("Login In"):
+
+        if username in USERS and USERS[username] == password:
+            st.session_state.logged_in = True
+            st.rerun()
+
+        else:
+            st.error("Invalid username or password")
+
+
+
 
 if not st.session_state.logged_in:
     login_page()
     st.stop()
 
-
-col1, col2 = st.columns([8,2])
-
-with col1:
-    st.markdown(f"### Welcome **{st.session_state.username}** 👋")
-
-with col2:
-    if st.button("Logout"):
-        logout()
-
+# ---------------- END LOGIN ---------------- #
 
 # ✅ MUST BE FIRST STREAMLIT COMMAND
 st.set_page_config(
@@ -128,11 +157,7 @@ st.sidebar.image(
     "https://cdn.shopify.com/s/files/1/0250/6198/2261/files/Insulation4less_main_logo.png?v=1767346032",
     width=200
 )
-st.set_page_config(page_title="Price Comparison Dashboard", page_icon=":bar_chart:", layout="wide", menu_items={
-    'Get Help': 'https://insulation4less.co.uk/pages/contact-us',
-    'Report a bug': "https://www.insulation4less.co.uk",
-    'About': "This app is a price comparison dashboard",
-})
+
 
 @st.cache_data
 def load_data(file_path):
