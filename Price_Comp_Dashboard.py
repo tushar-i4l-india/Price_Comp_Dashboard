@@ -71,7 +71,7 @@ def login_page():
     .welcome-text{
     position: fixed;
     left: 120px;
-    top: 260px;
+    top: 300px;
     width: 420px;
 }
 
