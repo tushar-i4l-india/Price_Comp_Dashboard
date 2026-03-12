@@ -66,6 +66,13 @@ label{
     height:45px;
 }
                 
+.login-title{
+    font-size:32px;
+    font-weight:bold;
+    color:white;
+    margin-bottom:25px;
+}                
+                
 div[data-testid="stVerticalBlock"]{
     text-align:center;
     margin-top:150px;
@@ -74,6 +81,8 @@ div[data-testid="stVerticalBlock"]{
 </style>
 """, unsafe_allow_html=True)
     
+
+
 
 
 
