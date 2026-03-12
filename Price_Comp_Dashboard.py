@@ -19,7 +19,9 @@ st.set_page_config(
         'About': "This app is a price comparison dashboard",
     }
 )
-# ---------------- LOGIN SYSTEM ---------------- #
+
+import streamlit as st
+import streamlit.components.v1 as components
 
 users = {
     "Admin": "Price@123",
@@ -31,8 +33,110 @@ users = {
 if "logged_in" not in st.session_state:
     st.session_state.logged_in = False
 
-def login():
-    st.title("🔐 Login - Price Comparison Dashboard")
+
+def login_page():
+
+    components.html("""
+    
+    <style>
+
+    body{
+        margin:0;
+        height:100vh;
+        background:linear-gradient(135deg,#1f4037,#99f2c8);
+        display:flex;
+        justify-content:center;
+        align-items:center;
+        font-family:Arial;
+    }
+
+    .login-card{
+        width:350px;
+        padding:40px;
+        border-radius:20px;
+        background:rgba(255,255,255,0.15);
+        backdrop-filter: blur(15px);
+        box-shadow:0 15px 40px rgba(0,0,0,0.3);
+        transform-style:preserve-3d;
+        animation:float 6s ease-in-out infinite;
+    }
+
+    @keyframes float{
+        0%{transform:translateY(0px) rotateX(0deg)}
+        50%{transform:translateY(-15px) rotateX(5deg)}
+        100%{transform:translateY(0px) rotateX(0deg)}
+    }
+
+    .login-card h2{
+        text-align:center;
+        color:white;
+        margin-bottom:30px;
+    }
+
+    input{
+        width:100%;
+        padding:12px;
+        margin:10px 0;
+        border:none;
+        border-radius:10px;
+        outline:none;
+    }
+
+    button{
+        width:100%;
+        padding:12px;
+        margin-top:20px;
+        border:none;
+        border-radius:10px;
+        background:#00c6ff;
+        color:white;
+        font-weight:bold;
+        cursor:pointer;
+        transition:0.3s;
+    }
+
+    button:hover{
+        background:#0072ff;
+        transform:scale(1.05);
+    }
+
+    </style>
+
+    <div class="login-card">
+
+        <h2>🚀 Price Dashboard</h2>
+
+        <input id="username" placeholder="Username">
+
+        <input id="password" type="password" placeholder="Password">
+
+        <button onclick="sendLogin()">Login</button>
+
+    </div>
+
+    <script>
+
+    function sendLogin(){
+        const user=document.getElementById("username").value
+        const pass=document.getElementById("password").value
+
+        const streamlitMsg={
+            isStreamlitMessage:true,
+            type:"streamlit:setComponentValue",
+            value:{username:user,password:pass}
+        }
+
+        window.parent.postMessage(streamlitMsg,"*")
+    }
+
+    </script>
+
+    """, height=500)
+
+
+if not st.session_state.logged_in:
+
+    result = login_page()
 
     username = st.text_input("Username")
     password = st.text_input("Password", type="password")
@@ -40,24 +144,14 @@ def login():
     if st.button("Login"):
         if username in users and users[username] == password:
             st.session_state.logged_in = True
-            st.session_state.user = username
-            st.success(f"Welcome {username} 👋")
+            st.success("Login Successful")
             st.rerun()
         else:
-            st.error("❌ Invalid Username or Password")
+            st.error("Invalid Login")
 
-def logout():
-    if st.sidebar.button("Logout"):
-        st.session_state.logged_in = False
-        st.rerun()
-
-if not st.session_state.logged_in:
-    login()
     st.stop()
 
-logout()
-
-st.sidebar.success(f"Logged in as {st.session_state.user}")
+st.sidebar.success("Logged In")
 
 # ✅ Sidebar logo (NOW SAFE)
 st.sidebar.image(
