@@ -34,93 +34,74 @@ def login_page():
         background-repeat: no-repeat;
     }
 
-
-
-/*Login In Title */
-.login-title{
-    font-size:34px;
-    font-weight:bold;
-    color:white;
-    margin-bottom:20px;
-}
-
-/* Username & Password Labels */
-label{
-    color:white !important;
-    font-weight:bold !important;
-}
-
-/* Input Fields */
-.stTextInput input{
-    background-color:#333;
-    color:white;
-    border-radius:6px;
-    border:1px solid #555;
-}
-
-
-/* Login Button */
-.stButton button{
-    background:#E50914;
-    color:white;
-    font-weight:bold;
-    border-radius:6px;
-    width:100%;
-    height:45px;
-}
-                
-.login-title{
-    font-size:32px;
-    font-weight:bold;
-    color:white;
-    margin-bottom:25px;
-} 
-
-.logo-container{
-    text-align:center;
-    margin-bottom:25px;
-}
-
-.logo-container img{
-    width:420px;
-    position: relative;
-    top: -60px;   /* move logo upward */
-    animation: glow 2.5s infinite alternate;
-}
-
-@keyframes glow{
-    0%{
-        filter: drop-shadow(0px 0px 5px rgba(255,255,255,0.2));
+    .login-box{
+        width:420px;
+        margin:auto;
+        margin-top:120px;
+        padding:40px;
+        background:rgba(0,0,0,0.65);
+        border-radius:10px;
     }
-    50%{
-        filter: drop-shadow(0px 0px 20px rgba(255,255,255,0.9));
+
+    .login-title{
+        font-size:32px;
+        font-weight:bold;
+        color:white;
+        margin-bottom:25px;
+        text-align:center;
     }
-    100%{
-        filter: drop-shadow(0px 0px 5px rgba(255,255,255,0.2));
+
+    label{
+        color:white !important;
+        font-weight:bold !important;
     }
-}
-                                        
-                
-div[data-testid="stVerticalBlock"]{
-    text-align:center;
-    margin-top:150px;
-}
 
-</style>
-""", unsafe_allow_html=True)
-    
+    .stTextInput input{
+        background:#333;
+        color:white;
+        border-radius:6px;
+        border:1px solid #555;
+    }
 
+    .stButton button{
+        background:#E50914;
+        color:white;
+        font-weight:bold;
+        border-radius:6px;
+        width:100%;
+        height:45px;
+    }
 
+    .logo-container{
+        text-align:center;
+        margin-bottom:25px;
+    }
 
+    .logo-container img{
+        width:420px;
+        position: relative;
+        top: -60px;
+        animation: glow 2.5s infinite alternate;
+    }
 
+    @keyframes glow{
+        0%{filter: drop-shadow(0px 0px 5px rgba(255,255,255,0.2));}
+        50%{filter: drop-shadow(0px 0px 20px rgba(255,255,255,0.9));}
+        100%{filter: drop-shadow(0px 0px 5px rgba(255,255,255,0.2));}
+    }
+
+    </style>
+    """, unsafe_allow_html=True)
 
     st.markdown("""
-<div class="logo-container">
-    <img src="https://cdn.shopify.com/s/files/1/0250/6198/2261/files/Insulation4less_main_logo.png?v=1767346032">
-</div>
+    <div class="logo-container">
+        <img src="https://cdn.shopify.com/s/files/1/0250/6198/2261/files/Insulation4less_main_logo.png?v=1767346032">
+    </div>
+    """, unsafe_allow_html=True)
 
-<div class="login-title">Login In</div>
-""", unsafe_allow_html=True)
+    st.markdown('<div class="login-box">', unsafe_allow_html=True)
+
+    st.markdown('<div class="login-title">Login In</div>', unsafe_allow_html=True)
 
     username = st.text_input("Username")
     password = st.text_input("Password", type="password")
@@ -135,12 +116,7 @@ div[data-testid="stVerticalBlock"]{
         else:
             st.error("Invalid username or password")
 
-
-
-
-if not st.session_state.logged_in:
-    login_page()
-    st.stop()
+    st.markdown('</div>', unsafe_allow_html=True)
 
 # ---------------- END LOGIN ---------------- #
 # -------- USER INFO + LOGOUT -------- #
@@ -173,11 +149,7 @@ st.sidebar.image(
     "https://cdn.shopify.com/s/files/1/0250/6198/2261/files/Insulation4less_main_logo.png?v=1767346032",
     width=200
 )
-st.set_page_config(page_title="Price Comparison Dashboard", page_icon=":bar_chart:", layout="wide", menu_items={
-    'Get Help': 'https://insulation4less.co.uk/pages/contact-us',
-    'Report a bug': "https://www.insulation4less.co.uk",
-    'About': "This app is a price comparison dashboard",
-})
+
 
 @st.cache_data
 def load_data(file_path):
