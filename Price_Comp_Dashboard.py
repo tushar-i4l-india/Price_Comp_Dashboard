@@ -161,6 +161,16 @@ st.sidebar.image(
     "https://cdn.shopify.com/s/files/1/0250/6198/2261/files/Insulation4less_main_logo.png?v=1767346032",
     width=200
 )
+st.sidebar.markdown("---")
+
+st.sidebar.markdown(f"👤 **Logged in as:** {st.session_state.username}")
+
+if st.sidebar.button("🚪 Logout"):
+    st.session_state.logged_in = False
+    st.session_state.username = None
+    st.rerun()
+
+
 st.set_page_config(page_title="Price Comparison Dashboard", page_icon=":bar_chart:", layout="wide", menu_items={
     'Get Help': 'https://insulation4less.co.uk/pages/contact-us',
     'Report a bug': "https://www.insulation4less.co.uk",
