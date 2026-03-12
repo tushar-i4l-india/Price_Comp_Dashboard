@@ -31,69 +31,66 @@ def login_page():
         background-repeat: no-repeat;
     }
 
-/* Login Box */
-.login-box{
-    background: rgba(0,0,0,0.85);
-    padding:40px;
-    border-radius:12px;
-    width:400px;
-    margin:auto;
-    margin-top:120px;
-    color:white;
-    text-align:center;
-}
+    /* Center card */
+    .login-card{
+        background: rgba(0,0,0,0.85);
+        padding:40px;
+        border-radius:12px;
+        text-align:center;
+    }
 
-/* Sign In Title */
-.login-title{
-    font-size:34px;
-    font-weight:bold;
-    color:white;
-    margin-bottom:20px;
-}
+    .login-title{
+        font-size:36px;
+        font-weight:bold;
+        color:white;
+        margin-bottom:25px;
+    }
 
-/* Username & Password Labels */
-label{
-    color:white !important;
-    font-weight:bold !important;
-}
+    label{
+        color:white !important;
+        font-weight:bold !important;
+    }
 
-/* Input Fields */
-.stTextInput input{
-    background-color:#333;
-    color:white;
-    border-radius:6px;
-    border:1px solid #555;
-}
+    .stTextInput input{
+        background-color:#333;
+        color:white;
+        border-radius:6px;
+        border:1px solid #555;
+    }
 
-/* Login Button */
-.stButton button{
-    background:#E50914;
-    color:white;
-    font-weight:bold;
-    border-radius:6px;
-    width:100%;
-    height:45px;
-}
+    .stButton button{
+        background:#E50914;
+        color:white;
+        font-weight:bold;
+        border-radius:6px;
+        width:100%;
+        height:45px;
+    }
 
-</style>
-""", unsafe_allow_html=True)
+    </style>
+    """, unsafe_allow_html=True)
 
-    st.markdown('<div class="login-box">', unsafe_allow_html=True)
-    st.markdown('<div class="login-title">Sign In</div>', unsafe_allow_html=True)
+    # Center layout
+    col1, col2, col3 = st.columns([2,1,2])
 
-    username = st.text_input("Username")
-    password = st.text_input("Password", type="password")
+    with col2:
 
-    if st.button("Sign In"):
+        st.markdown('<div class="login-card">', unsafe_allow_html=True)
 
-        if username in USERS and USERS[username] == password:
-            st.session_state.logged_in = True
-            st.rerun()
+        st.markdown('<div class="login-title">Sign In</div>', unsafe_allow_html=True)
 
-        else:
-            st.error("Invalid username or password")
+        username = st.text_input("Username")
+        password = st.text_input("Password", type="password")
 
-    st.markdown('</div>', unsafe_allow_html=True)
+        if st.button("Sign In"):
+
+            if username in USERS and USERS[username] == password:
+                st.session_state.logged_in = True
+                st.rerun()
+            else:
+                st.error("Invalid username or password")
+
+        st.markdown('</div>', unsafe_allow_html=True)
 
 
 if not st.session_state.logged_in:
