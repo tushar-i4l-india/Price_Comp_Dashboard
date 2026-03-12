@@ -31,41 +31,52 @@ def login_page():
         background-repeat: no-repeat;
     }
 
-    .login-box{
-        background: rgba(0,0,0,0.80);
-        padding:40px;
-        border-radius:12px;
-        width:400px;
-        margin:auto;
-        margin-top:120px;
-        color:white;
-        text-align:center;
-    }
+/* Login Box */
+.login-box{
+    background: rgba(0,0,0,0.85);
+    padding:40px;
+    border-radius:12px;
+    width:400px;
+    margin:auto;
+    margin-top:120px;
+    color:white;
+    text-align:center;
+}
 
-    .login-title{
-        font-size:32px;
-        font-weight:bold;
-        margin-bottom:20px;
-    }
+/* Sign In Title */
+.login-title{
+    font-size:34px;
+    font-weight:bold;
+    color:white;
+    margin-bottom:20px;
+}
 
-    .stTextInput input{
-        background-color:#333;
-        color:white;
-        border-radius:6px;
-        border:1px solid #555;
-    }
+/* Username & Password Labels */
+label{
+    color:white !important;
+    font-weight:bold !important;
+}
 
-    .stButton button{
-        background:#E50914;
-        color:white;
-        font-weight:bold;
-        border-radius:6px;
-        width:100%;
-        height:45px;
-    }
+/* Input Fields */
+.stTextInput input{
+    background-color:#333;
+    color:white;
+    border-radius:6px;
+    border:1px solid #555;
+}
 
-    </style>
-    """, unsafe_allow_html=True)
+/* Login Button */
+.stButton button{
+    background:#E50914;
+    color:white;
+    font-weight:bold;
+    border-radius:6px;
+    width:100%;
+    height:45px;
+}
+
+</style>
+""", unsafe_allow_html=True)
 
     st.markdown('<div class="login-box">', unsafe_allow_html=True)
     st.markdown('<div class="login-title">Sign In</div>', unsafe_allow_html=True)
