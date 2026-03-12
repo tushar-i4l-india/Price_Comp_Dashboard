@@ -85,12 +85,13 @@ label{
     border-radius:6px;
     border:1px solid #555;
 }
+/* CENTER BUTTON CONTAINER */
 div[data-testid="stButton"]{
-    display:flex;
-    justify-content:center;
+    max-width:500px;
+    margin:auto;
 }
 
-/* Login Button */
+/* LOGIN BUTTON STYLE */
 .stButton button{
     background:#E50914;
     color:white;
