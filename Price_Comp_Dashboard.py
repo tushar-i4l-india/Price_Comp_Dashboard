@@ -48,14 +48,6 @@ def login_page():
 
 
 
-/*Login In Title */
-.login-title{
-    font-size:34px;
-    font-weight:bold;
-    color:white;
-    margin-bottom:20px;
-}
-
 /* Username & Password Labels */
 label{
     color:white !important;
@@ -77,17 +69,12 @@ label{
     color:white;
     font-weight:bold;
     border-radius:6px;
-    width:100%;
     height:45px;
+    width:200px;
+    display:block;
+    margin:auto;
 }
                 
-.login-title{
-    font-size:32px;
-    font-weight:bold;
-    color:white;
-    margin-bottom:25px;
-} 
-
 .logo-container{
     text-align:center;
     margin-bottom:25px;
@@ -124,10 +111,12 @@ div[data-testid="stTextInput"]{
     margin:auto;
 }
 
-/* Center login button */
-div[data-testid="stButton"]{
-    max-width:200px;
-    margin:auto;
+.login-title{
+    font-size:32px;
+    font-weight:bold;
+    color:white;
+    margin-bottom:25px;
+    text-align:center;
 }
 
 </style>
