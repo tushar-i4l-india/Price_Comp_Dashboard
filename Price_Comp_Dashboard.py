@@ -104,14 +104,6 @@ By collecting and comparing daily pricing data from various online retailers, th
 <li>🗓 <b>Date-Based Data Exploration</b> – Select specific dates to review pricing data and track daily market movements.</li>
 </ul>
 
-<h3>Quick Overview</h3>
-
-<ul>
-<li>Compare competitor prices</li>
-<li>Track price increases and decreases</li>
-<li>Analyse historical price trends</li>
-<li>View product price comparisons</li>
-</ul>
     </div>
     """, unsafe_allow_html=True)
 
