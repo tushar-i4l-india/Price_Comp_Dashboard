@@ -45,9 +45,12 @@ def login_page():
     <div class="login-title">Login In</div>
     """, unsafe_allow_html=True)
 
-    username = st.text_input("Username")
-    password = st.text_input("Password", type="password")
+username = st.text_input("Username")
+password = st.text_input("Password", type="password")
 
+col1, col2, col3 = st.columns([2,1,2])
+
+with col2:
     login_clicked = st.button("Login In")
 
     if login_clicked:
