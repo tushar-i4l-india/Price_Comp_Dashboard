@@ -9,9 +9,13 @@ import streamlit.components.v1 as components
 from PIL import Image
 import streamlit as st
 
-st.set_page_config(page_title="Login", layout="wide")
+# ---------------- PAGE CONFIG ----------------
+st.set_page_config(
+    page_title="Price Comparison Dashboard",
+    layout="wide"
+)
 
-# users
+# ---------------- USERS ----------------
 USERS = {
     "admin": "price@123",
     "Nicola": "admin@123",
@@ -19,30 +23,48 @@ USERS = {
     "Ashish": "admin@123"
 }
 
+# ---------------- SESSION ----------------
 if "logged_in" not in st.session_state:
     st.session_state.logged_in = False
 
 
+# ---------------- LOGIN PAGE ----------------
 def login_page():
 
     st.markdown("""
     <style>
 
     [data-testid="stAppViewContainer"]{
-    background:#b8b7d7;
+        background:#b8b7d7;
     }
 
     .login-card{
-    background:white;
-    padding:35px;
-    border-radius:15px;
-    box-shadow:0 10px 30px rgba(0,0,0,0.2);
+        background:white;
+        padding:40px;
+        border-radius:15px;
+        box-shadow:0 10px 30px rgba(0,0,0,0.2);
+        margin-top:80px;
     }
 
     .title{
-    font-size:32px;
-    font-weight:bold;
-    text-align:center;
+        font-size:36px;
+        font-weight:bold;
+        text-align:center;
+        margin-bottom:20px;
+    }
+
+    .stTextInput input{
+        border-radius:10px;
+        height:45px;
+    }
+
+    .stButton button{
+        width:100%;
+        height:45px;
+        border-radius:10px;
+        background:#1f2a44;
+        color:white;
+        font-size:18px;
     }
 
     </style>
@@ -50,12 +72,14 @@ def login_page():
 
     col1, col2 = st.columns([1,1])
 
-    # avatar side
+    # ---------------- AVATAR SIDE ----------------
     with col1:
 
-        st.video("avatar-walking.mp4")
+        st.video(
+            "https://cdn.shopify.com/videos/c/o/v/68b54a51890847d8aecbf407dc2636f4.mp4"
+        )
 
-    # login form
+    # ---------------- LOGIN FORM ----------------
     with col2:
 
         st.markdown('<div class="login-card">', unsafe_allow_html=True)
@@ -82,18 +106,22 @@ def login_page():
         st.markdown('</div>', unsafe_allow_html=True)
 
 
+# ---------------- BLOCK DASHBOARD ----------------
 if not st.session_state.logged_in:
     login_page()
     st.stop()
 
-# dashboard
-st.sidebar.write(f"Logged in as {st.session_state.user}")
+
+# ---------------- DASHBOARD ----------------
+st.sidebar.write(f"👤 Logged in as: **{st.session_state.user}**")
 
 if st.sidebar.button("Logout"):
     st.session_state.logged_in = False
     st.rerun()
 
 st.title("Price Comparison Dashboard")
+
+st.write("Your dashboard content starts here.")
 
 # ✅ MUST BE FIRST STREAMLIT COMMAND
 st.set_page_config(
