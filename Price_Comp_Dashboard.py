@@ -45,11 +45,12 @@ def login_page():
     <style>
 
     .welcome-text{
-        position: fixed;
-        left: 120px;
-        top: 260px;
-        width: 420px;
-    }
+    position: fixed;
+    left: 120px;
+    top: 160px;   /* move upward */
+    width: 420px;
+}
+                
 
     .welcome-text h1{
         color:white;
@@ -71,10 +72,9 @@ def login_page():
     .welcome-text{
     position: fixed;
     left: 120px;
-    top: 300px;
+    top: 160px;   /* move upward */
     width: 420px;
 }
-
     </style>
     """, unsafe_allow_html=True)
 
