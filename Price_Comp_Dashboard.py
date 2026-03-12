@@ -19,6 +19,110 @@ st.set_page_config(
         'About': "This app is a price comparison dashboard",
     }
 )
+# ---------------- LOGIN SYSTEM ---------------- #
+
+import streamlit as st
+
+users = {
+    "Admin": "Price@123",
+    "Nicola": "admin@123",
+    "Shubham": "admin@123",
+    "Ashish": "admin@123"
+}
+
+if "logged_in" not in st.session_state:
+    st.session_state.logged_in = False
+
+
+def login():
+
+    st.markdown("""
+    <style>
+
+    .stApp {
+        background: linear-gradient(135deg,#1f4037,#99f2c8);
+    }
+
+    .login-container{
+        display:flex;
+        justify-content:center;
+        align-items:center;
+        height:80vh;
+    }
+
+    .login-box{
+        width:320px;
+        padding:30px;
+        border-radius:18px;
+        background:rgba(255,255,255,0.15);
+        backdrop-filter:blur(10px);
+        box-shadow:0 15px 40px rgba(0,0,0,0.25);
+        text-align:center;
+    }
+
+    .login-logo{
+        width:220px;
+        margin-bottom:20px;
+    }
+
+    div.stTextInput > div > div > input{
+        border-radius:8px;
+        height:40px;
+    }
+
+    div.stButton > button{
+        width:100%;
+        border-radius:8px;
+        height:40px;
+        background:#00c6ff;
+        color:white;
+        font-weight:bold;
+        border:none;
+    }
+
+    div.stButton > button:hover{
+        background:#0072ff;
+    }
+
+    </style>
+    """, unsafe_allow_html=True)
+
+    st.markdown('<div class="login-container">', unsafe_allow_html=True)
+
+    st.markdown('<div class="login-box">', unsafe_allow_html=True)
+
+    st.image(
+        "https://cdn.shopify.com/s/files/1/0250/6198/2261/files/Insulation4less_main_logo.png?v=1767346032",
+        use_container_width=True
+    )
+
+    username = st.text_input("Username")
+    password = st.text_input("Password", type="password")
+
+    if st.button("Login"):
+        if username in users and users[username] == password:
+            st.session_state.logged_in = True
+            st.session_state.user = username
+            st.rerun()
+        else:
+            st.error("Invalid Username or Password")
+
+    st.markdown('</div>', unsafe_allow_html=True)
+    st.markdown('</div>', unsafe_allow_html=True)
+
+
+# Show login page
+if not st.session_state.logged_in:
+    login()
+    st.stop()
+
+
+# Sidebar after login
+st.sidebar.success(f"Logged in as {st.session_state.user}")
+
+if st.sidebar.button("Logout"):
+    st.session_state.logged_in = False
+    st.rerun()
 
 # ✅ Sidebar logo (NOW SAFE)
 st.sidebar.image(
