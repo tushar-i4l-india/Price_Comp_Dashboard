@@ -106,12 +106,13 @@ def login_page():
         text-align:center;
         margin-bottom:30px;
     }
-    div[data-testid="stVerticalBlock"]:has(.login-title){
+div[data-testid="stVerticalBlock"]:has(.login-title){
     background: rgba(0,0,0,0.55);
     padding:40px;
     border-radius:30px;
     max-width:550px;
     margin:auto;
+    margin-top:120px;   /* move box down */
 }
 
     </style>
