@@ -20,8 +20,9 @@ st.set_page_config(
     }
 )
 
+# ---------------- LOGIN SYSTEM ---------------- #
+
 import streamlit as st
-import streamlit.components.v1 as components
 
 users = {
     "Admin": "Price@123",
@@ -30,113 +31,68 @@ users = {
     "Ashish": "admin@123"
 }
 
+# Session state
 if "logged_in" not in st.session_state:
     st.session_state.logged_in = False
 
+# Hide Streamlit default menu and footer
+st.markdown("""
+<style>
+#MainMenu {visibility: hidden;}
+footer {visibility: hidden;}
+header {visibility: hidden;}
+</style>
+""", unsafe_allow_html=True)
 
-def login_page():
 
-    components.html("""
-    
+def login():
+
+    st.markdown("""
     <style>
 
-    body{
-        margin:0;
-        height:100vh;
-        background:linear-gradient(135deg,#1f4037,#99f2c8);
-        display:flex;
-        justify-content:center;
-        align-items:center;
-        font-family:Arial;
+    .stApp {
+        background: linear-gradient(135deg,#1f4037,#99f2c8);
     }
 
-    .login-card{
-        width:350px;
-        padding:40px;
-        border-radius:20px;
-        background:rgba(255,255,255,0.15);
-        backdrop-filter: blur(15px);
-        box-shadow:0 15px 40px rgba(0,0,0,0.3);
-        transform-style:preserve-3d;
-        animation:float 6s ease-in-out infinite;
-    }
-
-    @keyframes float{
-        0%{transform:translateY(0px) rotateX(0deg)}
-        50%{transform:translateY(-15px) rotateX(5deg)}
-        100%{transform:translateY(0px) rotateX(0deg)}
-    }
-
-    .login-card h2{
+    .login-box {
+        width: 400px;
+        margin: auto;
+        margin-top: 150px;
+        padding: 40px;
+        border-radius: 20px;
+        background: rgba(255,255,255,0.15);
+        backdrop-filter: blur(10px);
+        box-shadow: 0 20px 40px rgba(0,0,0,0.2);
         text-align:center;
+    }
+
+    .title {
+        font-size:28px;
+        font-weight:700;
         color:white;
-        margin-bottom:30px;
+        margin-bottom:20px;
     }
 
-    input{
+    div.stButton > button {
         width:100%;
-        padding:12px;
-        margin:10px 0;
-        border:none;
         border-radius:10px;
-        outline:none;
-    }
-
-    button{
-        width:100%;
-        padding:12px;
-        margin-top:20px;
-        border:none;
-        border-radius:10px;
+        height:45px;
         background:#00c6ff;
         color:white;
         font-weight:bold;
-        cursor:pointer;
-        transition:0.3s;
+        border:none;
     }
 
-    button:hover{
+    div.stButton > button:hover {
         background:#0072ff;
-        transform:scale(1.05);
     }
 
     </style>
+    """, unsafe_allow_html=True)
 
-    <div class="login-card">
+    st.markdown('<div class="login-box">', unsafe_allow_html=True)
 
-        <h2>🚀 Price Dashboard</h2>
-
-        <input id="username" placeholder="Username">
-
-        <input id="password" type="password" placeholder="Password">
-
-        <button onclick="sendLogin()">Login</button>
-
-    </div>
-
-    <script>
-
-    function sendLogin(){
-        const user=document.getElementById("username").value
-        const pass=document.getElementById("password").value
-
-        const streamlitMsg={
-            isStreamlitMessage:true,
-            type:"streamlit:setComponentValue",
-            value:{username:user,password:pass}
-        }
-
-        window.parent.postMessage(streamlitMsg,"*")
-    }
-
-    </script>
-
-    """, height=500)
-
-
-if not st.session_state.logged_in:
-
-    result = login_page()
+    st.markdown('<div class="title">🚀 Price Dashboard</div>', unsafe_allow_html=True)
 
     username = st.text_input("Username")
     password = st.text_input("Password", type="password")
@@ -144,14 +100,26 @@ if not st.session_state.logged_in:
     if st.button("Login"):
         if username in users and users[username] == password:
             st.session_state.logged_in = True
-            st.success("Login Successful")
+            st.session_state.user = username
             st.rerun()
         else:
-            st.error("Invalid Login")
+            st.error("Invalid Username or Password")
 
+    st.markdown('</div>', unsafe_allow_html=True)
+
+
+# Show login page first
+if not st.session_state.logged_in:
+    login()
     st.stop()
 
-st.sidebar.success("Logged In")
+
+# Sidebar after login
+st.sidebar.success(f"Logged in as {st.session_state.user}")
+
+if st.sidebar.button("Logout"):
+    st.session_state.logged_in = False
+    st.rerun()
 
 # ✅ Sidebar logo (NOW SAFE)
 st.sidebar.image(
