@@ -85,7 +85,10 @@ label{
     border-radius:6px;
     border:1px solid #555;
 }
-
+div[data-testid="stButton"]{
+    display:flex;
+    justify-content:center;
+}
 
 /* Login Button */
 .stButton button{
@@ -142,6 +145,7 @@ div[data-testid="stTextInput"]{
     margin-bottom:25px;
     text-align:center;
 }
+
 
 </style>
 """, unsafe_allow_html=True)
