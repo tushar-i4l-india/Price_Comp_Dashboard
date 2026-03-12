@@ -95,7 +95,6 @@ It provides a centralized view of market pricing to track trends, identify price
 <li>🗓 View pricing data for specific dates</li>
 </ul>
 
-    </div>
     """, unsafe_allow_html=True)
 
 
