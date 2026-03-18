@@ -368,27 +368,55 @@ if st.session_state.selected_brand:
                     st.dataframe(df, hide_index=True, height=600)
 
             with tab2:
-                products = df["Product"].unique()
-                st.session_state.selected_product = st.sidebar.selectbox("Select Product", products)
-                if st.session_state.selected_product:
-                    product_data = df[df["Product"] == st.session_state.selected_product]
-                    if not product_data.empty:
-                        melted_data = product_data.melt(id_vars=["Product", "SKU"], var_name="Competitor", value_name="Price")
-                        for column in melted_data.columns:
-                            if 'Price' in column:
-                                melted_data[column] = melted_data[column].astype(str).apply(extract_price)
-                        melted_data = melted_data.dropna(subset=["Price"])
-                        melted_data.sort_values(by="Price", ascending=True, inplace=True)
-                        st.write(f"Showing price comparison for `{st.session_state.selected_product}`:")
-                        fig = px.bar(
-                            melted_data,
-                            x="Competitor",
-                            y="Price",
-                            color="Competitor",
-                            title=f"Price Comparison for {st.session_state.selected_product}",
-                            text="Price"
-                        )
-                        st.plotly_chart(fig)
+                products = df["Product"].dropna().unique()
+
+                selected_product = st.sidebar.selectbox(
+                "Select Product",
+                products,
+                key="product_selector"
+)
+
+with tab2:
+
+    products = df["Product"].dropna().unique()
+
+    selected_product = st.sidebar.selectbox(
+        "Select Product",
+        products,
+        key="product_selector"
+    )
+
+    st.session_state.selected_product = selected_product
+
+    if selected_product:
+
+        product_data = df[df["Product"] == selected_product]
+
+        if not product_data.empty:
+
+            melted_data = product_data.melt(
+                id_vars=["Product", "SKU"],
+                var_name="Competitor",
+                value_name="Price"
+            )
+
+            melted_data["Price"] = melted_data["Price"].astype(str).apply(extract_price)
+
+            melted_data = melted_data.dropna(subset=["Price"])
+            melted_data = melted_data.sort_values(by="Price", ascending=True)
+
+            st.write(f"Showing price comparison for `{selected_product}`:")
+
+            fig = px.bar(
+                melted_data,
+                x="Competitor",
+                y="Price",
+                color="Competitor",
+                title=f"Price Comparison for {selected_product}",
+                text="Price"
+            )
+
+            st.plotly_chart(fig)
 
             with tab3:
                 folder_path = brand_directory
