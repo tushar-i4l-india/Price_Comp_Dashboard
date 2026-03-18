@@ -36,6 +36,26 @@ if "logged_in" not in st.session_state:
 if "username" not in st.session_state:
     st.session_state.username = ""
 
+from datetime import datetime
+
+def log_login(username):
+    log_file = "login_logs.csv"
+
+    now = datetime.now()
+    date = now.strftime("%Y-%m-%d")
+    time = now.strftime("%H:%M:%S")
+
+    new_log = pd.DataFrame([{
+        "Username": username,
+        "Date": date,
+        "Time": time
+    }])
+
+    if os.path.exists(log_file):
+        new_log.to_csv(log_file, mode='a', header=False, index=False)
+    else:
+        new_log.to_csv(log_file, index=False)
+
 
 def login_page():
 
@@ -215,6 +235,7 @@ div[data-testid="stVerticalBlock"]:has(.login-title){
         if username in USERS and USERS[username] == password:
             st.session_state.logged_in = True
             st.session_state.username = username
+            log_login(username)
             st.rerun()
 
         else:
