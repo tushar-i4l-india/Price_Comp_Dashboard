@@ -131,21 +131,23 @@ It provides a centralized view of market pricing to track trends, identify price
         border:1px solid #555;
     }
 
-    div[data-testid="stButton"]{
-        max-width:500px;
-        margin:auto;
-    }
+div[data-testid="stButton"],
+div[data-testid="stFormSubmitButton"]{
+    max-width:500px;
+    margin:auto;
+}
 
-    .stButton button{
-        background:#E50914;
-        color:white;
-        font-weight:bold;
-        border-radius:6px;
-        height:45px;
-        width:200px;
-        display:block;
-        margin:auto;
-    }
+.stButton button,
+.stFormSubmitButton button{
+    background:#E50914;
+    color:white;
+    font-weight:bold;
+    border-radius:6px;
+    height:45px;
+    width:200px;
+    display:block;
+    margin:auto;
+}
 
     .logo-container{
         text-align:center;
@@ -162,11 +164,6 @@ It provides a centralized view of market pricing to track trends, identify price
         50%{filter: drop-shadow(0px 0px 20px rgba(255,255,255,0.9));}
         100%{filter: drop-shadow(0px 0px 5px rgba(255,255,255,0.2));}
     }
-                
-.login-box{
-    max-width:500px;
-    margin:auto;
-}
 
     .login-title{
         font-size:32px;
@@ -198,30 +195,30 @@ div[data-testid="stVerticalBlock"]:has(.login-title){
     """, unsafe_allow_html=True)
 
     # ---------- LOGIN FORM ----------
-# ---------- LOGIN FORM ----------
-st.markdown('<div class="login-box">', unsafe_allow_html=True)
+    # ---------- LOGIN FORM ----------
+    st.markdown('<div class="login-box">', unsafe_allow_html=True)
 
-with st.form("login_form"):
+    with st.form("login_form"):
 
-    username = st.text_input("Username")
-    password = st.text_input("Password", type="password")
+        username = st.text_input("Username")
+        password = st.text_input("Password", type="password")
 
-    st.markdown("<div style='text-align:center'>", unsafe_allow_html=True)
-    login_clicked = st.form_submit_button("Login In")
+        st.markdown("<div style='text-align:center'>", unsafe_allow_html=True)
+        login_clicked = st.form_submit_button("Login In")
+        st.markdown("</div>", unsafe_allow_html=True)
+
     st.markdown("</div>", unsafe_allow_html=True)
 
-st.markdown("</div>", unsafe_allow_html=True)
 
+    if login_clicked:
 
-if login_clicked:
+        if username in USERS and USERS[username] == password:
+            st.session_state.logged_in = True
+            st.session_state.username = username
+            st.rerun()
 
-    if username in USERS and USERS[username] == password:
-        st.session_state.logged_in = True
-        st.session_state.username = username
-        st.rerun()
-
-    else:
-        st.error("Invalid username or password")
+        else:
+            st.error("Invalid username or password")
 
 
 
