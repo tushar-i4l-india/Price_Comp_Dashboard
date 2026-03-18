@@ -38,6 +38,7 @@ if "username" not in st.session_state:
     st.session_state.username = ""
 
 def log_login(username):
+
     now = datetime.now()
 
     log_data = {
@@ -46,7 +47,9 @@ def log_login(username):
         "Time": now.strftime("%H:%M:%S")
     }
 
-    log_file = "login_logs.csv"
+    # always save in same folder as script
+    base_dir = os.path.dirname(__file__)
+    log_file = os.path.join(base_dir, "login_logs.csv")
 
     df = pd.DataFrame([log_data])
 
