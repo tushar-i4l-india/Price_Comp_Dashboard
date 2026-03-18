@@ -201,15 +201,15 @@ with st.form("login_form"):
 
     login_clicked = st.form_submit_button("Login In")
 
-if login_clicked:
+    if login_clicked:
 
-    if username in USERS and USERS[username] == password:
-        st.session_state.logged_in = True
-        st.session_state.username = username
-        st.rerun()
+        if username in USERS and USERS[username] == password:
+            st.session_state.logged_in = True
+            st.session_state.username = username
+            st.rerun()
 
-    else:
-        st.error("Invalid username or password")
+        else:
+            st.error("Invalid username or password")
 
 
 
