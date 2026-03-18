@@ -4,6 +4,7 @@ import os
 import plotly.express as px  
 from datetime import datetime, timedelta
 import re
+from datetime import datetime
 import glob
 import streamlit.components.v1 as components 
 from PIL import Image
@@ -36,25 +37,23 @@ if "logged_in" not in st.session_state:
 if "username" not in st.session_state:
     st.session_state.username = ""
 
-from datetime import datetime
-
 def log_login(username):
+    now = datetime.now()
+
+    log_data = {
+        "Username": username,
+        "Date": now.strftime("%Y-%m-%d"),
+        "Time": now.strftime("%H:%M:%S")
+    }
+
     log_file = "login_logs.csv"
 
-    now = datetime.now()
-    date = now.strftime("%Y-%m-%d")
-    time = now.strftime("%H:%M:%S")
-
-    new_log = pd.DataFrame([{
-        "Username": username,
-        "Date": date,
-        "Time": time
-    }])
+    df = pd.DataFrame([log_data])
 
     if os.path.exists(log_file):
-        new_log.to_csv(log_file, mode='a', header=False, index=False)
+        df.to_csv(log_file, mode="a", header=False, index=False)
     else:
-        new_log.to_csv(log_file, index=False)
+        df.to_csv(log_file, index=False)
 
 
 def login_page():
@@ -233,9 +232,9 @@ div[data-testid="stVerticalBlock"]:has(.login-title){
     if login_clicked:
 
         if username in USERS and USERS[username] == password:
+            log_login(username)
             st.session_state.logged_in = True
             st.session_state.username = username
-            log_login(username)
             st.rerun()
 
         else:
