@@ -193,13 +193,12 @@ div[data-testid="stVerticalBlock"]:has(.login-title){
     """, unsafe_allow_html=True)
 
     # ---------- LOGIN FORM ----------
-# ---------- LOGIN FORM ----------
-with st.form("login_form"):
-
     username = st.text_input("Username")
     password = st.text_input("Password", type="password")
 
-    login_clicked = st.form_submit_button("Login In")
+    st.markdown("<div style='text-align:center'>", unsafe_allow_html=True)
+    login_clicked = st.button("Login In")
+    st.markdown("</div>", unsafe_allow_html=True)
 
     if login_clicked:
 
