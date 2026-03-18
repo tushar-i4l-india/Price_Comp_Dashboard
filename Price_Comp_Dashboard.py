@@ -193,22 +193,23 @@ div[data-testid="stVerticalBlock"]:has(.login-title){
     """, unsafe_allow_html=True)
 
     # ---------- LOGIN FORM ----------
+# ---------- LOGIN FORM ----------
+with st.form("login_form"):
+
     username = st.text_input("Username")
     password = st.text_input("Password", type="password")
 
-    st.markdown("<div style='text-align:center'>", unsafe_allow_html=True)
-    login_clicked = st.button("Login In")
-    st.markdown("</div>", unsafe_allow_html=True)
+    login_clicked = st.form_submit_button("Login In")
 
-    if login_clicked:
+if login_clicked:
 
-        if username in USERS and USERS[username] == password:
-            st.session_state.logged_in = True
-            st.session_state.username = username
-            st.rerun()
+    if username in USERS and USERS[username] == password:
+        st.session_state.logged_in = True
+        st.session_state.username = username
+        st.rerun()
 
-        else:
-            st.error("Invalid username or password")
+    else:
+        st.error("Invalid username or password")
 
 
 
