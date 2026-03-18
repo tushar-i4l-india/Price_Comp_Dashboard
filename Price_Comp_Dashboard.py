@@ -295,7 +295,7 @@ if 'previous_date_str' not in st.session_state:
 
 st.sidebar.title("Price Comparison Dashboard 💷")
 
-brands = ["Celotex", "Recticel", "Ecotherm", "Unilin", "IKO", "Mannok", "Core-Products", "Novia", "Powerlon", "Superfoil",  "Cladco", "Rockwool"]
+brands = ["Celotex", "Recticel", "Ecotherm", "Unilin", "IKO", "Mannok", "Core-Products", "Novia", "Powerlon", "Superfoil",  "Cladco",  "Rockwool"]
 st.session_state.selected_brand = st.sidebar.selectbox("Select Brand", brands)
 
 if st.session_state.selected_brand:
@@ -368,17 +368,10 @@ if st.session_state.selected_brand:
                     st.dataframe(df, hide_index=True, height=600)
 
             with tab2:
-                products = sorted(df["Product"].dropna().unique())
-                selected_product = st.sidebar.selectbox(
-    "Select Product",
-    products,
-    key="product_selector"
-)
-                st.session_state.selected_product = selected_product
-                
-                if selected_product:
-                    if selected_product:
-                     product_data = df[df["Product"] == selected_product]
+                products = df["Product"].unique()
+                st.session_state.selected_product = st.sidebar.selectbox("Select Product", products)
+                if st.session_state.selected_product:
+                    product_data = df[df["Product"] == st.session_state.selected_product]
                     if not product_data.empty:
                         melted_data = product_data.melt(id_vars=["Product", "SKU"], var_name="Competitor", value_name="Price")
                         for column in melted_data.columns:
@@ -386,7 +379,7 @@ if st.session_state.selected_brand:
                                 melted_data[column] = melted_data[column].astype(str).apply(extract_price)
                         melted_data = melted_data.dropna(subset=["Price"])
                         melted_data.sort_values(by="Price", ascending=True, inplace=True)
-                        st.write(f"Showing price comparison for `{selected_product}`:")
+                        st.write(f"Showing price comparison for `{st.session_state.selected_product}`:")
                         fig = px.bar(
                             melted_data,
                             x="Competitor",
