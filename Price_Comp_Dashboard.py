@@ -20,40 +20,54 @@ st.set_page_config(
         'About': "This app is a price comparison dashboard",
     }
 )
+
 components.html("""
 <script>
-var meta = document.createElement('meta');
-meta.name = "viewport";
-meta.content = "width=1200";
-document.getElementsByTagName('head')[0].appendChild(meta);
+function forceDesktop() {
+    let meta = document.querySelector("meta[name=viewport]");
+    if (!meta) {
+        meta = document.createElement('meta');
+        meta.name = "viewport";
+        document.head.appendChild(meta);
+    }
+
+    if (window.innerWidth < 768) {
+        meta.content = "width=1200";
+    }
+}
+
+// Run multiple times (Streamlit rerender fix)
+forceDesktop();
+setTimeout(forceDesktop, 500);
+setTimeout(forceDesktop, 1500);
+setTimeout(forceDesktop, 3000);
 </script>
 """, height=0)
 st.markdown("""
 <style>
 
-/* Force desktop width */
-html, body {
-    min-width: 1200px !important;
-    overflow-x: auto !important;
-}
+/* APPLY TO WHOLE APP */
+@media (max-width: 768px) {
 
-/* Main app container */
-.block-container {
-    width: 1200px !important;
-    margin: auto;
-}
+    html, body {
+        min-width: 1200px !important;
+        overflow-x: auto !important;
+    }
 
-/* Prevent columns from stacking */
-div[data-testid="column"] {
-    min-width: 250px !important;
-    flex: 1 !important;
-}
+    .block-container {
+        width: 1200px !important;
+    }
 
-/* Keep sidebar visible */
-section[data-testid="stSidebar"] {
-    transform: none !important;
-    visibility: visible !important;
-    width: 300px !important;
+    div[data-testid="column"] {
+        min-width: 250px !important;
+        flex: 1 !important;
+    }
+
+    section[data-testid="stSidebar"] {
+        transform: none !important;
+        visibility: visible !important;
+        width: 300px !important;
+    }
 }
 
 </style>
@@ -103,6 +117,20 @@ def login_page():
 
     st.markdown("""
     <style>
+     /* Prevent Streamlit shrinking layout */
+.main {
+    min-width: 1200px !important;
+}
+
+/* Fix dataframe scroll */
+[data-testid="stDataFrame"] {
+    overflow-x: auto !important;
+}
+
+/* Prevent tab collapse */
+button[role="tab"] {
+    white-space: nowrap !important;
+}           
 
 .welcome-text{
     position: relative;
@@ -129,6 +157,7 @@ def login_page():
         font-size:16px;
         padding-left:20px;
     }
+
     </style>
     """, unsafe_allow_html=True)
 
@@ -210,8 +239,8 @@ div[data-testid="stFormSubmitButton"]{
     }
 
 .logo-container img{
-    width:420px;
-    max-width:300px;
+    width:100%;
+    max-width:320px;
     animation: glow 1.5s infinite alternate, zoom 3s infinite ease-in-out;
 }
 
