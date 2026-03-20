@@ -179,15 +179,24 @@ div[data-testid="stFormSubmitButton"]{
 
 .logo-container img{
     width:420px;
-    animation: glow 2.5s infinite alternate;   /* faster blinking */
+    animation: glow 2s infinite alternate;
 }
 
 @keyframes glow{
     0%{
-        filter: brightness(1) drop-shadow(0px 0px 10px rgba(255,255,255,0.5));
+        filter: brightness(1.2)
+                drop-shadow(0px 0px 10px #ffffff)
+                drop-shadow(0px 0px 20px #ffffff);
+    }
+    50%{
+        filter: brightness(1.8)
+                drop-shadow(0px 0px 30px #ffffff)
+                drop-shadow(0px 0px 50px #ffffff);
     }
     100%{
-        filter: brightness(2.5) drop-shadow(0px 0px 60px rgba(255,255,255,1));
+        filter: brightness(2.3)
+                drop-shadow(0px 0px 60px #ffffff)
+                drop-shadow(0px 0px 90px #ffffff);
     }
 }
     .login-title{
