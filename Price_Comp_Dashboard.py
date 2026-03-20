@@ -38,9 +38,6 @@ if "username" not in st.session_state:
     st.session_state.username = ""
 
 def log_login(username):
-
-    st.write("Logging user:", username)  # DEBUG
-
     now = datetime.now()
 
     log_data = {
@@ -50,7 +47,6 @@ def log_login(username):
     }
 
     log_file = "login_logs.csv"
-
     df = pd.DataFrame([log_data])
 
     if os.path.exists(log_file):
@@ -58,21 +54,23 @@ def log_login(username):
     else:
         df.to_csv(log_file, index=False)
 
-
-def login_page():
-
-    # ---------- CSS ----------
-
+    # ---------- RESPONSIVE CSS ----------
     st.markdown("""
     <style>
-
-    .welcome-text{
-    position: fixed;
-    left: 120px;
-    top: 160px;   /* move upward */
-    width: 420px;
+                /* MOBILE TABLE SCROLL FIX */
+@media (max-width: 768px){
+    .stDataFrame{
+        overflow-x: auto;
+    }
 }
-                
+
+    /* ================= DESKTOP ================= */
+    .welcome-text{
+        position: fixed;
+        left: 120px;
+        top: 160px;
+        width: 420px;
+    }
 
     .welcome-text h1{
         color:white;
@@ -91,43 +89,50 @@ def login_page():
         font-size:16px;
         padding-left:20px;
     }
-    .welcome-text{
-    position: fixed;
-    left: 120px;
-    top: 160px;   /* move upward */
-    width: 420px;
-}
-    </style>
-    """, unsafe_allow_html=True)
 
+    /* ================= MOBILE ================= */
+    @media (max-width: 768px){
 
-    # ✅ WELCOME TEXT
-    st.markdown("""
-    <div class="welcome-text">
+        .welcome-text{
+            position: relative !important;
+            left: 0 !important;
+            top: 0 !important;
+            width: 100% !important;
+            padding: 15px;
+            margin-top:10px;
+        }
 
-<h1>📊 Welcome to Price Comparison Dashboard</h1>
+        .welcome-text h1{
+            font-size:22px !important;
+        }
 
-<p>
-The <b>Price Comparison Dashboard</b> helps monitor and analyse competitor insulation product prices across multiple supplier websites. 
-It provides a centralized view of market pricing to track trends, identify price movements, and support better pricing decisions.
-</p>
+        .welcome-text p,
+        .welcome-text ul{
+            font-size:14px !important;
+        }
 
-<h3 style="color:white;">Key Features</h3>
+        .logo-container img{
+            width:250px !important;
+        }
 
-<ul>
-<li>🔎 Monitor competitor prices across multiple websites</li>
-<li>📊 Compare product prices between suppliers</li>
-<li>📈 Analyse historical price trends over time</li>
-<li>🔺 Detect daily price increases and decreases</li>
-<li>📦 Explore pricing insights by brand and product SKU</li>
-<li>🗓 View pricing data for specific dates</li>
-</ul>
+        div[data-testid="stTextInput"]{
+            max-width:100% !important;
+        }
 
-    """, unsafe_allow_html=True)
+        .stButton button,
+        .stFormSubmitButton button{
+            width:100% !important;
+        }
 
+        div[data-testid="stVerticalBlock"]:has(.login-title){
+            padding:20px !important;
+            margin-top:20px !important;
+            max-width:95% !important;
+            border-radius:15px !important;
+        }
+    }
 
-    st.markdown("""
-    <style>
+    /* ================= COMMON ================= */
 
     .stApp {
         background-image: url("https://cdn.shopify.com/s/files/1/0845/8443/1893/files/Streamlit.png?v=1773315005");
@@ -153,61 +158,54 @@ It provides a centralized view of market pricing to track trends, identify price
         border:1px solid #555;
     }
 
-div[data-testid="stButton"],
-div[data-testid="stFormSubmitButton"]{
-    max-width:500px;
-    margin:auto;
-}
+    div[data-testid="stButton"],
+    div[data-testid="stFormSubmitButton"]{
+        max-width:500px;
+        margin:auto;
+    }
 
-.stButton button,
-.stFormSubmitButton button{
-    background:#E50914;
-    color:white;
-    font-weight:bold;
-    border-radius:6px;
-    height:35px;
-    width:140px;
-    font-size:14px;
-    display:block;
-    margin:auto;
-}
+    .stButton button,
+    .stFormSubmitButton button{
+        background:#E50914;
+        color:white;
+        font-weight:bold;
+        border-radius:6px;
+        height:35px;
+        width:140px;
+        font-size:14px;
+        display:block;
+        margin:auto;
+    }
 
     .logo-container{
         text-align:center;
         margin-bottom:20px;
     }
 
-.logo-container img{
-    width:420px;
-    animation: glow 1.5s infinite alternate, zoom 3s infinite ease-in-out;
-}
+    .logo-container img{
+        width:420px;
+        animation: glow 1.5s infinite alternate, zoom 3s infinite ease-in-out;
+    }
 
-/* STRONG WHITE BLINK */
-@keyframes glow{
-    0%{
-        filter: brightness(1.2)
-                drop-shadow(0px 0px 10px #ffffff)
-                drop-shadow(0px 0px 20px #ffffff);
+    @keyframes glow{
+        0%{
+            filter: brightness(1.2)
+                    drop-shadow(0px 0px 10px #ffffff)
+                    drop-shadow(0px 0px 20px #ffffff);
+        }
+        100%{
+            filter: brightness(2.5)
+                    drop-shadow(0px 0px 60px #ffffff)
+                    drop-shadow(0px 0px 100px #ffffff);
+        }
     }
-    100%{
-        filter: brightness(2.5)
-                drop-shadow(0px 0px 60px #ffffff)
-                drop-shadow(0px 0px 100px #ffffff);
-    }
-}
 
-/* VERY LOW ZOOM (almost invisible) */
-@keyframes zoom{
-    0%{
-        transform: scale(1);
+    @keyframes zoom{
+        0%{ transform: scale(1); }
+        50%{ transform: scale(1.01); }
+        100%{ transform: scale(1); }
     }
-    50%{
-        transform: scale(1.01);   /* tiny zoom */
-    }
-    100%{
-        transform: scale(1);
-    }
-}
+
     .login-title{
         font-size:32px;
         font-weight:bold;
@@ -215,18 +213,43 @@ div[data-testid="stFormSubmitButton"]{
         text-align:center;
         margin-bottom:30px;
     }
-div[data-testid="stVerticalBlock"]:has(.login-title){
-    background: rgba(0,0,0,0.55);
-    padding:40px;
-    border-radius:30px;
-    max-width:550px;
-    margin:auto;
-    margin-top:80px;   /* move box down */
-}
+
+    div[data-testid="stVerticalBlock"]:has(.login-title){
+        background: rgba(0,0,0,0.55);
+        padding:40px;
+        border-radius:30px;
+        max-width:550px;
+        margin:auto;
+        margin-top:80px;
+    }
 
     </style>
     """, unsafe_allow_html=True)
 
+    # ---------- WELCOME TEXT ----------
+    st.markdown("""
+    <div class="welcome-text">
+
+    <h1>📊 Welcome to Price Comparison Dashboard</h1>
+
+    <p>
+    The <b>Price Comparison Dashboard</b> helps monitor and analyse competitor insulation product prices across multiple supplier websites. 
+    It provides a centralized view of market pricing to track trends, identify price movements, and support better pricing decisions.
+    </p>
+
+    <h3 style="color:white;">Key Features</h3>
+
+    <ul>
+    <li>🔎 Monitor competitor prices across multiple websites</li>
+    <li>📊 Compare product prices between suppliers</li>
+    <li>📈 Analyse historical price trends over time</li>
+    <li>🔺 Detect daily price increases and decreases</li>
+    <li>📦 Explore pricing insights by brand and product SKU</li>
+    <li>🗓 View pricing data for specific dates</li>
+    </ul>
+
+    </div>
+    """, unsafe_allow_html=True)
 
     # ---------- LOGO ----------
     st.markdown("""
@@ -238,9 +261,6 @@ div[data-testid="stVerticalBlock"]:has(.login-title){
     """, unsafe_allow_html=True)
 
     # ---------- LOGIN FORM ----------
-    # ---------- LOGIN FORM ----------
-    st.markdown('<div class="login-box">', unsafe_allow_html=True)
-
     with st.form("login_form"):
 
         username = st.text_input("Username")
@@ -250,9 +270,7 @@ div[data-testid="stVerticalBlock"]:has(.login-title){
         login_clicked = st.form_submit_button("Login In")
         st.markdown("</div>", unsafe_allow_html=True)
 
-    st.markdown("</div>", unsafe_allow_html=True)
-
-
+    # ---------- LOGIN LOGIC ----------
     if login_clicked:
 
         if username in USERS and USERS[username] == password:
