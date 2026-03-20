@@ -20,6 +20,44 @@ st.set_page_config(
         'About': "This app is a price comparison dashboard",
     }
 )
+components.html("""
+<script>
+var meta = document.createElement('meta');
+meta.name = "viewport";
+meta.content = "width=1200";
+document.getElementsByTagName('head')[0].appendChild(meta);
+</script>
+""", height=0)
+st.markdown("""
+<style>
+
+/* Force desktop width */
+html, body {
+    min-width: 1200px !important;
+    overflow-x: auto !important;
+}
+
+/* Main app container */
+.block-container {
+    width: 1200px !important;
+    margin: auto;
+}
+
+/* Prevent columns from stacking */
+div[data-testid="column"] {
+    min-width: 250px !important;
+    flex: 1 !important;
+}
+
+/* Keep sidebar visible */
+section[data-testid="stSidebar"] {
+    transform: none !important;
+    visibility: visible !important;
+    width: 300px !important;
+}
+
+</style>
+""", unsafe_allow_html=True)
 # ---------------- LOGIN SYSTEM ---------------- #
 
 # ---------------- LOGIN SYSTEM ---------------- #
@@ -66,11 +104,11 @@ def login_page():
     st.markdown("""
     <style>
 
-    .welcome-text{
-    position: fixed;
-    left: 120px;
-    top: 160px;   /* move upward */
-    width: 420px;
+.welcome-text{
+    position: relative;
+    margin: 20px auto;
+    width: 90%;
+    max-width: 500px;
 }
                 
 
@@ -91,12 +129,6 @@ def login_page():
         font-size:16px;
         padding-left:20px;
     }
-    .welcome-text{
-    position: fixed;
-    left: 120px;
-    top: 160px;   /* move upward */
-    width: 420px;
-}
     </style>
     """, unsafe_allow_html=True)
 
@@ -179,6 +211,7 @@ div[data-testid="stFormSubmitButton"]{
 
 .logo-container img{
     width:420px;
+    max-width:300px;
     animation: glow 1.5s infinite alternate, zoom 3s infinite ease-in-out;
 }
 
