@@ -165,8 +165,9 @@ div[data-testid="stFormSubmitButton"]{
     color:white;
     font-weight:bold;
     border-radius:6px;
-    height:45px;
-    width:200px;
+    height:35px;
+    width:140px;
+    font-size:14px;
     display:block;
     margin:auto;
 }
