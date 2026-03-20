@@ -20,58 +20,6 @@ st.set_page_config(
         'About': "This app is a price comparison dashboard",
     }
 )
-
-components.html("""
-<script>
-function forceDesktop() {
-    let meta = document.querySelector("meta[name=viewport]");
-    if (!meta) {
-        meta = document.createElement('meta');
-        meta.name = "viewport";
-        document.head.appendChild(meta);
-    }
-
-    if (window.innerWidth < 768) {
-        meta.content = "width=1200";
-    }
-}
-
-// Run multiple times (Streamlit rerender fix)
-forceDesktop();
-setTimeout(forceDesktop, 500);
-setTimeout(forceDesktop, 1500);
-setTimeout(forceDesktop, 3000);
-</script>
-""", height=0)
-st.markdown("""
-<style>
-
-/* APPLY TO WHOLE APP */
-@media (max-width: 768px) {
-
-    html, body {
-        min-width: 1200px !important;
-        overflow-x: auto !important;
-    }
-
-    .block-container {
-        width: 1200px !important;
-    }
-
-    div[data-testid="column"] {
-        min-width: 250px !important;
-        flex: 1 !important;
-    }
-
-    section[data-testid="stSidebar"] {
-        transform: none !important;
-        visibility: visible !important;
-        width: 300px !important;
-    }
-}
-
-</style>
-""", unsafe_allow_html=True)
 # ---------------- LOGIN SYSTEM ---------------- #
 
 # ---------------- LOGIN SYSTEM ---------------- #
@@ -117,26 +65,12 @@ def login_page():
 
     st.markdown("""
     <style>
-     /* Prevent Streamlit shrinking layout */
-.main {
-    min-width: 1200px !important;
-}
 
-/* Fix dataframe scroll */
-[data-testid="stDataFrame"] {
-    overflow-x: auto !important;
-}
-
-/* Prevent tab collapse */
-button[role="tab"] {
-    white-space: nowrap !important;
-}           
-
-.welcome-text{
-    position: relative;
-    margin: 20px auto;
-    width: 90%;
-    max-width: 500px;
+    .welcome-text{
+    position: fixed;
+    left: 120px;
+    top: 160px;   /* move upward */
+    width: 420px;
 }
                 
 
@@ -157,7 +91,12 @@ button[role="tab"] {
         font-size:16px;
         padding-left:20px;
     }
-
+    .welcome-text{
+    position: fixed;
+    left: 120px;
+    top: 160px;   /* move upward */
+    width: 420px;
+}
     </style>
     """, unsafe_allow_html=True)
 
@@ -239,8 +178,7 @@ div[data-testid="stFormSubmitButton"]{
     }
 
 .logo-container img{
-    width:100%;
-    max-width:320px;
+    width:420px;
     animation: glow 1.5s infinite alternate, zoom 3s infinite ease-in-out;
 }
 
