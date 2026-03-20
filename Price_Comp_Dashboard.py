@@ -61,41 +61,39 @@ def log_login(username):
 
 def login_page():
 
-    # ---------- CSS ----------
+    # ✅ STEP 1 — VIEWPORT (must be separate)
+    st.markdown(
+        '<meta name="viewport" content="width=1200">',
+        unsafe_allow_html=True
+    )
 
+    # ✅ STEP 2 — MAIN CSS (CLEAN + FIXED)
     st.markdown("""
-    <meta name="viewport" content="width=1200">
     <style>
-                
-section.main > div {
-    max-width: 1200px;
-}
 
+    section.main > div {
+        max-width: 1200px;
+    }
 
-/* FORCE DESKTOP WIDTH */
-.main-container {
-    width: 1200px;
-    margin: auto;
-}
+    /* MAIN CONTAINER */
+    .main-container {
+        width: 1200px;
+        margin: auto;
+        position: relative;   /* 🔥 IMPORTANT */
+    }
 
-/* PREVENT SHRINK */
-html, body {
-    overflow-x: auto;
-}
+    /* ALLOW SCROLL */
+    html, body {
+        overflow-x: auto;
+    }
 
-/* FIXED POSITION (KEEP ONLY ONE) */
-.welcome-text{
-    position: absolute;
-    left: 120px;
-    top: 160px;
-    width: 420px;
-}
-
-/* STREAMLIT WIDTH FIX */
-.block-container {
-    max-width: 1200px;
-}
-                
+    /* WELCOME TEXT */
+    .welcome-text{
+        position: absolute;
+        left: 120px;
+        top: 160px;
+        width: 420px;
+    }
 
     .welcome-text h1{
         color:white;
@@ -114,45 +112,8 @@ html, body {
         font-size:16px;
         padding-left:20px;
     }
-.block-container {
-    max-width: 1200px;
-}
-    </style>
-    """, unsafe_allow_html=True)
 
-
-    # ✅ WELCOME TEXT
-    st.markdown("""
-    <div class="main-container">
-    <div class="welcome-text">
-
-
-<h1>📊 Welcome to Price Comparison Dashboard</h1>
-
-<p>
-The <b>Price Comparison Dashboard</b> helps monitor and analyse competitor insulation product prices across multiple supplier websites. 
-It provides a centralized view of market pricing to track trends, identify price movements, and support better pricing decisions.
-</p>
-
-<h3 style="color:white;">Key Features</h3>
-
-<ul>
-<li>🔎 Monitor competitor prices across multiple websites</li>
-<li>📊 Compare product prices between suppliers</li>
-<li>📈 Analyse historical price trends over time</li>
-<li>🔺 Detect daily price increases and decreases</li>
-<li>📦 Explore pricing insights by brand and product SKU</li>
-<li>🗓 View pricing data for specific dates</li>
-</ul>
-                    </div>
-</div>
-
-    """, unsafe_allow_html=True)
-
-
-    st.markdown("""
-    <style>
-
+    /* BACKGROUND */
     .stApp {
         background-image: url("https://cdn.shopify.com/s/files/1/0845/8443/1893/files/Streamlit.png?v=1773315005");
         background-size: cover;
@@ -160,11 +121,7 @@ It provides a centralized view of market pricing to track trends, identify price
         background-repeat: no-repeat;
     }
 
-    label{
-        color:white !important;
-        font-weight:bold !important;
-    }
-
+    /* INPUT */
     div[data-testid="stTextInput"]{
         max-width:500px;
         margin:auto;
@@ -177,61 +134,42 @@ It provides a centralized view of market pricing to track trends, identify price
         border:1px solid #555;
     }
 
-div[data-testid="stButton"],
-div[data-testid="stFormSubmitButton"]{
-    max-width:500px;
-    margin:auto;
-}
+    /* BUTTON */
+    .stFormSubmitButton button{
+        background:#E50914;
+        color:white;
+        font-weight:bold;
+        border-radius:6px;
+        height:35px;
+        width:140px;
+        font-size:14px;
+        display:block;
+        margin:auto;
+    }
 
-.stButton button,
-.stFormSubmitButton button{
-    background:#E50914;
-    color:white;
-    font-weight:bold;
-    border-radius:6px;
-    height:35px;
-    width:140px;
-    font-size:14px;
-    display:block;
-    margin:auto;
-}
-
+    /* LOGO */
     .logo-container{
         text-align:center;
         margin-bottom:20px;
     }
 
-.logo-container img{
-    width:420px;
-    animation: glow 1.5s infinite alternate, zoom 3s infinite ease-in-out;
-}
+    .logo-container img{
+        width:420px;
+        animation: glow 1.5s infinite alternate, zoom 3s infinite ease-in-out;
+    }
 
-/* STRONG WHITE BLINK */
-@keyframes glow{
-    0%{
-        filter: brightness(1.2)
-                drop-shadow(0px 0px 10px #ffffff)
-                drop-shadow(0px 0px 20px #ffffff);
+    @keyframes glow{
+        0%{filter: brightness(1.2) drop-shadow(0px 0px 10px #fff);}
+        100%{filter: brightness(2.5) drop-shadow(0px 0px 60px #fff);}
     }
-    100%{
-        filter: brightness(2.5)
-                drop-shadow(0px 0px 60px #ffffff)
-                drop-shadow(0px 0px 100px #ffffff);
-    }
-}
 
-/* VERY LOW ZOOM (almost invisible) */
-@keyframes zoom{
-    0%{
-        transform: scale(1);
+    @keyframes zoom{
+        0%{transform: scale(1);}
+        50%{transform: scale(1.01);}
+        100%{transform: scale(1);}
     }
-    50%{
-        transform: scale(1.01);   /* tiny zoom */
-    }
-    100%{
-        transform: scale(1);
-    }
-}
+
+    /* LOGIN BOX */
     .login-title{
         font-size:32px;
         font-weight:bold;
@@ -239,20 +177,44 @@ div[data-testid="stFormSubmitButton"]{
         text-align:center;
         margin-bottom:30px;
     }
-div[data-testid="stVerticalBlock"]:has(.login-title){
-    background: rgba(0,0,0,0.55);
-    padding:40px;
-    border-radius:30px;
-    max-width:550px;
-    margin:auto;
-    margin-top:80px;   /* move box down */
-}
+
+    div[data-testid="stVerticalBlock"]:has(.login-title){
+        background: rgba(0,0,0,0.55);
+        padding:40px;
+        border-radius:30px;
+        max-width:550px;
+        margin:auto;
+        margin-top:80px;
+    }
 
     </style>
     """, unsafe_allow_html=True)
 
+    # ✅ STEP 3 — CONTENT
+    st.markdown("""
+    <div class="main-container">
+        <div class="welcome-text">
 
-    # ---------- LOGO ----------
+        <h1>📊 Welcome to Price Comparison Dashboard</h1>
+
+        <p>
+        The <b>Price Comparison Dashboard</b> helps monitor and analyse competitor prices across multiple supplier websites.
+        </p>
+
+        <h3 style="color:white;">Key Features</h3>
+
+        <ul>
+        <li>🔎 Monitor competitor prices</li>
+        <li>📊 Compare prices</li>
+        <li>📈 Analyse trends</li>
+        <li>🔺 Detect price changes</li>
+        </ul>
+
+        </div>
+    </div>
+    """, unsafe_allow_html=True)
+
+    # ✅ LOGO + TITLE
     st.markdown("""
     <div class="logo-container">
         <img src="https://cdn.shopify.com/s/files/1/0250/6198/2261/files/Insulation4less_main_logo.png?v=1767346032">
@@ -261,30 +223,18 @@ div[data-testid="stVerticalBlock"]:has(.login-title){
     <div class="login-title">Login In</div>
     """, unsafe_allow_html=True)
 
-    # ---------- LOGIN FORM ----------
-    # ---------- LOGIN FORM ----------
-    st.markdown('<div class="login-box">', unsafe_allow_html=True)
-
+    # ✅ LOGIN FORM
     with st.form("login_form"):
-
         username = st.text_input("Username")
         password = st.text_input("Password", type="password")
-
-        st.markdown("<div style='text-align:center'>", unsafe_allow_html=True)
         login_clicked = st.form_submit_button("Login In")
-        st.markdown("</div>", unsafe_allow_html=True)
-
-    st.markdown("</div>", unsafe_allow_html=True)
-
 
     if login_clicked:
-
         if username in USERS and USERS[username] == password:
             log_login(username)
             st.session_state.logged_in = True
             st.session_state.username = username
             st.rerun()
-
         else:
             st.error("Invalid username or password")
 
