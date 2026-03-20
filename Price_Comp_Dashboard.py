@@ -20,37 +20,6 @@ st.set_page_config(
         'About': "This app is a price comparison dashboard",
     }
 )
-st.markdown("""
-<style>
-
-/* ✅ Force desktop layout on mobile */
-html, body, [class*="css"]  {
-    min-width: 1200px !important;
-    overflow-x: auto !important;
-}
-
-/* Main container width */
-.block-container {
-    width: 1200px !important;
-    min-width: 1200px !important;
-}
-
-/* Sidebar always visible */
-section[data-testid="stSidebar"] {
-    display: block !important;
-    width: 300px !important;
-}
-
-/* Prevent column stacking */
-div[data-testid="column"] {
-    min-width: 300px !important;
-}
-
-</style>
-""", unsafe_allow_html=True)
-
-
-
 # ---------------- LOGIN SYSTEM ---------------- #
 
 # ---------------- LOGIN SYSTEM ---------------- #
@@ -97,11 +66,11 @@ def login_page():
     st.markdown("""
     <style>
 
-.welcome-text{
-    position: relative;
-    margin: auto;
-    width: 90%;
-    max-width: 500px;
+    .welcome-text{
+    position: fixed;
+    left: 120px;
+    top: 160px;   /* move upward */
+    width: 420px;
 }
                 
 
@@ -122,6 +91,12 @@ def login_page():
         font-size:16px;
         padding-left:20px;
     }
+    .welcome-text{
+    position: fixed;
+    left: 120px;
+    top: 160px;   /* move upward */
+    width: 420px;
+}
     </style>
     """, unsafe_allow_html=True)
 
@@ -204,7 +179,6 @@ div[data-testid="stFormSubmitButton"]{
 
 .logo-container img{
     width:420px;
-    max-width:350px;
     animation: glow 1.5s infinite alternate, zoom 3s infinite ease-in-out;
 }
 
@@ -249,17 +223,9 @@ div[data-testid="stVerticalBlock"]:has(.login-title){
     margin:auto;
     margin-top:80px;   /* move box down */
 }
-                
-
-/* Allow horizontal scroll for tables */
-[data-testid="stDataFrame"] {
-    overflow-x: auto !important;
-}
 
     </style>
     """, unsafe_allow_html=True)
-
-
 
 
     # ---------- LOGO ----------
