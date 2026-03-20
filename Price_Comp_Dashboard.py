@@ -66,6 +66,14 @@ def login_page():
     st.markdown("""
     <style>
 
+    .welcome-text{
+    position: fixed;
+    left: 120px;
+    top: 160px;   /* move upward */
+    width: 420px;
+}
+                
+
     .welcome-text h1{
         color:white;
         font-size:34px;
@@ -83,25 +91,12 @@ def login_page():
         font-size:16px;
         padding-left:20px;
     }
-
-.welcome-text{
-    max-width: 420px;
-    position: absolute;
-    left: 120px;
-    top: 160px;
-}
-
-/* MOBILE FIX */
-@media (max-width: 768px) {
     .welcome-text{
-        position: static;
-        max-width: 100%;
-        padding: 15px;
-        margin: auto;
-        text-align: center;
-    }
+    position: fixed;
+    left: 120px;
+    top: 160px;   /* move upward */
+    width: 420px;
 }
-
     </style>
     """, unsafe_allow_html=True)
 
@@ -146,10 +141,10 @@ It provides a centralized view of market pricing to track trends, identify price
         font-weight:bold !important;
     }
 
-div[data-testid="stTextInput"]{
-    max-width:500px;
-    width:100%;
-}
+    div[data-testid="stTextInput"]{
+        max-width:500px;
+        margin:auto;
+    }
 
     .stTextInput input{
         background-color:#333;
@@ -225,64 +220,8 @@ div[data-testid="stVerticalBlock"]:has(.login-title){
     padding:40px;
     border-radius:30px;
     max-width:550px;
-width:90%;
     margin:auto;
     margin-top:80px;   /* move box down */
-}
-@media (max-width: 768px) {
-    div[data-testid="stVerticalBlock"]:has(.login-title){
-        margin-top:30px !important;
-        padding:20px !important;
-        width:95% !important;
-    }
-}
-                
-.stButton button{
-    width:140px;
-}
-
-/* MOBILE */
-@media (max-width: 768px) {
-    .stButton button{
-        width:100%;
-    }
-}
-                
-@media (max-width: 768px) {
-
-    .logo-container img{
-        width: 240px !important;
-    }
-
-    .login-title{
-        font-size:22px !important;
-    }
-
-    .welcome-text{
-        padding:15px !important;
-    }
-
-    div[data-testid="stTextInput"]{
-        max-width:100% !important;
-    }
-
-    div[data-testid="stButton"]{
-        max-width:100% !important;
-    }
-
-    .stButton button{
-        width:100% !important;
-        height:45px !important;
-        font-size:16px !important;
-    }
-
-    /* Reduce padding globally */
-    .block-container{
-        padding-top:1rem !important;
-        padding-bottom:1rem !important;
-        padding-left:1rem !important;
-        padding-right:1rem !important;
-    }
 }
 
     </style>
@@ -335,7 +274,7 @@ if not st.session_state.logged_in:
 
 # ---------------- USER HEADER ---------------- #
 
-col1, col2 = st.columns([5,1])
+col1, col2 = st.columns([6,1])
 
 with col1:
     st.markdown(f"### 👋 Welcome, **{st.session_state.username}**")
@@ -478,7 +417,7 @@ if st.session_state.selected_brand:
                     for col in website_columns:
                         df_display[col] = df_display[col] + " " + df_display[col + "_Arrow"]
                         df_display.drop(columns=[col + "_Arrow"], inplace=True)
-                    st.dataframe(styled_df, use_container_width=True, hide_index=True, height=600)
+                    st.dataframe(styled_df, hide_index=True, height=600)
                 except:
                     st.dataframe(df, hide_index=True, height=600)
 
@@ -503,7 +442,7 @@ if st.session_state.selected_brand:
                             title=f"Price Comparison for {st.session_state.selected_product}",
                             text="Price"
                         )
-                        st.plotly_chart(fig, use_container_width=True)
+                        st.plotly_chart(fig)
 
             with tab3:
                 folder_path = brand_directory
@@ -533,7 +472,7 @@ if st.session_state.selected_brand:
                     st.write(f"📈 Average Price Trend for `{selected_product}` over time: ")
                     fig = px.line(avg_price_trend, x="date", y="price_numeric", title=f"Average Price Trend for {selected_product}", hover_data= ["price_numeric"], 
                                   markers=True, labels={"date": "Date", "price_numeric": "Price in £"}, hover_name="product")
-                    st.plotly_chart(fig, use_container_width=True)
+                    st.plotly_chart(fig)
         else:
             components.html(
                 """
@@ -580,7 +519,7 @@ if st.session_state.selected_brand:
                 </body>
                 </html>
                 """,
-                height=420,
+                height=650,
             )
     else:
         st.markdown(
