@@ -122,6 +122,11 @@ It provides a centralized view of market pricing to track trends, identify price
 
     st.markdown("""
     <style>
+                
+section.main > div{
+    display: flex;
+    justify-content: space-between;
+}
 
     .stApp {
         background-image: url("https://cdn.shopify.com/s/files/1/0845/8443/1893/files/Streamlit.png?v=1773315005");
@@ -209,13 +214,17 @@ div[data-testid="stFormSubmitButton"]{
         margin-bottom:30px;
     }
 .login-container{
-    position: fixed;
+    position: absolute;
     right: 120px;
     top: 120px;
     width: 500px;
     background: rgba(0,0,0,0.55);
     padding:40px;
     border-radius:30px;
+    z-index: 999;
+}
+.block-container{
+    padding-top: 0 !important;
 }
 /* ================= MOBILE ONLY FIX ================= */
 @media (max-width: 768px) and (orientation: portrait){
