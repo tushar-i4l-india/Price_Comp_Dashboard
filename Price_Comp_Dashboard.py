@@ -66,35 +66,11 @@ def login_page():
     st.markdown("""
     <style>
 
-.welcome-text{
-    max-width: 500px;
-    margin: auto;
-    padding: 20px;
-}
-
-/* DESKTOP */
-@media (min-width: 768px){
     .welcome-text{
-        margin-left: 120px;
-        margin-top: 160px;
-    }
-}
-
-/* MOBILE */
-@media (max-width: 768px){
-    .welcome-text{
-        margin: 20px;
-        padding: 15px;
-    }
-
-    .welcome-text h1{
-        font-size: 22px;
-    }
-
-    .welcome-text p,
-    .welcome-text ul{
-        font-size: 14px;
-    }
+    position: fixed;
+    left: 120px;
+    top: 160px;   /* move upward */
+    width: 420px;
 }
                 
 
@@ -115,6 +91,12 @@ def login_page():
         font-size:16px;
         padding-left:20px;
     }
+    .welcome-text{
+    position: fixed;
+    left: 120px;
+    top: 160px;   /* move upward */
+    width: 420px;
+}
     </style>
     """, unsafe_allow_html=True)
 
@@ -159,21 +141,24 @@ It provides a centralized view of market pricing to track trends, identify price
         font-weight:bold !important;
     }
 
-div[data-testid="stTextInput"],
+    div[data-testid="stTextInput"]{
+        max-width:500px;
+        margin:auto;
+    }
+
+    .stTextInput input{
+        background-color:#333;
+        color:white;
+        border-radius:6px;
+        border:1px solid #555;
+    }
+
 div[data-testid="stButton"],
 div[data-testid="stFormSubmitButton"]{
-    max-width: 90%;
-    margin: auto;
+    max-width:500px;
+    margin:auto;
 }
 
-/* DESKTOP */
-@media (min-width: 768px){
-    div[data-testid="stTextInput"],
-    div[data-testid="stButton"],
-    div[data-testid="stFormSubmitButton"]{
-        max-width: 500px;
-    }
-}
 .stButton button,
 .stFormSubmitButton button{
     background:#E50914;
@@ -193,8 +178,7 @@ div[data-testid="stFormSubmitButton"]{
     }
 
 .logo-container img{
-    width: 80%;
-    max-width: 420px;
+    width:420px;
     animation: glow 1.5s infinite alternate, zoom 3s infinite ease-in-out;
 }
 
@@ -233,19 +217,11 @@ div[data-testid="stFormSubmitButton"]{
     }
 div[data-testid="stVerticalBlock"]:has(.login-title){
     background: rgba(0,0,0,0.55);
-    padding: 30px;
-    border-radius: 20px;
-    max-width: 90%;
-    margin: auto;
-    margin-top: 40px;
-}
-
-/* DESKTOP */
-@media (min-width: 768px){
-    div[data-testid="stVerticalBlock"]:has(.login-title){
-        max-width: 550px;
-        margin-top: 80px;
-    }
+    padding:40px;
+    border-radius:30px;
+    max-width:550px;
+    margin:auto;
+    margin-top:80px;   /* move box down */
 }
 
     </style>
