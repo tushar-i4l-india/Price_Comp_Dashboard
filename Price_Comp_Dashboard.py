@@ -126,12 +126,14 @@ def login_page():
             max-width: 100% !important;
         }
 
-        .stButton button,
-        .stFormSubmitButton button{
-            width: 100% !important;
-        }
-
     }
+.login-box input{
+    width: 100% !important;
+}
+
+.login-box button{
+    width: 100% !important;
+}
     </style>
     """, unsafe_allow_html=True)
 
@@ -252,7 +254,6 @@ div[data-testid="stFormSubmitButton"]{
         text-align:center;
         margin-bottom:30px;
     }
-div[data-testid="stVerticalBlock"]:has(.login-title){
     background: rgba(0,0,0,0.55);
     padding:40px;
     border-radius:30px;
