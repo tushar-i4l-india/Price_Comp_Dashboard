@@ -8,16 +8,7 @@ from datetime import datetime
 import glob
 import streamlit.components.v1 as components 
 from PIL import Image
-st.markdown("""
-<style>
-@media (max-width: 768px) {
-    .block-container {
-        padding-left: 10px !important;
-        padding-right: 10px !important;
-    }
-}
-</style>
-""", unsafe_allow_html=True)
+
 # ✅ MUST BE FIRST STREAMLIT COMMAND
 st.set_page_config(
     page_title="Price Comparison Dashboard",
@@ -275,16 +266,18 @@ div[data-testid="stVerticalBlock"]:has(.login-title){
 st.markdown("""
 <style>
 
-/* ✅ MOBILE RESPONSIVE */
-@media (max-width: 768px) {
+/* ✅ ONLY APPLY ON MOBILE */
+@media only screen and (max-width: 768px) {
 
+    /* Fix welcome text */
     .welcome-text{
         position: static !important;
         width: 100% !important;
-        padding: 15px;
+        padding: 10px !important;
         text-align: center;
     }
 
+    /* Reduce font size */
     .welcome-text h1{
         font-size: 22px !important;
     }
@@ -294,25 +287,35 @@ st.markdown("""
         font-size: 14px !important;
     }
 
+    /* Logo resize */
     .logo-container img{
-        width: 220px !important;
+        width: 200px !important;
     }
 
+    /* Login box */
     div[data-testid="stVerticalBlock"]:has(.login-title){
         max-width: 95% !important;
-        padding: 20px !important;
-        margin-top: 30px !important;
+        padding: 15px !important;
+        margin-top: 20px !important;
     }
 
+    /* Inputs full width */
+    div[data-testid="stTextInput"]{
+        max-width: 100% !important;
+    }
+
+    /* Button full width */
     .stButton button,
     .stFormSubmitButton button{
         width: 100% !important;
     }
 
-    div[data-testid="stTextInput"]{
-        max-width: 100% !important;
-    }
+}
 
+/* ❌ REMOVE this from mobile CSS */
+.block-container {
+    padding-left: 0 !important;
+    padding-right: 0 !important;
 }
 
 </style>
