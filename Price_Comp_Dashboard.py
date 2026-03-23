@@ -62,11 +62,10 @@ def log_login(username):
 def login_page():
 
     # ---------- CSS ----------
-    st.markdown("""
-   <meta name="viewport" content="width=device-width, initial-scale=1">
-""", unsafe_allow_html=True)
+
     st.markdown("""
     <style>
+
     .welcome-text{
     position: fixed;
     left: 120px;
@@ -92,6 +91,12 @@ def login_page():
         font-size:16px;
         padding-left:20px;
     }
+    .welcome-text{
+    position: fixed;
+    left: 120px;
+    top: 160px;   /* move upward */
+    width: 420px;
+}
     </style>
     """, unsafe_allow_html=True)
 
@@ -99,6 +104,7 @@ def login_page():
     # ✅ WELCOME TEXT
     st.markdown("""
     <div class="welcome-text">
+
 <h1>📊 Welcome to Price Comparison Dashboard</h1>
 
 <p>
@@ -116,17 +122,12 @@ It provides a centralized view of market pricing to track trends, identify price
 <li>📦 Explore pricing insights by brand and product SKU</li>
 <li>🗓 View pricing data for specific dates</li>
 </ul>
-</div>
+
     """, unsafe_allow_html=True)
 
 
     st.markdown("""
     <style>
-                
-section.main > div{
-    display: flex;
-    justify-content: space-between;
-}
 
     .stApp {
         background-image: url("https://cdn.shopify.com/s/files/1/0845/8443/1893/files/Streamlit.png?v=1773315005");
@@ -177,9 +178,10 @@ div[data-testid="stFormSubmitButton"]{
     }
 
 .logo-container img{
-    width: 80%;
-    max-width: 420px;
+    width:420px;
+    animation: glow 1.5s infinite alternate, zoom 3s infinite ease-in-out;
 }
+
 /* STRONG WHITE BLINK */
 @keyframes glow{
     0%{
@@ -213,75 +215,21 @@ div[data-testid="stFormSubmitButton"]{
         text-align:center;
         margin-bottom:30px;
     }
-.login-container{
-    position: absolute;
-    right: 120px;
-    top: 120px;
-    width: 500px;
+div[data-testid="stVerticalBlock"]:has(.login-title){
     background: rgba(0,0,0,0.55);
     padding:40px;
     border-radius:30px;
-    z-index: 999;
-}
-.block-container{
-    padding-top: 0 !important;
-}
-/* ================= MOBILE ONLY FIX ================= */
-@media (max-width: 768px) and (orientation: portrait){
-
-    .welcome-text{
-        position: relative !important;
-        left: auto !important;
-        top: auto !important;
-        width: 90% !important;
-        margin: 20px auto !important;
-        padding: 15px !important;
-    }
-                body {
-    overflow-x: hidden;
+    max-width:550px;
+    margin:auto;
+    margin-top:80px;   /* move box down */
 }
 
-    .welcome-text h1{
-        font-size: 22px !important;
-    }
-
-    .welcome-text p,
-    .welcome-text ul{
-        font-size: 14px !important;
-    }
-
-    .login-container{
-        max-width: 90% !important;
-        margin-top: 20px !important;
-        padding: 20px !important;
-    }
-
-    .logo-container img{
-        width: 80% !important;
-        max-width: 300px !important;
-    }
-
-    div[data-testid="stTextInput"],
-    div[data-testid="stButton"],
-    div[data-testid="stFormSubmitButton"]{
-        max-width: 90% !important;
-    }
-
-    .stButton button,
-    .stFormSubmitButton button{
-        width: 100% !important;
-        max-width: 200px !important;
-    }
-}
-</style>
+    </style>
     """, unsafe_allow_html=True)
 
 
     # ---------- LOGO ----------
-    # ---------- LOGO ----------
     st.markdown("""
-    <div class="login-container">
-
     <div class="logo-container">
         <img src="https://cdn.shopify.com/s/files/1/0250/6198/2261/files/Insulation4less_main_logo.png?v=1767346032">
     </div>
@@ -302,8 +250,8 @@ div[data-testid="stFormSubmitButton"]{
         login_clicked = st.form_submit_button("Login In")
         st.markdown("</div>", unsafe_allow_html=True)
 
-    st.markdown("</div>", unsafe_allow_html=True)   # close login-box
-    st.markdown("</div>", unsafe_allow_html=True)   # close login-container
+    st.markdown("</div>", unsafe_allow_html=True)
+
 
     if login_clicked:
 
