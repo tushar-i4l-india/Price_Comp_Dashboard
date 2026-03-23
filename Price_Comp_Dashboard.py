@@ -97,47 +97,8 @@ def login_page():
     top: 160px;   /* move upward */
     width: 420px;
 }
-                
-    @media only screen and (max-width: 768px) {
-
-        .welcome-text{
-            position: static !important;
-            width: 100% !important;
-            padding: 10px !important;
-            text-align: center !important;
-        }
-.login-title {
-    font-size: 22px !important;
-}
-        .welcome-text h1{
-            font-size: 22px !important;
-        }
-
-        .welcome-text p,
-        .welcome-text ul{
-            font-size: 14px !important;
-        }
-
-        .logo-container img{
-            width: 200px !important;
-        }
-
-        div[data-testid="stTextInput"]{
-            max-width: 100% !important;
-        }
-
-    }
-.login-box input{
-    width: 100% !important;
-}
-
-.login-box button{
-    width: 100% !important;
-}
     </style>
     """, unsafe_allow_html=True)
-
-
 
 
     # ✅ WELCOME TEXT
@@ -254,6 +215,7 @@ div[data-testid="stFormSubmitButton"]{
         text-align:center;
         margin-bottom:30px;
     }
+div[data-testid="stVerticalBlock"]:has(.login-title){
     background: rgba(0,0,0,0.55);
     padding:40px;
     border-radius:30px;
@@ -455,7 +417,7 @@ if st.session_state.selected_brand:
                     for col in website_columns:
                         df_display[col] = df_display[col] + " " + df_display[col + "_Arrow"]
                         df_display.drop(columns=[col + "_Arrow"], inplace=True)
-                    st.dataframe(styled_df, use_container_width=True, hide_index=True)
+                    st.dataframe(styled_df, hide_index=True, height=600)
                 except:
                     st.dataframe(df, hide_index=True, height=600)
 
@@ -480,7 +442,7 @@ if st.session_state.selected_brand:
                             title=f"Price Comparison for {st.session_state.selected_product}",
                             text="Price"
                         )
-                        st.plotly_chart(fig, use_container_width=True)
+                        st.plotly_chart(fig)
 
             with tab3:
                 folder_path = brand_directory
@@ -510,7 +472,7 @@ if st.session_state.selected_brand:
                     st.write(f"📈 Average Price Trend for `{selected_product}` over time: ")
                     fig = px.line(avg_price_trend, x="date", y="price_numeric", title=f"Average Price Trend for {selected_product}", hover_data= ["price_numeric"], 
                                   markers=True, labels={"date": "Date", "price_numeric": "Price in £"}, hover_name="product")
-                    st.plotly_chart(fig, use_container_width=True)
+                    st.plotly_chart(fig)
         else:
             components.html(
                 """
