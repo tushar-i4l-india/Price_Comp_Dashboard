@@ -62,10 +62,11 @@ def log_login(username):
 def login_page():
 
     # ---------- CSS ----------
-
+    st.markdown("""
+   <meta name="viewport" content="width=device-width, initial-scale=1">
+""", unsafe_allow_html=True)
     st.markdown("""
     <style>
-<meta name="viewport" content="width=device-width, initial-scale=1">
     .welcome-text{
     position: fixed;
     left: 120px;
@@ -98,6 +99,7 @@ def login_page():
     # ✅ WELCOME TEXT
     st.markdown("""
     <div class="welcome-text">
+                </div>
 
 <h1>📊 Welcome to Price Comparison Dashboard</h1>
 
