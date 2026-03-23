@@ -99,8 +99,6 @@ def login_page():
     # ✅ WELCOME TEXT
     st.markdown("""
     <div class="welcome-text">
-                </div>
-
 <h1>📊 Welcome to Price Comparison Dashboard</h1>
 
 <p>
@@ -118,7 +116,7 @@ It provides a centralized view of market pricing to track trends, identify price
 <li>📦 Explore pricing insights by brand and product SKU</li>
 <li>🗓 View pricing data for specific dates</li>
 </ul>
-
+</div>
     """, unsafe_allow_html=True)
 
 
@@ -174,10 +172,9 @@ div[data-testid="stFormSubmitButton"]{
     }
 
 .logo-container img{
-    width:420px;
-    animation: glow 1.5s infinite alternate, zoom 3s infinite ease-in-out;
+    width: 80%;
+    max-width: 420px;
 }
-
 /* STRONG WHITE BLINK */
 @keyframes glow{
     0%{
