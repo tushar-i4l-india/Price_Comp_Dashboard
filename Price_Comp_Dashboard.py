@@ -65,7 +65,7 @@ def login_page():
 
     st.markdown("""
     <style>
-
+<meta name="viewport" content="width=device-width, initial-scale=1">
     .welcome-text{
     position: fixed;
     left: 120px;
@@ -91,12 +91,6 @@ def login_page():
         font-size:16px;
         padding-left:20px;
     }
-    .welcome-text{
-    position: fixed;
-    left: 120px;
-    top: 160px;   /* move upward */
-    width: 420px;
-}
     </style>
     """, unsafe_allow_html=True)
 
@@ -215,32 +209,77 @@ div[data-testid="stFormSubmitButton"]{
         text-align:center;
         margin-bottom:30px;
     }
-div[data-testid="stVerticalBlock"]:has(.login-title){
+.login-container{
     background: rgba(0,0,0,0.55);
     padding:40px;
     border-radius:30px;
     max-width:550px;
     margin:auto;
-    margin-top:80px;   /* move box down */
+    margin-top:80px;
 }
+/* ================= MOBILE ONLY FIX ================= */
+@media (max-width: 768px){
 
-    </style>
+    .welcome-text{
+        position: relative !important;
+        left: auto !important;
+        top: auto !important;
+        width: 90% !important;
+        margin: 20px auto !important;
+        padding: 15px !important;
+    }
+
+    .welcome-text h1{
+        font-size: 22px !important;
+    }
+
+    .welcome-text p,
+    .welcome-text ul{
+        font-size: 14px !important;
+    }
+
+    .login-container{
+        max-width: 90% !important;
+        margin-top: 20px !important;
+        padding: 20px !important;
+    }
+
+    .logo-container img{
+        width: 80% !important;
+        max-width: 300px !important;
+    }
+
+    div[data-testid="stTextInput"],
+    div[data-testid="stButton"],
+    div[data-testid="stFormSubmitButton"]{
+        max-width: 90% !important;
+    }
+
+    .stButton button,
+    .stFormSubmitButton button{
+        width: 100% !important;
+        max-width: 200px !important;
+    }
+}
+</style>
     """, unsafe_allow_html=True)
 
 
     # ---------- LOGO ----------
-    st.markdown("""
-    <div class="logo-container">
-        <img src="https://cdn.shopify.com/s/files/1/0250/6198/2261/files/Insulation4less_main_logo.png?v=1767346032">
-    </div>
+st.markdown("""
+<div class="login-container">
 
-    <div class="login-title">Login In</div>
-    """, unsafe_allow_html=True)
+<div class="logo-container">
+    <img src="https://cdn.shopify.com/s/files/1/0250/6198/2261/files/Insulation4less_main_logo.png?v=1767346032">
+</div>
+
+<div class="login-title">Login In</div>
+""", unsafe_allow_html=True)
 
     # ---------- LOGIN FORM ----------
     # ---------- LOGIN FORM ----------
     st.markdown('<div class="login-box">', unsafe_allow_html=True)
-
+    
     with st.form("login_form"):
 
         username = st.text_input("Username")
@@ -249,9 +288,9 @@ div[data-testid="stVerticalBlock"]:has(.login-title){
         st.markdown("<div style='text-align:center'>", unsafe_allow_html=True)
         login_clicked = st.form_submit_button("Login In")
         st.markdown("</div>", unsafe_allow_html=True)
-
-    st.markdown("</div>", unsafe_allow_html=True)
-
+            
+        st.markdown("</div>", unsafe_allow_html=True)
+        st.markdown("</div>", unsafe_allow_html=True)
 
     if login_clicked:
 
