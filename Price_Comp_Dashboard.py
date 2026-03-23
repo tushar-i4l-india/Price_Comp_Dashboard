@@ -64,7 +64,6 @@ def login_page():
     # ---------- CSS ----------
 
     st.markdown("""
-                <meta name="viewport" content="width=device-width, initial-scale=1">
     <style>
 
     .welcome-text{
@@ -223,55 +222,6 @@ div[data-testid="stVerticalBlock"]:has(.login-title){
     max-width:550px;
     margin:auto;
     margin-top:80px;   /* move box down */
-}
-/* ================= MOBILE ONLY FIX ================= */
-@media (max-width: 768px){
-
-    /* Fix welcome text */
-    .welcome-text{
-        position: relative !important;
-        left: auto !important;
-        top: auto !important;
-        width: 90% !important;
-        margin: 20px auto !important;
-        padding: 15px !important;
-    }
-
-    .welcome-text h1{
-        font-size: 22px !important;
-    }
-
-    .welcome-text p,
-    .welcome-text ul{
-        font-size: 14px !important;
-    }
-
-    /* Fix login container */
-    div[data-testid="stVerticalBlock"]:has(.login-title){
-        max-width: 90% !important;
-        margin-top: 20px !important;
-        padding: 20px !important;
-    }
-
-    /* Fix logo */
-    .logo-container img{
-        width: 80% !important;
-        max-width: 300px !important;
-    }
-
-    /* Inputs */
-    div[data-testid="stTextInput"],
-    div[data-testid="stButton"],
-    div[data-testid="stFormSubmitButton"]{
-        max-width: 90% !important;
-    }
-
-    /* Button */
-    .stButton button,
-    .stFormSubmitButton button{
-        width: 100% !important;
-        max-width: 200px !important;
-    }
 }
 
     </style>
