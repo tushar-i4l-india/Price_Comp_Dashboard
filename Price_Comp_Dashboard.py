@@ -217,7 +217,13 @@ div[data-testid="stFormSubmitButton"]{
     margin-top:80px;
 }
 /* ================= MOBILE ONLY FIX ================= */
-@media (max-width: 768px){
+.welcome-text{
+    position: fixed;
+    left: 120px;
+    top: 160px;
+    width: 420px;
+}
+@media (max-width: 768px) and (orientation: portrait){
 
     .welcome-text{
         position: relative !important;
@@ -227,6 +233,9 @@ div[data-testid="stFormSubmitButton"]{
         margin: 20px auto !important;
         padding: 15px !important;
     }
+                body {
+    overflow-x: hidden;
+}
 
     .welcome-text h1{
         font-size: 22px !important;
