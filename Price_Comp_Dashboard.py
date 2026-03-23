@@ -106,7 +106,9 @@ def login_page():
             padding: 10px !important;
             text-align: center !important;
         }
-
+.login-title {
+    font-size: 22px !important;
+}
         .welcome-text h1{
             font-size: 22px !important;
         }
@@ -118,12 +120,6 @@ def login_page():
 
         .logo-container img{
             width: 200px !important;
-        }
-
-        div[data-testid="stVerticalBlock"]:has(.login-title){
-            max-width: 95% !important;
-            padding: 15px !important;
-            margin-top: 20px !important;
         }
 
         div[data-testid="stTextInput"]{
