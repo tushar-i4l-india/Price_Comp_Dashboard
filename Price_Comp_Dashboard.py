@@ -326,7 +326,6 @@ if not st.session_state.logged_in:
 
 
 # ---------------- USER HEADER ---------------- #
-is_mobile = st.runtime.exists() and st.runtime.scriptrunner.script_run_context is not None
 col1, col2 = st.columns([4,1])
 
 with col1:
