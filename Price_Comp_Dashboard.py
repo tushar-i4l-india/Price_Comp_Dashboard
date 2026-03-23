@@ -266,20 +266,21 @@ div[data-testid="stFormSubmitButton"]{
 
 
     # ---------- LOGO ----------
-st.markdown("""
-<div class="login-container">
+    # ---------- LOGO ----------
+    st.markdown("""
+    <div class="login-container">
 
-<div class="logo-container">
-    <img src="https://cdn.shopify.com/s/files/1/0250/6198/2261/files/Insulation4less_main_logo.png?v=1767346032">
-</div>
+    <div class="logo-container">
+        <img src="https://cdn.shopify.com/s/files/1/0250/6198/2261/files/Insulation4less_main_logo.png?v=1767346032">
+    </div>
 
-<div class="login-title">Login In</div>
-""", unsafe_allow_html=True)
+    <div class="login-title">Login In</div>
+    """, unsafe_allow_html=True)
 
     # ---------- LOGIN FORM ----------
     # ---------- LOGIN FORM ----------
     st.markdown('<div class="login-box">', unsafe_allow_html=True)
-    
+
     with st.form("login_form"):
 
         username = st.text_input("Username")
@@ -288,9 +289,9 @@ st.markdown("""
         st.markdown("<div style='text-align:center'>", unsafe_allow_html=True)
         login_clicked = st.form_submit_button("Login In")
         st.markdown("</div>", unsafe_allow_html=True)
-            
-        st.markdown("</div>", unsafe_allow_html=True)
-        st.markdown("</div>", unsafe_allow_html=True)
+
+    st.markdown("</div>", unsafe_allow_html=True)   # close login-box
+    st.markdown("</div>", unsafe_allow_html=True)   # close login-container
 
     if login_clicked:
 
