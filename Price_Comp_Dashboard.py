@@ -209,12 +209,13 @@ div[data-testid="stFormSubmitButton"]{
         margin-bottom:30px;
     }
 .login-container{
+    position: fixed;
+    right: 120px;
+    top: 120px;
+    width: 500px;
     background: rgba(0,0,0,0.55);
     padding:40px;
     border-radius:30px;
-    max-width:550px;
-    margin:auto;
-    margin-top:80px;
 }
 /* ================= MOBILE ONLY FIX ================= */
 @media (max-width: 768px) and (orientation: portrait){
