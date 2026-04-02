@@ -4,7 +4,9 @@ import os
 import plotly.express as px  
 from datetime import datetime, timedelta
 import re
+from datetime import datetime
 import glob
+import streamlit.components.v1 as components 
 from PIL import Image
 
 # ✅ MUST BE FIRST STREAMLIT COMMAND
@@ -37,6 +39,8 @@ if "username" not in st.session_state:
 
 def log_login(username):
 
+    st.write("Logging user:", username)  # DEBUG
+
     now = datetime.now()
 
     log_data = {
@@ -45,10 +49,7 @@ def log_login(username):
         "Time": now.strftime("%H:%M:%S")
     }
 
-    # ✅ Save in same folder as your .py file
-    log_file = os.path.join(os.path.dirname(__file__), "login_logs.csv")
-
-    print("Saving log at:", log_file)  # 👈 VERY IMPORTANT
+    log_file = "login_logs.csv"
 
     df = pd.DataFrame([log_data])
 
@@ -473,7 +474,7 @@ if st.session_state.selected_brand:
                                   markers=True, labels={"date": "Date", "price_numeric": "Price in £"}, hover_name="product")
                     st.plotly_chart(fig)
         else:
-            st.html(
+            components.html(
                 """
                 <!DOCTYPE html>
                 <html>
