@@ -4,7 +4,6 @@ import os
 import plotly.express as px  
 from datetime import datetime, timedelta
 import re
-from datetime import datetime
 import glob
 from PIL import Image
 
@@ -474,8 +473,7 @@ if st.session_state.selected_brand:
                                   markers=True, labels={"date": "Date", "price_numeric": "Price in £"}, hover_name="product")
                     st.plotly_chart(fig)
         else:
-            st.iframe(
-            srcdoc=
+            st.html(
                 """
                 <!DOCTYPE html>
                 <html>
