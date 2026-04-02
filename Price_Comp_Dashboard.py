@@ -6,7 +6,6 @@ from datetime import datetime, timedelta
 import re
 from datetime import datetime
 import glob
-import streamlit.components.v1 as components 
 from PIL import Image
 
 # ✅ MUST BE FIRST STREAMLIT COMMAND
@@ -475,7 +474,8 @@ if st.session_state.selected_brand:
                                   markers=True, labels={"date": "Date", "price_numeric": "Price in £"}, hover_name="product")
                     st.plotly_chart(fig)
         else:
-            components.html(
+            st.iframe(
+            srcdoc=
                 """
                 <!DOCTYPE html>
                 <html>
