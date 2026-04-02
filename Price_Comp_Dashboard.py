@@ -49,7 +49,8 @@ def log_login(username):
             "Time": now.strftime("%H:%M:%S")
         }
 
-        log_file = os.path.join(os.getcwd(), "login_logs.csv")
+        log_file = os.path.join(os.path.dirname(__file__), "login_logs.csv")
+        print("📁 File path:", log_file)
         print("📁 Saving to:", log_file)
 
         df = pd.DataFrame([log_data])
