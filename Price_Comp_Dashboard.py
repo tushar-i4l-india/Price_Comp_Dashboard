@@ -38,26 +38,29 @@ if "username" not in st.session_state:
     st.session_state.username = ""
 
 def log_login(username):
+    try:
+        print("🔥 Logging user:", username)
 
-    now = datetime.now()
+        now = datetime.now()
 
-    log_data = {
-        "Username": username,
-        "Date": now.strftime("%Y-%m-%d"),
-        "Time": now.strftime("%H:%M:%S")
-    }
+        log_data = {
+            "Username": username,
+            "Date": now.strftime("%Y-%m-%d"),
+            "Time": now.strftime("%H:%M:%S")
+        }
 
-    # ✅ Save in same folder as your .py file
-    log_file = os.path.join(os.path.dirname(__file__), "login_logs.csv")
+        log_file = os.path.join(os.getcwd(), "login_logs.csv")
+        print("📁 Saving to:", log_file)
 
-    print("Saving log at:", log_file)  # 👈 VERY IMPORTANT
+        df = pd.DataFrame([log_data])
 
-    df = pd.DataFrame([log_data])
+        if os.path.exists(log_file):
+            df.to_csv(log_file, mode="a", header=False, index=False)
+        else:
+            df.to_csv(log_file, index=False)
 
-    if os.path.exists(log_file):
-        df.to_csv(log_file, mode="a", header=False, index=False)
-    else:
-        df.to_csv(log_file, index=False)
+    except Exception as e:
+        print("❌ Error:", e)
 
 
 def login_page():
